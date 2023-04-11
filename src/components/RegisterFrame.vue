@@ -78,18 +78,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
       }
     })
 
-    r.then(function (response) {
-      console.log(response);
+    r.then((response) => {
+      console.log(response)
       ElNotification({
         title: '注册成功',
         message: h('info', { style: 'color: teal' }, response.data.msg),
       })
-    }).catch(function (error) {
+    }).catch((error) => {
+      console.log(error)
       ElNotification({
         title: '错误',
-        message: h('error', { style: 'color: teal' }, error.response.data.msg),
+        message: h('error', { style: 'color: teal' }, error.response?.data.msg),
       })
-    });
+    })
   })
 
 

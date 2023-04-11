@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { h, reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { ElNotification } from "element-plus";
+import { ElNotification } from "element-plus"
 import request from "../utils/request"
 
 const ruleFormRef = ref<FormInstance>()
@@ -61,18 +61,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
       }
     })
 
-    r.then(function (response) {
-      console.log(response);
+    r.then((response) => {
+      console.log(response)
       ElNotification({
         title: '登录成功',
         message: h('i', { style: 'color: teal' }, response.data.msg),
       })
-    }).catch(function (error) {
+    }).catch((error) => {
+      console.log(error)
       ElNotification({
         title: '错误',
-        message: h('i', { style: 'color: teal' }, error.response.data.msg),
+        message: h('i', { style: 'color: teal' }, error.response?.data.msg),
       })
-    });
+    })
   })
 
 
