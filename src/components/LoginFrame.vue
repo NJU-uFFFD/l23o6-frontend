@@ -25,34 +25,9 @@
 import {h, reactive, ref} from 'vue'
 import type {FormInstance, FormRules} from 'element-plus'
 import {ElNotification} from "element-plus";
-import axios from "axios";
+import request from "../utils/request"
 
 const ruleFormRef = ref<FormInstance>()
-
-// const validatePass = (rule: any, value: any, callback: any) => {
-//
-//   if (!ruleFormRef.value) return
-//   if (!(value.length >= 8 && value.length <= 56)) {
-//     callback(new Error('密码长度不符合要求(8-56)'))
-//   } else if (!/^[\x21-\x7e]*$/.test(value)) {
-//     callback(new Error('密码只能包含字母,数字和符号'))
-//   } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/.test(value)) {
-//     callback(new Error('密码未达到复杂性要求:密码必须包含大小写字母和数字'))
-//   }
-//   callback()
-// }
-
-// const validateUsername = (rule: any, value: any, callback: any) => {
-//
-//   if (!ruleFormRef.value) return
-//   if (!(value.length >= 4 && value.length <= 16)) {
-//     callback(new Error('用户名长度不符合要求(4-16)'))
-//   } else if (!/^[a-z\d-_]*$/.test(value)) {
-//     callback(new Error('用户名只能包含小写字母,数字,下划线和连字符'))
-//   }
-//   callback()
-// }
-
 
 const ruleForm = reactive({
   username: '',
@@ -82,11 +57,17 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (!valid) return
 
     console.log('submit!')
+    
+    const r=request({
+      url: '/v1/session',
+      method: 'POST',
+      data: {
+        username: ruleForm.username,
+        password: ruleForm.password
+      }
+    })
 
-    axios.post('http://localhost:8080/v1/session', {
-      username: ruleForm.username,
-      password: ruleForm.password
-    }).then(function (response) {
+    r.then(function (response) {
       console.log(response);
       ElNotification({
         title: '登录成功',
