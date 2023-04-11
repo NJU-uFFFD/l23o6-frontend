@@ -10,24 +10,14 @@
   </el-row>
 </template>
 
-<script>
-
-
-export default {
-    name: "TitleComponent"
-}
-
-</script>
-
 <style scoped>
 .title {
-    font-size: 40px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
 
-    font-family: "Microsoft YaHei", monospace;
+  font-family: "Microsoft YaHei", monospace;
 
 }
-
 </style>

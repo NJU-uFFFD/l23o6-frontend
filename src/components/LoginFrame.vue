@@ -1,25 +1,9 @@
-<template>
-  <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" status-icon>
-    <el-form-item label="用户名" prop="username">
-      <el-input v-model="ruleForm.username" type="text" />
-    </el-form-item>
-
-    <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" autocomplete="off" type="password" show-password />
-    </el-form-item>
-
-
-    <el-form-item>
-      <el-button style="margin-left: 25%" type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
-    </el-form-item>
-  </el-form>
-</template>
-
 <script lang="ts" setup>
 import { h, reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElNotification } from "element-plus"
-import request from "../utils/request"
+import { request } from "../utils/request"
+import { AxiosError, AxiosResponse } from 'axios';
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -61,13 +45,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
       }
     })
 
-    r.then((response) => {
+    r.then((response: AxiosResponse<any>) => {
       console.log(response)
       ElNotification({
         title: '登录成功',
         message: h('i', { style: 'color: teal' }, response.data.msg),
       })
-    }).catch((error) => {
+    }).catch((error: AxiosError<any>) => {
       console.log(error)
       ElNotification({
         title: '错误',
@@ -76,9 +60,26 @@ const submitForm = (formEl: FormInstance | undefined) => {
     })
   })
 
-
 }
 
 </script>
+
+<template>
+  <el-form class="demo-ruleForm" ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" status-icon>
+    <el-form-item label="用户名" prop="username">
+      <el-input v-model="ruleForm.username" type="text" />
+    </el-form-item>
+
+    <el-form-item label="密码" prop="password">
+      <el-input v-model="ruleForm.password" autocomplete="off" type="password" show-password />
+    </el-form-item>
+
+
+    <el-form-item>
+      <el-button style="margin-left: 25%" type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
+    </el-form-item>
+  </el-form>
+</template>
+
 
 <style scoped></style>
