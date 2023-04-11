@@ -1,17 +1,11 @@
 <template>
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="120px"
-    status-icon
-  >
+  <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" status-icon>
     <el-form-item label="用户名" prop="username">
-      <el-input v-model="ruleForm.username" type="text"/>
+      <el-input v-model="ruleForm.username" type="text" />
     </el-form-item>
 
     <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" autocomplete="off" type="password" show-password/>
+      <el-input v-model="ruleForm.password" autocomplete="off" type="password" show-password />
     </el-form-item>
 
 
@@ -22,9 +16,9 @@
 </template>
 
 <script lang="ts" setup>
-import {h, reactive, ref} from 'vue'
-import type {FormInstance, FormRules} from 'element-plus'
-import {ElNotification} from "element-plus";
+import { h, reactive, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElNotification } from "element-plus";
 import request from "../utils/request"
 
 const ruleFormRef = ref<FormInstance>()
@@ -35,12 +29,12 @@ const ruleForm = reactive({
 })
 
 const rules = reactive<FormRules>({
-  username: [{required: true, message: '此字段为必填项', trigger: 'blur'}, {
+  username: [{ required: true, message: '此字段为必填项', trigger: 'blur' }, {
     min: 4, max: 16, message: '用户名长度不符合要求(4-16)', trigger: 'blur'
   }, {
     pattern: /^[a-z\d-_]*$/, message: '用户名只能包含小写字母,数字,下划线和连字符', trigger: 'blur'
   }],
-  password: [{required: true, message: '此字段为必填项', trigger: 'blur'}, {
+  password: [{ required: true, message: '此字段为必填项', trigger: 'blur' }, {
     min: 8, max: 56, message: '密码长度不符合要求(8-56)', trigger: 'blur'
   }, {
     pattern: /^[\x21-\x7e]*$/, message: '密码只能包含字母,数字和符号', trigger: 'blur'
@@ -57,8 +51,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (!valid) return
 
     console.log('submit!')
-    
-    const r=request({
+
+    const r = request({
       url: '/v1/session',
       method: 'POST',
       data: {
@@ -71,12 +65,12 @@ const submitForm = (formEl: FormInstance | undefined) => {
       console.log(response);
       ElNotification({
         title: '登录成功',
-        message: h('i', {style: 'color: teal'}, response.data.msg),
+        message: h('i', { style: 'color: teal' }, response.data.msg),
       })
     }).catch(function (error) {
       ElNotification({
         title: '错误',
-        message: h('i', {style: 'color: teal'}, error.response.data.msg),
+        message: h('i', { style: 'color: teal' }, error.response.data.msg),
       })
     });
   })
@@ -86,6 +80,4 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
