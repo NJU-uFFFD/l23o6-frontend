@@ -14,7 +14,6 @@
 .title {
   font-size: 40px;
   font-weight: bold;
-  color: #333;
   text-align: center;
 
   font-family: "Microsoft YaHei", monospace;
