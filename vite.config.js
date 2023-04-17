@@ -19,7 +19,7 @@ const pathSrc = path.resolve(__dirname, 'src')
 export default defineConfig({
     plugins: [
         Vue(),
-        Pages(),
+        Pages({importMode: 'sync'}),
         Components({
             extensions: ['vue'],
             include: [/\.vue$/, /\.vue\?vue/],
