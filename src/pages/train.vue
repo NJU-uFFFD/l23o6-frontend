@@ -33,9 +33,8 @@ import { trains } from "~/store/store.js";
 </script>
 
 <template>
-<!--  <Menu pageIndex="/train" />-->
+  <Menu pageIndex="/train" />
   <Search />
-
 
   <Train v-for="train in trains.res" v-bind="train"/>
 
