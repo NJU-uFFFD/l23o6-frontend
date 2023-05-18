@@ -16,12 +16,16 @@ const validateCheckPass = (rule: any, value: any, callback: any) => {
   }
 }
 
+
 const ruleForm = reactive({
   username: '',
   password: '',
   checkPass: '',
   name: '',
+  type: '身份证',
   id: '',
+  phone: '',
+  rick: false,
 })
 
 const rules = reactive<FormRules>({
@@ -50,7 +54,13 @@ const rules = reactive<FormRules>({
   }],
   id:[{required: true, message: '此字段为必填项', trigger: 'change'}, {
     pattern: /^\d{18}$/, message: '身份证号码不符合要求', trigger: 'change'
-  }]
+  }],
+  type: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
+    pattern: /^(身份证|护照|其他)$/, message: '证件类型不符合要求', trigger: 'change'
+  }],
+  phone: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
+    pattern: /^1[3456789]\d{9}$/, message: '手机号码不符合要求', trigger: 'change'
+  }],
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
@@ -104,22 +114,42 @@ const submitForm = (formEl: FormInstance | undefined) => {
     </el-form-item>
 
     <el-form-item label="姓名" prop="name">
-      <el-input v-model="ruleForm.name" autocomplete="off" type="text"/>
+      <el-input v-model="ruleForm.name" type="text"/>
+    </el-form-item>
+
+    <el-form-item label="证件类型" prop="type">
+      <el-select v-model="ruleForm.type" placeholder=" ">
+        <el-option value="身份证"/>
+        <el-option value="护照"/>
+        <el-option value="其他"/>
+      </el-select>
     </el-form-item>
 
     <el-form-item label="证件号码" prop="id">
-      <el-input v-model="ruleForm.id" autocomplete="off" type="text"/>
+      <el-input v-model="ruleForm.id" type="text"/>
     </el-form-item>
+
+    <el-form-item label="手机号" prop="phone">
+      <el-input v-model="ruleForm.phone" />
+    </el-form-item>
+
+    <el-form-item prop="rick">
+      <el-checkbox v-model="ruleForm.rick">
+        <span>我已阅读并同意</span>
+        <el-link type="primary" href="https://www.bilibili.com/video/BV1GJ411x7h7/" target="_blank">《l23o6客户服务中心网站服务条款》</el-link>
+      </el-checkbox>
+    </el-form-item>
+
 
     <el-row justify="start">
       <el-col :span="12" style="display: flex; justify-content: center; align-items: center">
         <el-form-item>
-          <el-button  type="primary" @click="submitForm(ruleFormRef)">注册</el-button>
+          <el-button  type="primary" @click="submitForm(ruleFormRef)" :disabled="!ruleForm.rick">注册</el-button>
         </el-form-item>
       </el-col>
       <el-col :span="7" style="display: flex; justify-content: center; align-items: center">
         <el-form-item>
-          <el-button @click="this.$router.back()" >
+          <el-button @click="this.$router.back()">
             返回
           </el-button>
         </el-form-item>
