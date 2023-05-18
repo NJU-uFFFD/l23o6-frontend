@@ -1,4 +1,5 @@
 import {createApp} from 'vue'
+import { createPinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 import ElementPlus from 'element-plus'
 // @ts-ignore
@@ -15,7 +16,10 @@ const router = createRouter({
     routes,
 })
 
+const pinia =createPinia();
 const app = createApp(App)
+
+app.use(pinia);
 app.use(ElementPlus, {
     locale: zhCn,
 })

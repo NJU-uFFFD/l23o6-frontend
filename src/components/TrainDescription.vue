@@ -11,6 +11,7 @@ defineProps({
   tickets: Array
 })
 
+
 import {
   SwitchFilled
 } from '@element-plus/icons-vue'
@@ -24,8 +25,15 @@ import {
       :size="size"
       border
     >
-      <el-descriptions-item label="车次" span="2" width="25%" align="center">
-        {{ trainName }}
+      <el-descriptions-item span="2" width="25%" align="center">
+        <template #label>
+          <el-text type="primary" tag="b" size="large">
+            车次
+          </el-text>
+        </template>
+        <el-text type="primary" tag="b" size="large">
+          {{trainName}}
+        </el-text>
       </el-descriptions-item>
       <el-descriptions-item label="历时" span="2" width="25%" align="center">
         {{ duration }}
@@ -42,7 +50,7 @@ import {
       <el-descriptions-item label="到达时间" span="2" width="25%" align="center">
         {{ arrivalTime }}
       </el-descriptions-item>
-      <el-descriptions-item v-for="ticket in tickets" :label="ticket.seatType" width="25">
+      <el-descriptions-item v-for="ticket in tickets" :label="ticket.seatType" width="25%">
         {{ ticket.count }}
       </el-descriptions-item>
     </el-descriptions>
@@ -51,6 +59,7 @@ import {
       <el-icon><SwitchFilled /></el-icon>
     </el-divider>
   </div>
+
 
 
 
