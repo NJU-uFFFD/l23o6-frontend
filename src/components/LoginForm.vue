@@ -5,6 +5,13 @@ import {ElNotification} from "element-plus"
 import {request} from "../utils/request"
 import {AxiosError, AxiosResponse} from 'axios';
 import {Lock, User} from '@element-plus/icons-vue'
+import {useUserStore} from "~/stores/user.js";
+import {getUser} from "~/utils/user.js";
+import {useRouter} from "vue-router";
+
+
+const user = useUserStore();
+const router = useRouter();
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -49,12 +56,16 @@ const submitForm = (formEl: FormInstance | undefined) => {
     r.then((response: AxiosResponse<any>) => {
       console.log(response)
       ElNotification({
+        offset: 70,
         title: '登录成功',
         message: h('i', { style: 'color: teal' }, response.data.msg),
       })
+      getUser()
+      router.push('/')
     }).catch((error: AxiosError<any>) => {
       console.log(error)
       ElNotification({
+        offset: 70,
         title: '错误',
         message: h('i', { style: 'color: teal' }, error.response?.data.msg),
       })
@@ -66,7 +77,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 </script>
 
 <template>
-  <el-form class="demo-ruleForm" ref="ruleFormRef" :model="ruleForm" :rules="rules" status-icon>
+  <el-form class="demo-ruleForm" ref="ruleFormRef" :model="ruleForm" :rules="rules">
     <el-form-item prop="username">
       <el-input v-model="ruleForm.username" type="text" :prefix-icon="User" placeholder="用户名"/>
     </el-form-item>

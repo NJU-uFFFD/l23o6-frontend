@@ -16,14 +16,15 @@ const router = createRouter({
     routes,
 })
 
-const pinia =createPinia();
-const app = createApp(App)
-
-app.use(pinia);
-app.use(ElementPlus, {
+createApp(App).use(createPinia()).use(ElementPlus, {
     locale: zhCn,
-})
-app.use(router)
+}).use(router).mount('#app')
 
-
-app.mount('#app')
+// app.use(pinia);
+// app.use(ElementPlus, {
+//     locale: zhCn,
+// })
+// app.use(router)
+//
+//
+// app.mount('#app')

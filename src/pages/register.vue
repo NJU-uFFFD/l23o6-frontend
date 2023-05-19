@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <Menu pageIndex="/register" />
+  <MenuComponent pageIndex="/register" />
   <el-row style="display: flex; justify-content: center; align-content: center; height: 90vh">
     <el-col :span="24" style="display: flex; justify-content: center; align-content: center">
       <el-card shadow="hover" header="注册">

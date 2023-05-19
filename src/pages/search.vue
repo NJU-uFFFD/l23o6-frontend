@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {h, onMounted, reactive, watch} from "vue";
+import {h, onMounted, reactive, ref} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
 import {useSearchStore} from "~/stores/search.js";
@@ -7,6 +7,8 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute();
 const search = useSearchStore();
+let table = ref(false)
+let trainId = ref(0)
 
 let trains = reactive({
   res : []
@@ -36,6 +38,7 @@ const submit = () => {
   }).catch((error) => {
     console.log(error)
     ElNotification({
+      offset: 70,
       title: '错误',
       message: h('error', { style: 'color: teal' }, error.response?.data.msg),
     })
@@ -46,7 +49,7 @@ const submit = () => {
 
 
 <template>
-  <Menu pageIndex="/train" />
+  <MenuComponent pageIndex="/search" />
   <div style="height: 5vh">
   </div>
 
@@ -60,7 +63,15 @@ const submit = () => {
   <div style="height: 5vh">
   </div>
 
-  <train-description v-for="train in trains.res" v-bind="train"/>
+  <train-description v-for="train in trains.res" v-bind="train" @click="table=true; trainId=train.trainId"/>
+
+  <el-drawer
+    v-model="table"
+    direction="rtl"
+    size="30%"
+  >
+    <TrainDetail :trainId="trainId"/>
+  </el-drawer>
 
 </template>
 

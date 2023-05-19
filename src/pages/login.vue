@@ -5,7 +5,7 @@ const activeName = ref('登录')
 </script>
 
 <template>
-  <Menu pageIndex="/login" />
+  <MenuComponent pageIndex="/login" />
   <el-row justify="center" style="display: flex; align-content: center;height: 90vh;">
     <el-col :span="12" style="display: flex; align-items: center">
       <Title style="margin: 0 auto 20vh"></Title>

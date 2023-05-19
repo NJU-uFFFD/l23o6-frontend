@@ -4,8 +4,11 @@ import type {FormInstance, FormRules} from 'element-plus'
 import {ElNotification} from "element-plus"
 import {request} from "~/utils/request"
 import {AxiosError, AxiosResponse} from 'axios';
+import {useRouter} from "vue-router";
+
 
 const ruleFormRef = ref<FormInstance>()
+const router = useRouter();
 
 const validateCheckPass = (rule: any, value: any, callback: any) => {
   if (ruleForm.password === '') return
@@ -75,19 +78,26 @@ const submitForm = (formEl: FormInstance | undefined) => {
       method: 'POST',
       data: {
         username: ruleForm.username,
-        password: ruleForm.password
+        password: ruleForm.password,
+        name: ruleForm.name,
+        type: ruleForm.type,
+        id: ruleForm.id,
+        phone: ruleForm.phone,
       }
     })
 
     r.then((response: AxiosResponse<any>) => {
       console.log(response)
       ElNotification({
+        offset: 70,
         title: '注册成功',
         message: h('info', { style: 'color: teal' }, response.data.msg),
       })
+      router.push('/login')
     }).catch((error: AxiosError<any>) => {
       console.log(error)
       ElNotification({
+        offset: 70,
         title: '错误',
         message: h('error', { style: 'color: teal' }, error.response?.data.msg),
       })
@@ -100,7 +110,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 </script>
 
 <template>
-  <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" class="demo-ruleForm" label-width="120px" status-icon>
+  <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" class="demo-ruleForm" label-width="120px">
     <el-form-item label="用户名" prop="username">
       <el-input v-model="ruleForm.username" type="text"/>
     </el-form-item>

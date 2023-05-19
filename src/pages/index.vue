@@ -33,11 +33,11 @@
 </script>
 
 <template>
-  <Menu pageIndex="/" />
+  <MenuComponent pageIndex="/" />
   <el-row justify="center" style="display: flex; align-content: center;height: 90vh;">
     <el-col :span="12" style="display: flex; align-items: center">
       <el-card class="search-card" shadow="hover" header="车票查询">
-        <SearchForm @formUpdated="() => {this.$router.push('/train#query');}"></SearchForm>
+        <SearchForm @formUpdated="() => {this.$router.push('/search#query');}"></SearchForm>
       </el-card>
     </el-col>
     <el-col :span="12" style="display: flex; align-items: center">
