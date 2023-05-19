@@ -49,29 +49,35 @@ const submit = () => {
 
 
 <template>
-  <MenuComponent pageIndex="/search" />
-  <div style="height: 5vh">
-  </div>
+  <el-container>
+    <el-header>
+      <MenuComponent pageIndex="/search" />
+    </el-header>
+    <el-main>
+      <div style="height: 5vh">
+      </div>
 
-  <div style="display: flex; justify-content: center">
-    <el-card shadow="hover" style="width: 70vh; height: auto">
-      <SearchForm @formUpdated="submit"/>
-    </el-card>
-  </div>
+      <div style="display: flex; justify-content: center">
+        <el-card shadow="hover" style="width: 70vh; height: auto">
+          <SearchForm @formUpdated="submit"/>
+        </el-card>
+      </div>
 
 
-  <div style="height: 5vh">
-  </div>
+      <div style="height: 5vh">
+      </div>
 
-  <train-description v-for="train in trains.res" v-bind="train" @click="table=true; trainId=train.trainId"/>
+      <train-description v-for="train in trains.res" v-bind="train" @click="table=true; trainId=train.trainId"/>
 
-  <el-drawer
-    v-model="table"
-    direction="rtl"
-    size="30%"
-  >
-    <TrainDetail :trainId="trainId"/>
-  </el-drawer>
+      <el-drawer
+        v-model="table"
+        direction="rtl"
+        size="30%"
+      >
+        <TrainDetail :trainId="trainId"/>
+      </el-drawer>
+    </el-main>
+  </el-container>
 
 </template>
 

@@ -5,6 +5,7 @@ import {request} from "~/utils/request";
 import {AxiosError, AxiosResponse} from "axios";
 import {ElNotification} from "element-plus";
 import {h} from "vue";
+
 defineProps<{
   pageIndex: string
 }>()
@@ -53,14 +54,12 @@ const logout = () =>
     </el-menu-item>
     <div class="flex-grow"/>
 
-    <el-row v-if="user.username === ''">
-      <el-menu-item index="/login">登录</el-menu-item>
-      <el-menu-item index="/register">注册</el-menu-item>
-    </el-row>
-    <el-row v-else>
-      <el-menu-item index="/user">用户中心</el-menu-item>
-      <el-menu-item @click="logout">登出</el-menu-item>
-    </el-row>
+
+    <el-menu-item index="/login" v-if="user.username === ''">登录</el-menu-item>
+    <el-menu-item index="/register" v-if="user.username === ''">注册</el-menu-item>
+    <el-menu-item index="/user" v-if="user.username !== ''">用户中心</el-menu-item>
+    <el-menu-item @click="logout" v-if="user.username !== ''">登出</el-menu-item>
+
 
   </el-menu>
 </template>
@@ -68,6 +67,7 @@ const logout = () =>
 
 <style scoped>
 .flex-grow {
-    flex-grow: 1;
+  flex-grow: 1;
 }
+
 </style>
