@@ -1,0 +1,207 @@
+<script setup lang="ts">
+
+import {h, onMounted, reactive, ref} from "vue";
+import {request} from "~/utils/request";
+import {ElNotification} from "element-plus";
+
+let stationName = ref('')
+
+let stations;
+let stationsFiltered = reactive({
+  data: []
+})
+
+let toAdd = ref('')
+let toRename = ref('')
+let toRenameId = ref(0)
+let rename = ref(false)
+
+const addStation = () => {
+  if (toAdd.value === '') return
+  request({
+    url: '/v1/station',
+    method: 'POST',
+    data: {
+      name: toAdd
+    }
+  }).then((res) => {
+    console.log(res.data)
+    ElNotification({
+      offset: 70,
+      title: '成功',
+      message: h('success', {style: 'color: teal'}, res.data.msg),
+    })
+    stationName.value = ''
+    refreshData()
+    filter()
+    toAdd.value = ''
+  }).catch((error) => {
+    console.log(error)
+    ElNotification({
+      offset: 70,
+      title: '错误',
+      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+    })
+  })
+}
+
+const delStation = (id) => {
+  request({
+    url: `/v1/station/${id}`,
+    method: 'DELETE'
+  }).then((res) => {
+    console.log(res.data)
+    ElNotification({
+      offset: 70,
+      title: '成功',
+      message: h('success', {style: 'color: teal'}, res.data.msg),
+    })
+    stationName.value = ''
+    refreshData()
+    filter()
+  }).catch((error) => {
+    console.log(error)
+    ElNotification({
+      offset: 70,
+      title: '错误',
+      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+    })
+  })
+}
+
+const renameStation = () => {
+  request({
+    url: `/v1/station/${toRenameId.value}`,
+    method: 'PUT',
+    data: {
+      name: toRename.value
+    }
+  }).then((res) => {
+    console.log(res.data)
+    ElNotification({
+      offset: 70,
+      title: '成功',
+      message: h('success', {style: 'color: teal'}, res.data.msg),
+    })
+    stationName.value = ''
+    refreshData()
+    filter()
+    toRename.value = ''
+    toRenameId.value = 0
+    rename.value=false
+  }).catch((error) => {
+    console.log(error)
+    ElNotification({
+      offset: 70,
+      title: '错误',
+      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+    })
+  })
+}
+
+const refreshData = () => {
+  request({
+    url: '/v1/station',
+    method: 'GET'
+  }).then((res) => {
+    stations = res.data.data
+    console.log(stations)
+    stationsFiltered.data = [...stations]
+    console.log(res.data)
+  }).catch((error) => {
+    console.log(error)
+    ElNotification({
+      offset: 70,
+      title: '错误',
+      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+    })
+  })
+}
+
+const filter = () => {
+  stationsFiltered.data = stations.filter((station) => {
+    return station.name.includes(stationName.value)
+  })
+}
+
+onMounted(() => {
+  refreshData()
+})
+
+</script>
+
+<template>
+  <el-container>
+    <el-header>
+      <MenuComponent pageIndex="/station"/>
+    </el-header>
+    <el-main>
+      <div style="display: flex; justify-content: center">
+        <el-card shadow="hover" style="width: 70vh; height: auto; ">
+          <el-form inline style="display: flex; " @submit.native.prevent>
+            <el-form-item label="车站名" style="display: flex; flex-grow: 1">
+              <el-input v-model="stationName" autofocus @keyup.enter.native="filter"/>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="filter">
+                查询
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </div>
+
+      <br/>
+      <br/>
+
+
+      <div style="display: flex; justify-content: center">
+        <div style="display: flex; width: 80vh; justify-content: flex-end">
+          <el-space>
+            <el-input v-model="toAdd" style="width: 20vh"/>
+            <el-button type="primary" @click="addStation">
+              添加
+            </el-button>
+          </el-space>
+        </div>
+      </div>
+
+
+      <br/>
+      <br/>
+
+      <div style="display: flex; justify-content: center">
+        <el-collapse style="width: 80vh; display: flex;flex-direction: column;">
+          <el-collapse-item v-for="station in stationsFiltered.data" :title="station.name">
+            <el-button @click="rename=true; toRenameId=station.id">
+              更改
+            </el-button>
+            <el-button type="danger" @click="delStation(station.id)">
+              删除
+            </el-button>
+          </el-collapse-item>
+
+        </el-collapse>
+      </div>
+
+    </el-main>
+  </el-container>
+
+  <el-dialog v-model="rename" title="重命名" width="30%" draggable @close="toRenameId=0; toRename=''">
+    <div>请输入新的站名</div>
+    <br/>
+    <div style="display: flex;">
+      <el-space>
+        <el-input v-model="toRename"/>
+        <el-button type="primary" @click="renameStation">
+          确定
+        </el-button>
+      </el-space>
+    </div>
+  </el-dialog>
+
+</template>
+
+<style scoped>
+
+</style>

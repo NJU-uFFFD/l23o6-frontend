@@ -31,7 +31,7 @@ const disabledDate = (time: Date) => {
       <el-date-picker
         v-model="form.date"
         type="date"
-        placeholder="选择日期"
+        placeholder="选择 日期"
         :disabled-date="disabledDate"
       />
     </el-form-item>

@@ -2,7 +2,7 @@
 
 let size = "default"
 defineProps({
-  trainName: String,
+  name: String,
   startStation: String,
   endStation: String,
   departureTime: Date,
@@ -32,7 +32,7 @@ import {
           </el-text>
         </template>
         <el-text type="primary" tag="b" size="large">
-          {{trainName}}
+          {{name}}
         </el-text>
       </el-descriptions-item>
       <el-descriptions-item label="历时" span="2" width="25%" align="center">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {request} from "~/utils/request";
-import {reactive} from "vue";
+import {onMounted, reactive, watch} from "vue";
 import {Right} from "@element-plus/icons-vue";
 
 const props = defineProps({
@@ -9,33 +9,63 @@ const props = defineProps({
 
 let data = reactive({
   data: {
-    "trainId": 0,
-    "trainName": "",
-    "startStation": "",
-    "endStation": "",
-    "departureTime": "",
-    "arrivalTime": "",
-    "isLate": true,
-    "ticketInfo": [
+    id: 0,
+    name: "",
+    startStation: "",
+    endStation: "",
+    departureTime: "",
+    arrivalTime: "",
+    isLate: true,
+    ticketInfo: [
       {
-        "type": "",
-        "count": 0,
-        "price": 0
+        type: "",
+        count: 0,
+        price: 0
       }
     ]
   }
 });
 
-const r = request({
-  url: `/v1/train/${props.trainId}`,
-  method: 'GET'
-}).then((res) => {
-  data.data = res.data.data
-  console.log(data)
-  console.log("submit")
-}).catch((error) => {
-  console.log(error)
+watch(props, () => {
+  data.data = {
+    id: 0,
+    name: "",
+    startStation: "",
+    endStation: "",
+    departureTime: "",
+    arrivalTime: "",
+    isLate: true,
+    ticketInfo: [
+      {
+        type: "",
+        count: 0,
+        price: 0
+      }
+    ]
+  }
+  console.log(props.trainId)
+  refreshData()
 })
+
+const refreshData = () => {
+  const r = request({
+    url: `/v1/train/${props.trainId}`,
+    method: 'GET'
+  }).then((res) => {
+    data.data = res.data.data
+    console.log(data)
+    console.log("submit")
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
+
+onMounted(() => {
+  refreshData()
+})
+
+
 
 </script>
 
@@ -49,7 +79,7 @@ const r = request({
   <el-row class="el-row">
     <el-col :span="24" style="display: flex; justify-content: center; align-items: center">
       <el-text type="primary" size="large" tag="b">
-        {{ data.data.trainName }}
+        {{ data.data.name }}
       </el-text>
     </el-col>
   </el-row>
