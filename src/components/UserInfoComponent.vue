@@ -12,7 +12,7 @@ let form = reactive({
   username: '',
   name: '',
   type: '',
-  id: '',
+  idn: '',
   phone: ''
 });
 
@@ -20,7 +20,7 @@ const setForm = () => {
   form.username = user.username;
   form.name = user.name;
   form.type = user.type;
-  form.id = user.id;
+  form.idn = user.idn;
   form.phone = user.phone;
 }
 
@@ -37,7 +37,7 @@ const rules = reactive({
   }, {
     pattern: /^[\u4e00-\u9fa5]{2,16}$/, message: '姓名只能包含中文', trigger: 'change'
   }],
-  id: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  idn: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
     pattern: /^\d{18}$/, message: '身份证号码不符合要求', trigger: 'change'
   }],
   type: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
@@ -92,8 +92,8 @@ const rules = reactive({
         <el-option value="其他"/>
       </el-select>
     </el-form-item>
-    <el-form-item label="证件号码" prop="id">
-      <el-input v-model="form.id" type="text" style="width: 25vh"/>
+    <el-form-item label="证件号码" prop="idn">
+      <el-input v-model="form.idn" type="text" style="width: 25vh"/>
     </el-form-item>
 
     <el-form-item label="手机号" prop="phone">

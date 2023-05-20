@@ -6,7 +6,6 @@ import {request} from "../utils/request"
 import {AxiosError, AxiosResponse} from 'axios';
 import {Lock, User} from '@element-plus/icons-vue'
 import {useUserStore} from "~/stores/user.js";
-import {getUser} from "~/utils/user.js";
 import {useRouter} from "vue-router";
 
 
@@ -60,13 +59,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
         title: '登录成功',
         message: h('i', { style: 'color: teal' }, response.data.msg),
       })
-      getUser()
+      user.fetch()
       router.push('/')
     }).catch((error: AxiosError<any>) => {
       console.log(error)
       ElNotification({
         offset: 70,
-        title: '错误',
+        title: 'login错误',
         message: h('i', { style: 'color: teal' }, error.response?.data.msg),
       })
     })

@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import {onMounted} from "vue";
-import {getUser} from "~/utils/user.js";
+import {useUserStore} from "~/stores/user.js";
 
-onMounted(getUser)
+onMounted(() => {
+  const userStore = useUserStore()
+  userStore.fetch()
+})
 
 </script>
 

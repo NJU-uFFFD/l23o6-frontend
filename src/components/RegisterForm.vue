@@ -26,7 +26,7 @@ const ruleForm = reactive({
   checkPass: '',
   name: '',
   type: '身份证',
-  id: '',
+  idn: '',
   phone: '',
   rick: false,
 })
@@ -55,8 +55,8 @@ const rules = reactive<FormRules>({
   }, {
     pattern: /^[\u4e00-\u9fa5]{2,16}$/, message: '姓名只能包含中文', trigger: 'change'
   }],
-  id:[{required: true, message: '此字段为必填项', trigger: 'change'}, {
-    pattern: /^\d{18}$/, message: '身份证号码不符合要求', trigger: 'change'
+  idn:[{required: true, message: '此字段为必填项', trigger: 'change'}, {
+    pattern: /^\d{17}(\d|X)$/, message: '身份证号码不符合要求', trigger: 'change'
   }],
   type: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     pattern: /^(身份证|护照|其他)$/, message: '证件类型不符合要求', trigger: 'change'
@@ -81,7 +81,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         password: ruleForm.password,
         name: ruleForm.name,
         type: ruleForm.type,
-        id: ruleForm.id,
+        idn: ruleForm.idn,
         phone: ruleForm.phone,
       }
     })
@@ -98,7 +98,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       console.log(error)
       ElNotification({
         offset: 70,
-        title: '错误',
+        title: 'register错误',
         message: h('error', { style: 'color: teal' }, error.response?.data.msg),
       })
     })
@@ -135,8 +135,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
       </el-select>
     </el-form-item>
 
-    <el-form-item label="证件号码" prop="id">
-      <el-input v-model="ruleForm.id" type="text"/>
+    <el-form-item label="证件号码" prop="idn">
+      <el-input v-model="ruleForm.idn" type="text"/>
     </el-form-item>
 
     <el-form-item label="手机号" prop="phone">

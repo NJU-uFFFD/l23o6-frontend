@@ -1,36 +1,40 @@
 <script setup lang="ts">
-import {reactive, ref} from "vue";
+import {h, onMounted, reactive, ref} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
-import {h, onMounted} from "vue";
+import {useStationsStore} from "~/stores/stations.js";
 
 let routeName = ref('')
 
-
-let stations;
+const stations = useStationsStore()
 let routes;
 let routesFiltered = reactive({
   data: []
 })
 
+let toAdd = {
+  name: '',
+  station_ids: []
+}
 
-let toAddName = ref('')
-let toAddStationIds = ref([])
-let toChangeName = ref('')
-let toChangeId = ref(0)
-let toChangeStationIds = ref([])
+let toChange= {
+  id: 0,
+  name: '',
+  station_ids: []
+}
+
+
 let change = ref(false)
 let add = ref(false)
 
 
-const addRoute = () => {
-  if (toAddName.value === '') return
+const addRoute = (route) => {
   request({
-    url: '/v1/station',
+    url: '/v1/route',
     method: 'POST',
     data: {
-      name: toAddName,
-      stationIds: toAddStationIds
+      name: route.name,
+      station_ids: route.station_ids
     }
   }).then((res) => {
     console.log(res.data)
@@ -40,17 +44,14 @@ const addRoute = () => {
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     routeName.value = ''
-    refreshStation()
     refreshData()
     filter()
-    toAddName.value = ''
-    toAddStationIds.value = []
     add.value = false
   }).catch((error) => {
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'postRoute错误',
       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
   })
@@ -68,26 +69,25 @@ const delRoute = (id) => {
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     routeName.value = ''
-    refreshStation()
     refreshData()
     filter()
   }).catch((error) => {
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'deleteRoute错误',
       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
   })
 }
 
-const changeRoute = () => {
+const changeRoute = (route) => {
   request({
-    url: `/v1/route/${toChangeId.value}`,
+    url: `/v1/route/${toChange.id}`,
     method: 'PUT',
     data: {
-      name: toChangeName.value,
-      stationIds: toChangeStationIds.value
+      name: route.name,
+      station_ids: route.station_ids
     }
   }).then((res) => {
     console.log(res.data)
@@ -97,17 +97,14 @@ const changeRoute = () => {
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     routeName.value = ''
-    refreshStation()
     refreshData()
     filter()
-    toChangeName.value = ''
-    toChangeStationIds.value = []
     change.value = false
   }).catch((error) => {
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'putRoute错误',
       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
   })
@@ -115,6 +112,7 @@ const changeRoute = () => {
 
 
 const refreshData = () => {
+  stations.fetch()
   request({
     url: '/v1/route',
     method: 'GET'
@@ -127,7 +125,7 @@ const refreshData = () => {
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'getRoute错误',
       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
   })
@@ -139,27 +137,9 @@ const filter = () => {
   })
 }
 
-const refreshStation = () => {
-  request({
-    url: '/v1/station',
-    method: 'GET'
-  }).then((res) => {
-    stations = res.data.data
-    console.log(stations)
-    console.log(res.data)
-  }).catch((error) => {
-    console.log(error)
-    ElNotification({
-      offset: 70,
-      title: '错误',
-      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
-    })
-  })
-}
 
 onMounted(() => {
   refreshData()
-  refreshStation()
 })
 
 
@@ -207,7 +187,7 @@ onMounted(() => {
       <div style="display: flex; justify-content: center">
         <el-collapse style="width: 80vh; display: flex;flex-direction: column;">
           <el-collapse-item v-for="route in routesFiltered.data" :title="route.name">
-            <el-button @click="change=true; toChangeId=route.id">
+            <el-button @click="change=true; toChange=route;">
               更改
             </el-button>
             <el-button type="danger" @click="delRoute(route.id)">
@@ -221,29 +201,32 @@ onMounted(() => {
     </el-main>
   </el-container>
 
-  <el-dialog v-model="change" title="更改路线" width="30%" draggable @close="toChangeId=0; toChangeName=''; toChangeStationIds=[];">
+  <el-dialog v-model="change" title="更改路线" width="30%" draggable >
     <div>请输入更改后的路线信息</div>
     <br/>
-    <div style="display: flex;">
-      <el-space>
-        <el-input v-model="toChangeName"/>
-        <el-button type="primary" @click="changeRoute">
-          确定
-        </el-button>
-      </el-space>
+    <div>
+      <RouteDetailForm  v-bind="toChange" @formSubmitted="changeRoute" :key="toChange.id"/>
+      <!--      <el-space>-->
+      <!--        <el-input v-model="toChangeName"/>-->
+      <!--        <el-button type="primary" @click="changeRoute">-->
+      <!--          确定-->
+      <!--        </el-button>-->
+      <!--      </el-space>-->
+<!--      <RouteDetailForm :stations-prop="stations" :station-ids-prop=""/>-->
     </div>
   </el-dialog>
 
-  <el-dialog v-model="add" title="添加路线" width="30%" draggable @clos="toAddName=''; toAddStationIds=[];">
+  <el-dialog v-model="add" title="添加路线" width="30%" draggable>
     <div>请输入新的路线信息</div>
     <br/>
-    <div style="display: flex;">
-      <el-space>
-        <el-input v-model="toAddName"/>
-        <el-button type="primary" @click="addRoute">
-          确定
-        </el-button>
-      </el-space>
+    <div>
+      <RouteDetailForm  v-bind="toAdd" @formSubmitted="addRoute"/>
+<!--      <el-space>-->
+<!--        <el-input v-model="toAddName"/>-->
+<!--        <el-button type="primary" @click="addRoute">-->
+<!--          确定-->
+<!--        </el-button>-->
+<!--      </el-space>-->
     </div>
   </el-dialog>
 </template>

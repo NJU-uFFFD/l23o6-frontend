@@ -1,12 +1,13 @@
 <script setup lang="ts">
 
-import {h, onMounted, reactive, ref} from "vue";
+import {h, onMounted, reactive, ref, watch} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
+import {useStationsStore} from "~/stores/stations.js";
 
 let stationName = ref('')
 
-let stations;
+let stations = useStationsStore()
 let stationsFiltered = reactive({
   data: []
 })
@@ -22,7 +23,7 @@ const addStation = () => {
     url: '/v1/station',
     method: 'POST',
     data: {
-      name: toAdd
+      name: toAdd.value
     }
   }).then((res) => {
     console.log(res.data)
@@ -32,14 +33,14 @@ const addStation = () => {
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     stationName.value = ''
-    refreshData()
+    stations.fetch()
     filter()
     toAdd.value = ''
   }).catch((error) => {
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'postStation错误',
       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
   })
@@ -57,13 +58,13 @@ const delStation = (id) => {
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     stationName.value = ''
-    refreshData()
+    stations.fetch()
     filter()
   }).catch((error) => {
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'deleteStation错误',
       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
   })
@@ -84,7 +85,7 @@ const renameStation = () => {
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
     stationName.value = ''
-    refreshData()
+    stations.fetch()
     filter()
     toRename.value = ''
     toRenameId.value = 0
@@ -93,39 +94,27 @@ const renameStation = () => {
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'putStation错误',
       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
     })
   })
 }
 
-const refreshData = () => {
-  request({
-    url: '/v1/station',
-    method: 'GET'
-  }).then((res) => {
-    stations = res.data.data
-    console.log(stations)
-    stationsFiltered.data = [...stations]
-    console.log(res.data)
-  }).catch((error) => {
-    console.log(error)
-    ElNotification({
-      offset: 70,
-      title: '错误',
-      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
-    })
-  })
-}
 
 const filter = () => {
-  stationsFiltered.data = stations.filter((station) => {
+  stationsFiltered.data = stations.rawData.filter((station) => {
     return station.name.includes(stationName.value)
   })
 }
 
 onMounted(() => {
-  refreshData()
+  stations.fetch()
+  stationsFiltered.data = [...stations.rawData]
+  console.log(stations.rawData)
+})
+
+watch(stations, () => {
+  filter()
 })
 
 </script>

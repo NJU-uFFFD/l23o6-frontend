@@ -33,7 +33,7 @@ const logout = () =>
     console.log(error)
     ElNotification({
       offset: 70,
-      title: '错误',
+      title: 'logout错误',
       message: h('error', { style: 'color: teal' }, error.response?.data.msg),
     })
   });

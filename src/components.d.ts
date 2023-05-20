@@ -61,6 +61,7 @@ declare module '@vue/runtime-core' {
     Register: typeof import('./components/Register.vue')['default']
     RegisterForm: typeof import('./components/RegisterForm.vue')['default']
     RouteDetail: typeof import('./components/RouteDetail.vue')['default']
+    RouteDetailForm: typeof import('./components/RouteDetailForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./components/Search.vue')['default']
