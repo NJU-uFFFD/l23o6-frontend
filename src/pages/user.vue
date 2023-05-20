@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import UserInfoComponent from "~/components/UserInfoComponent.vue";
 </script>
 
 <template>

@@ -201,7 +201,7 @@ onMounted(() => {
     </el-main>
   </el-container>
 
-  <el-dialog v-model="change" title="更改路线" width="30%" draggable >
+  <el-dialog v-model="change" title="更改路线" width="50%" draggable >
     <div>请输入更改后的路线信息</div>
     <br/>
     <div>
@@ -216,7 +216,7 @@ onMounted(() => {
     </div>
   </el-dialog>
 
-  <el-dialog v-model="add" title="添加路线" width="30%" draggable>
+  <el-dialog v-model="add" title="添加路线" width="50%" draggable>
     <div>请输入新的路线信息</div>
     <br/>
     <div>

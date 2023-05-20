@@ -1,8 +1,10 @@
 <script setup lang="ts">
 
-import {reactive, ref} from "vue";
+import {h, onBeforeMount, onMounted, onUpdated, reactive, ref, watch} from "vue";
 import {useUserStore} from "~/stores/user.js";
-import {FormInstance} from "element-plus";
+import {ElNotification, FormInstance} from "element-plus";
+import {request} from "~/utils/request";
+import {AxiosError, AxiosResponse} from "axios";
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -16,7 +18,7 @@ let form = reactive({
   phone: ''
 });
 
-const setForm = () => {
+const setForm = async () => {
   form.username = user.username;
   form.name = user.name;
   form.type = user.type;
@@ -24,7 +26,12 @@ const setForm = () => {
   form.phone = user.phone;
 }
 
-setForm();
+watch(user, () => {
+  setForm()
+})
+
+setForm()
+
 
 const rules = reactive({
   username: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
@@ -38,7 +45,7 @@ const rules = reactive({
     pattern: /^[\u4e00-\u9fa5]{2,16}$/, message: '姓名只能包含中文', trigger: 'change'
   }],
   idn: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
-    pattern: /^\d{18}$/, message: '身份证号码不符合要求', trigger: 'change'
+    pattern: /^\d{17}(\d|X)$/, message: '身份证号码不符合要求', trigger: 'change'
   }],
   type: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
     pattern: /^(身份证|护照|其他)$/, message: '证件类型不符合要求', trigger: 'change'
@@ -48,6 +55,46 @@ const rules = reactive({
   }],
 })
 
+const submitForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (!valid) return
+
+    console.log('submit!')
+
+    const r = request({
+      url: '/v1/user',
+      method: 'PUT',
+      data: {
+        username: form.username,
+        name: form.name,
+        type: form.type,
+        idn: form.idn,
+        phone: form.phone,
+      }
+    })
+
+    r.then((response: AxiosResponse<any>) => {
+      console.log(response)
+      ElNotification({
+        offset: 70,
+        title: '修改成功',
+        message: h('info', {style: 'color: teal'}, response.data.msg),
+      })
+      user.fetch()
+      edit.value=false
+    }).catch((error: AxiosError<any>) => {
+      console.log(error)
+      ElNotification({
+        offset: 70,
+        title: 'putUser错误',
+        message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+      })
+    })
+  })
+}
+
+
 
 </script>
 
@@ -55,7 +102,7 @@ const rules = reactive({
   <div v-if="edit" style="display: flex; flex-direction: row-reverse; justify-content: flex-start">
     <el-space>
       <el-button @click="edit=false;">取消</el-button>
-      <el-button type="primary">提交</el-button>
+      <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
     </el-space>
 
 
@@ -76,28 +123,27 @@ const rules = reactive({
     class="demo-ruleForm"
     label-position="right"
     hide-required-asterisk
-    :disabled="!edit"
     size="large"
   >
-    <el-form-item label="用户名" prop="username">
-      <el-input v-model="form.username" style="width: 25vh"/>
+    <el-form-item label="用户名" prop="username" >
+      <el-input v-model="form.username" style="width: 25vh" :disabled="true"/>
     </el-form-item>
-    <el-form-item label="姓名" prop="name">
-      <el-input v-model="form.name" style="width: 25vh"/>
+    <el-form-item label="姓名" prop="name" >
+      <el-input v-model="form.name" style="width: 25vh" :disabled="!edit"/>
     </el-form-item>
-    <el-form-item label="证件类型" prop="type">
-      <el-select v-model="form.type" placeholder=" " style="width: 25vh">
+    <el-form-item label="证件类型" prop="type" >
+      <el-select v-model="form.type" placeholder=" " style="width: 25vh" :disabled="!edit">
         <el-option value="身份证"/>
         <el-option value="护照"/>
         <el-option value="其他"/>
       </el-select>
     </el-form-item>
-    <el-form-item label="证件号码" prop="idn">
-      <el-input v-model="form.idn" type="text" style="width: 25vh"/>
+    <el-form-item label="证件号码" prop="idn" >
+      <el-input v-model="form.idn" type="text" style="width: 25vh" :disabled="!edit"/>
     </el-form-item>
 
-    <el-form-item label="手机号" prop="phone">
-      <el-input v-model="form.phone" style="width: 25vh"/>
+    <el-form-item label="手机号" prop="phone" >
+      <el-input v-model="form.phone" style="width: 25vh" :disabled="!edit"/>
     </el-form-item>
   </el-form>
 

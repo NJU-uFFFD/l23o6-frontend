@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
 import {VueDraggable} from 'vue-draggable-plus'
-import {CloseBold, Expand} from "@element-plus/icons-vue";
+import {CloseBold, SwitchFilled} from "@element-plus/icons-vue";
 import {useStationsStore} from "~/stores/stations.js";
 
 const stations = useStationsStore()
@@ -16,8 +16,12 @@ let route = reactive({
   name: '',
   station_ids: []
 })
+
+let edit = ref(false)
 let add = ref(false)
 let toAddId = ref(1)
+let toEditIndex = ref(1)
+let toEditId = ref(1)
 
 
 console.log(props.station_ids)
@@ -35,6 +39,11 @@ const addStation = () => {
   add.value = false;
 }
 
+const editStation = () => {
+  route.station_ids.splice(toEditIndex.value, 1, toEditId.value)
+  edit.value = false;
+}
+
 
 const onEnd = () => {
   // refreshIndex()
@@ -47,32 +56,57 @@ const deleteStation = (index) => {
 </script>
 
 <template>
-  <div>
-    <div style="display: flex; width: 70%">
-      <el-text tag="b">
-        路线名
-      </el-text>
-      <el-input v-model="route.name"/>
+  <div style="display: flex;flex-direction: column">
+    <el-form-item>
+      <template #label>
+        <el-text tag="b" type="primary">
+          路线名
+        </el-text>
+      </template>
+      <el-input v-model="route.name" style="margin-right: 60%"/>
+    </el-form-item>
+
+
+    <div>
+      <el-button @click="add=true" style="margin-bottom: 3%; float:right;">
+        添加站点
+      </el-button>
     </div>
 
-
-
-
-
-    <el-button @click="add=true">
-      添加站点
-    </el-button>
     <VueDraggable ref="el" v-model="route.station_ids" :animation="100" handle=".handle" @end="onEnd">
       <div v-for="station in route.station_ids" :key="station">
-        <el-card style="margin-bottom: 0.25%">
-          <el-icon class="handle">
-            <Expand/>
-          </el-icon>
-          {{ route.station_ids.indexOf(station) + 1 }}
-          {{ stations.idToName[station] }}
-          <el-icon @click="deleteStation(route.station_ids.indexOf(station))">
-            <CloseBold/>
-          </el-icon>
+        <el-card style="margin-bottom: 0.25%" shadow="hover" class="container">
+          <div style="display: flex; align-items: center;">
+            <el-icon class="handle">
+              <SwitchFilled/>
+            </el-icon>
+            <strong style="margin-left: 5%; margin-right: 5%">
+              {{ route.station_ids.indexOf(station) + 1 }}
+            </strong>
+            <div style="width: 80%">
+              {{ stations.idToName[station] }}
+            </div>
+
+            <div>
+
+            </div>
+
+            <div style="display: flex; flex-direction: row; justify-items: center; align-items: center;">
+              <el-space>
+                <el-button class="change" @click="toEditIndex=route.station_ids.indexOf(station); toEditId=station; edit=true">
+                  编辑
+                </el-button>
+                <div>
+                  <el-icon @click="deleteStation(route.station_ids.indexOf(station))"
+                           style="display: flex; align-self: flex-end;">
+                    <CloseBold/>
+                  </el-icon>
+                </div>
+              </el-space>
+            </div>
+
+
+          </div>
         </el-card>
       </div>
     </VueDraggable>
@@ -108,4 +142,36 @@ const deleteStation = (index) => {
     </div>
   </el-dialog>
 
+
+  <el-dialog v-model="edit" title="编辑站点" width="30%" draggable>
+    <div>请选择新的站点</div>
+    <br/>
+    <div style="display: flex;">
+      <el-space>
+        <el-select v-model="toEditId">
+          <el-option
+            v-for="item in stations.rawData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+        <el-button type="primary" @click="editStation">
+          确定
+        </el-button>
+      </el-space>
+    </div>
+  </el-dialog>
+
+
 </template>
+
+<style scoped>
+.change {
+  visibility: hidden
+}
+
+.container:hover .change {
+  visibility: visible
+}
+</style>

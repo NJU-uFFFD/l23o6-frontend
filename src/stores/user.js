@@ -11,6 +11,11 @@ export const useUserStore = defineStore('user', {
             phone: ''
         }
     },
+    getters:{
+      getUserName(){
+
+      }
+    },
     actions: {
         fetch(){
             request({
