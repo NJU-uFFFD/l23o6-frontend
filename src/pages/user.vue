@@ -5,10 +5,6 @@ import {useRouter} from "vue-router";
 const router = useRouter()
 const user = useUserStore()
 
-if(user.username === ''){
-  router.push('/login')
-}
-
 </script>
 
 <template>

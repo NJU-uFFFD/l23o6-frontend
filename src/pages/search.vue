@@ -7,8 +7,8 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute();
 const search = useSearchStore();
-let table = ref(false)
-let id = ref(0)
+// let table = ref(false)
+// let id = ref(0)
 
 let trains = reactive({
   res : []
@@ -67,18 +67,18 @@ const submit = () => {
       <div style="height: 5vh">
       </div>
 
-      <train-description v-for="train in trains.res" v-bind="train" @click="table=true; id=train.id"/>
+      <train-description v-for="train in trains.res" v-bind="train"/>
     </el-main>
   </el-container>
 
 
-  <el-drawer
-    v-model="table"
-    direction="rtl"
-    size="30%"
-  >
-    <TrainDetail :trainId="id"/>
-  </el-drawer>
+<!--  <el-drawer-->
+<!--    v-model="table"-->
+<!--    direction="rtl"-->
+<!--    size="30%"-->
+<!--  >-->
+<!--    <TrainDetail :trainId="id"/>-->
+<!--  </el-drawer>-->
 </template>
 
 <style scoped>

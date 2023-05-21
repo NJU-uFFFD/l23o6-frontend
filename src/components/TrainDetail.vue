@@ -85,11 +85,7 @@ onMounted(() => {
   </el-row>
 
 
-  <el-row class="el-row">
-    <el-col :span="24">
-      <br/>
-    </el-col>
-  </el-row>
+z
 
 
   <el-row justify="center" class="el-row">

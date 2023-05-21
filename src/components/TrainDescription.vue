@@ -1,25 +1,28 @@
 <script setup lang="ts">
 
+import {ref} from "vue";
+
 let size = "default"
-defineProps({
+const props = defineProps({
+  id: Number,
   name: String,
   startStation: String,
   endStation: String,
   departureTime: Date,
   arrivalTime: Date,
   duration: String,
-  tickets: Array
+  ticketInfo: Array
 })
 
+let drawer = ref(false)
+let dialog = ref(false)
 
-import {
-  SwitchFilled
-} from '@element-plus/icons-vue'
 
+import {SwitchFilled} from '@element-plus/icons-vue'
 </script>
 
 <template>
-  <div style="margin: 0 200px">
+  <div style="margin: 0 40vh">
     <el-descriptions
       :column="4"
       :size="size"
@@ -50,17 +53,48 @@ import {
       <el-descriptions-item label="到达时间" span="2" width="25%" align="center">
         {{ arrivalTime }}
       </el-descriptions-item>
-      <el-descriptions-item v-for="ticket in tickets" :label="ticket.seatType" width="25%">
+      <el-descriptions-item v-for="ticket in ticketInfo" :label="ticket.type" span="2" width="25%" align="center">
         {{ ticket.count }}
       </el-descriptions-item>
     </el-descriptions>
 
+    <div style="display: flex; justify-content: flex-end; margin-top: 3vh;">
+      <el-button @click="drawer=true">
+        查看详情
+      </el-button>
+      <el-button type="primary" @click="dialog=true">
+        购买
+      </el-button>
+    </div>
+
+
     <el-divider>
-      <el-icon><SwitchFilled /></el-icon>
+      <el-icon>
+        <SwitchFilled/>
+      </el-icon>
     </el-divider>
   </div>
 
+  <el-drawer
+    v-model="drawer"
+    direction="rtl"
+    size="30%"
+  >
+    <TrainDetail :trainId="id"/>
+  </el-drawer>
 
+
+  <el-dialog v-model="dialog" title="Tips" width="50%" draggable>
+    <OrderForm v-bind="props"></OrderForm>
+    <template #footer>
+      <span>
+        <el-button @click="dialog = false">Cancel</el-button>
+        <el-button type="primary" @click="dialog = false">
+          Confirm
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 
 
 </template>
