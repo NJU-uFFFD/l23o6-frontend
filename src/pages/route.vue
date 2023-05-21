@@ -115,7 +115,7 @@ const changeRoute = (route) => {
 const refreshData = () => {
   stations.fetch()
   request({
-    url: '/v1/route',
+    url: '/v1/admin/route',
     method: 'GET'
   }).then((res) => {
     routes = res.data.data

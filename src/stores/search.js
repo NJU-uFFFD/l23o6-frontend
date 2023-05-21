@@ -3,8 +3,8 @@ import {defineStore} from "pinia";
 export const useSearchStore = defineStore('search', {
     state: () => {
       return {
-          startStation: '',
-          endStation: '',
+          start_station: '',
+          end_station: '',
           date: ''
       }
     }

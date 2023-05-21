@@ -2,16 +2,15 @@
 
 import {ref} from "vue";
 
-let size = "default"
 const props = defineProps({
   id: Number,
   name: String,
-  startStation: String,
-  endStation: String,
-  departureTime: Date,
-  arrivalTime: Date,
+  start_station: String,
+  end_station: String,
+  departure_time: Date,
+  arrival_time: Date,
   duration: String,
-  ticketInfo: Array
+  ticket_info: Array
 })
 
 let drawer = ref(false)
@@ -25,7 +24,6 @@ import {SwitchFilled} from '@element-plus/icons-vue'
   <div style="margin: 0 40vh">
     <el-descriptions
       :column="4"
-      :size="size"
       border
     >
       <el-descriptions-item span="2" width="25%" align="center">
@@ -42,18 +40,18 @@ import {SwitchFilled} from '@element-plus/icons-vue'
         {{ duration }}
       </el-descriptions-item>
       <el-descriptions-item label="出发站" span="2" width="25%" align="center">
-        {{ startStation }}
+        {{ start_station }}
       </el-descriptions-item>
       <el-descriptions-item label="到达站" span="2" width="25%" align="center">
-        {{ endStation }}
+        {{ end_station }}
       </el-descriptions-item>
       <el-descriptions-item label="出发时间" span="2" width="25%" align="center">
-        {{ departureTime }}
+        {{ departure_time }}
       </el-descriptions-item>
       <el-descriptions-item label="到达时间" span="2" width="25%" align="center">
-        {{ arrivalTime }}
+        {{ arrival_time }}
       </el-descriptions-item>
-      <el-descriptions-item v-for="ticket in ticketInfo" :label="ticket.type" span="2" width="25%" align="center">
+      <el-descriptions-item v-for="ticket in ticket_info" :label="ticket.type" span="2" width="25%" align="center">
         {{ ticket.count }}
       </el-descriptions-item>
     </el-descriptions>
@@ -86,14 +84,6 @@ import {SwitchFilled} from '@element-plus/icons-vue'
 
   <el-dialog v-model="dialog" title="Tips" width="50%" draggable>
     <OrderForm v-bind="props"></OrderForm>
-    <template #footer>
-      <span>
-        <el-button @click="dialog = false">Cancel</el-button>
-        <el-button type="primary" @click="dialog = false">
-          Confirm
-        </el-button>
-      </span>
-    </template>
   </el-dialog>
 
 

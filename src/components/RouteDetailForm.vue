@@ -25,8 +25,6 @@ let toEditIndex = ref<number>()
 let toEditId = ref<number>()
 
 
-console.log(props.station_ids)
-console.log('nmsl')
 for (let i = 0; i < props.station_ids?.length; i++) {
   route.station_ids.push(props.station_ids?.[i])
 }
@@ -172,8 +170,6 @@ const deleteStation = (index) => {
       </el-space>
     </div>
   </el-dialog>
-
-
 </template>
 
 <style scoped>

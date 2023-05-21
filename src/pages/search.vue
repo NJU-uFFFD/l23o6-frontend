@@ -25,8 +25,8 @@ const submit = () => {
     url: '/v1/train',
     method: 'GET',
     params: {
-      startStation: search.startStation,
-      endStation: search.endStation,
+      start_station: search.start_station,
+      end_station: search.end_station,
       date: search.date
     }
   })

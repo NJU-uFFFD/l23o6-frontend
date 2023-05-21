@@ -1,20 +1,12 @@
 <script lang="ts" setup>
 
-let stations = {
-  1: "fdsf",
-  2: "dfgdfg",
-  3: "dfgdfdfgg",
-  4: "dfgdfgdfgsdf",
-}
-
-let stationIds = [1, 2, 3, 4]
 
 // let train = {
 //     trainName: "G1234",
-//     startStation: "北京",
-//     endStation: "上海",
-//     departureTime: Date(),
-//     arrivalTime: Date(),
+//     start_station: "北京",
+//     end_station: "上海",
+//     departure_time: Date(),
+//     arrival_time: Date(),
 //     duration: "0s",
 //     tickets: [
 //         {

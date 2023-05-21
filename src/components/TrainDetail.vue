@@ -11,12 +11,11 @@ let data = reactive({
   data: {
     id: 0,
     name: "",
-    startStation: "",
-    endStation: "",
-    departureTime: "",
-    arrivalTime: "",
-    isLate: true,
-    ticketInfo: [
+    start_station: "",
+    end_station: "",
+    departure_time: "",
+    arrival_time: "",
+    ticket_info: [
       {
         type: "",
         count: 0,
@@ -30,12 +29,11 @@ watch(props, () => {
   data.data = {
     id: 0,
     name: "",
-    startStation: "",
-    endStation: "",
-    departureTime: "",
-    arrivalTime: "",
-    isLate: true,
-    ticketInfo: [
+    start_station: "",
+    end_station: "",
+    departure_time: "",
+    arrival_time: "",
+    ticket_info: [
       {
         type: "",
         count: 0,
@@ -91,7 +89,7 @@ onMounted(() => {
   <el-row justify="center" class="el-row">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
-        {{ data.data.startStation }}
+        {{ data.data.start_station }}
       </el-text>
     </el-col>
     <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
@@ -101,7 +99,7 @@ onMounted(() => {
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
       <el-text style="text-align: center">
-        {{ data.data.endStation }}
+        {{ data.data.end_station }}
       </el-text>
     </el-col>
   </el-row>
@@ -109,21 +107,21 @@ onMounted(() => {
   <el-row justify="center">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
-        {{ data.data.departureTime }}
+        {{ data.data.departure_time }}
       </el-text>
     </el-col>
     <el-col :span="2">
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center">
       <el-text>
-        {{ data.data.arrivalTime }}
+        {{ data.data.arrival_time }}
       </el-text>
     </el-col>
   </el-row>
 
   <!--    <el-space alignment="center" size="large">-->
   <!--      <el-text style="float: right">-->
-  <!--        {{data.data.startStation}}-->
+  <!--        {{data.data.start_station}}-->
   <!--      </el-text>-->
 
 
@@ -132,7 +130,7 @@ onMounted(() => {
   <!--      </el-icon>-->
 
   <!--      <el-text>-->
-  <!--        {{data.data.endStation}}-->
+  <!--        {{data.data.end_station}}-->
   <!--      </el-text>-->
   <!--    </el-space>-->
 

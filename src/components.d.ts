@@ -75,6 +75,8 @@ declare module '@vue/runtime-core' {
     'TrainDescription_dulingxiaodeMacBookPro.local_May170132272023_CaseConflict': typeof import('./components/trainDescription_dulingxiaodeMacBook-Pro.local_May-17-013227-2023_CaseConflict.vue')['default']
     'TrainDescription_dulingxiaodeMacBookPro.local_May170133052023_CaseConflict': typeof import('./components/TrainDescription.vue')['default']
     TrainDetail: typeof import('./components/TrainDetail.vue')['default']
+    TrainManageDetail: typeof import('./components/TrainManageDetail.vue')['default']
+    TrainManageForm: typeof import('./components/TrainManageForm.vue')['default']
     UserInfoComponent: typeof import('./components/UserInfoComponent.vue')['default']
   }
   export interface ComponentCustomProperties {
