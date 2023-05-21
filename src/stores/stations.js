@@ -15,7 +15,7 @@ export const useStationsStore = defineStore('stations', {
         }
     },
     actions: {
-        fetch(){
+        async fetch(){
             request({
                 url: '/v1/station',
                 method: 'GET'
