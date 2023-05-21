@@ -13,11 +13,13 @@ const props = defineProps({
   date: String,
   departure_times: Array,
   arrival_times: Array,
-  extra_infos: Array
+  extra_infos: Array,
+  train_type: String
 })
 
 let train = reactive({
   name: props.name,
+  train_type: props.train_type,
   route_id: props.route_id,
   date: props.date,
   departure_times: props.departure_times,
@@ -33,12 +35,36 @@ let route = reactive({
   station_ids: []
 })
 
+let routes = ref([])
+
+const getRoutes = () => {
+  console.log("getRoutes")
+  request({
+    url: `/v1/admin/route`,
+    method: 'GET'
+  }).then((res) => {
+    console.log(res.data.data)
+    routes.value = res.data.data
+  }).catch((error) => {
+    ElNotification({
+      offset: 70,
+      title: 'getRoutes错误(trainManage)',
+      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+    })
+    console.log(error)
+  })
+  console.log("end")
+}
+
+getRoutes()
+
 
 const getRoute = () => {
+  if(train.route_id === undefined) return
   console.log("manage")
   console.log(props.route_id)
   request({
-    url: `/v1/admin/route/${props.route_id}`,
+    url: `/v1/admin/route/${train.route_id}`,
     method: 'GET'
   }).then((res) => {
     console.log(res.data.data)
@@ -74,8 +100,19 @@ getRoute()
           车次名
         </el-text>
       </template>
-      <el-input v-model="route.name" style="margin-right: 60%"/>
+      <el-input v-model="train.name" style="margin-right: 60%"/>
     </el-form-item>
+
+    <el-date-picker type="datetime" v-model="train.date" value-format="YYYY-MM-DD"/>
+
+    <el-select v-model="train.route_id">
+      <el-option
+        v-for="singleRoute in routes"
+        :key="singleRoute.id"
+        :label="singleRoute.name"
+        :value="singleRoute.id"
+      />
+    </el-select>
 
 
     <div v-for="(station, index) in route.station_ids" :key="station">

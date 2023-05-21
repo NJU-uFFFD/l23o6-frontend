@@ -2,7 +2,7 @@
 
 import {h, onMounted, reactive, ref, watch} from "vue";
 import {request} from "~/utils/request";
-import {ElNotification} from "element-plus";
+import {ElMessage, ElNotification} from "element-plus";
 import {useStationsStore} from "~/stores/stations.js";
 import {Right} from "@element-plus/icons-vue";
 import TrainManageDetail from "~/components/TrainManageDetail.vue";
@@ -18,8 +18,9 @@ let trainsFiltered = reactive({
 
 let toAdd = reactive({
     name: '',
-    route_id: 0,
+    route_id: undefined,
     date: '',
+    train_type: '',
     departure_times: [],
     arrival_times: [],
     extra_infos: []
@@ -29,6 +30,7 @@ let toChange= reactive({
     id: 0,
     name: '',
     route_id: 0,
+    train_type: '',
     date: '',
     departure_times: [],
     arrival_times: [],
@@ -39,16 +41,24 @@ let add = ref(false)
 let change = ref(false)
 
 const addTrain = (train) => {
+  if(train.route_id === undefined){
+    ElMessage({
+      message: '路线不能为空',
+      type: 'error',
+    })
+    return
+  }
   request({
     url: '/v1/admin/train',
     method: 'POST',
     data: {
-      name: toAdd.name,
-      route_id: toAdd.route_id,
-      date: toAdd.date,
-      departure_times: toAdd.departure_times,
-      arrival_times: toAdd.arrival_times,
-      extra_infos: toAdd.extra_infos
+      name: train.name,
+      route_id: train.route_id,
+      date: train.date,
+      departure_times: train.departure_times,
+      arrival_times: train.arrival_times,
+      extra_infos: train.extra_infos,
+      train_type: train.train_type
     }
   }).then((res) => {
     console.log(res.data)
@@ -73,7 +83,7 @@ const addTrain = (train) => {
 
 const delTrain = (id) => {
   request({
-    url: `/v1/train/${id}`,
+    url: `/v1/admin/train/${id}`,
     method: 'DELETE'
   }).then((res) => {
     console.log(res.data)
@@ -97,15 +107,16 @@ const delTrain = (id) => {
 
 const changeTrain = (train) => {
   request({
-    url: `/v1/station/${toChange.id}`,
+    url: `/v1/admin/train/${train.id}`,
     method: 'PUT',
     data: {
-      name: toChange.name,
-      route_id: toChange.route_id,
-      date: toChange.date,
-      departure_times: toChange.departure_times,
-      arrival_times: toChange.arrival_times,
-      extra_infos: toChange.extra_infos
+      name: train.name,
+      route_id: train.route_id,
+      date: train.date,
+      departure_times: train.departure_times,
+      arrival_times: train.arrival_times,
+      extra_infos: train.extra_infos,
+      train_type: train.train_type
     }
   }).then((res) => {
     console.log(res.data)
@@ -233,7 +244,7 @@ onMounted(() => {
   </el-dialog>
 
   <el-dialog v-model="add" title="添加车次" width="50%" draggable>
-    <div>请输入新的路线信息</div>
+    <div>请输入新的车次信息</div>
     <br/>
     <div>
       <TrainManageForm  v-bind="toAdd" @formSubmitted="addTrain"/>

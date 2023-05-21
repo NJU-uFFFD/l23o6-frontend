@@ -31,7 +31,7 @@ let add = ref(false)
 
 const addRoute = (route) => {
   request({
-    url: '/v1/route',
+    url: '/v1/admin/route',
     method: 'POST',
     data: {
       name: route.name,
@@ -60,7 +60,7 @@ const addRoute = (route) => {
 
 const delRoute = (id) => {
   request({
-    url: `/v1/route/${id}`,
+    url: `/v1/admin/route/${id}`,
     method: 'DELETE'
   }).then((res) => {
     console.log(res.data)
@@ -84,7 +84,7 @@ const delRoute = (id) => {
 
 const changeRoute = (route) => {
   request({
-    url: `/v1/route/${toChange.id}`,
+    url: `/v1/admin/route/${toChange.id}`,
     method: 'PUT',
     data: {
       name: route.name,
@@ -174,7 +174,7 @@ onMounted(() => {
       <div style="display: flex; justify-content: center">
         <div style="display: flex; width: 80vh; justify-content: flex-end">
           <el-space>
-            <el-button type="primary" @click="add=true">
+            <el-button type="primary" @click="add=true;toAdd={name: '',station_ids: []}">
               添加
             </el-button>
           </el-space>

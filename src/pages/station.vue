@@ -20,7 +20,7 @@ let rename = ref(false)
 const addStation = () => {
   if (toAdd.value === '') return
   request({
-    url: '/v1/station',
+    url: '/v1/admin/station',
     method: 'POST',
     data: {
       name: toAdd.value
@@ -48,7 +48,7 @@ const addStation = () => {
 
 const delStation = (id) => {
   request({
-    url: `/v1/station/${id}`,
+    url: `/v1/admin/station/${id}`,
     method: 'DELETE'
   }).then((res) => {
     console.log(res.data)
@@ -72,7 +72,7 @@ const delStation = (id) => {
 
 const renameStation = () => {
   request({
-    url: `/v1/station/${toRenameId.value}`,
+    url: `/v1/admin/station/${toRenameId.value}`,
     method: 'PUT',
     data: {
       name: toRename.value
