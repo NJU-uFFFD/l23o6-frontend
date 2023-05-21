@@ -57,7 +57,6 @@ declare module '@vue/runtime-core' {
     'LoginForm,': typeof import('./components/LoginForm
     Menu: typeof import('./components/Menu.vue')['default']
     MenuComponent: typeof import('./components/MenuComponent.vue')['default']
-    OrderComfirm: typeof import('./components/OrderComfirm.vue')['default']
     OrderDetail: typeof import('./components/OrderDetail.vue')['default']
     OrderForm: typeof import('./components/OrderForm.vue')['default']
     Register: typeof import('./components/Register.vue')['default']

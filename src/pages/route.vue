@@ -203,7 +203,7 @@ onMounted(() => {
               <el-row justify="center" class="el-row" style="width: 50%;">
                 <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
                   <el-text tag="b" type="primary" size="large">
-                    {{ route.station_ids.length > 0 ? stations.idToName[route.station_ids[0]] : ''  }}
+                    {{ route.station_ids?.length > 0 ? stations.idToName[route.station_ids?.[0]] : ''  }}
                   </el-text>
                 </el-col>
                 <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
@@ -213,7 +213,7 @@ onMounted(() => {
                 </el-col>
                 <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
                   <el-text style="text-align: center" tag="b" type="primary" size="large">
-                    {{ route.station_ids.length > 0 ? stations.idToName[route.station_ids[route.station_ids.length - 1]] : ''}}
+                    {{ route.station_ids?.length > 0 ? stations.idToName[route.station_ids?.[route.station_ids?.length - 1]] : ''}}
                   </el-text>
                 </el-col>
               </el-row>

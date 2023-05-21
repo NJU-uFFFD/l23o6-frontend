@@ -19,12 +19,11 @@ const router = createRouter({
 
 
 
-// @ts-ignore
-const app = createApp(App).use(createPinia()).use(ElementPlus, {
-    locale: zhCn,
-}).use(router)
 
-app.mount('#app')
+// @ts-ignore
+createApp(App).use(createPinia()).use(ElementPlus, {
+    locale: zhCn,
+}).use(router).mount('#app')
 
 // app.use(pinia);
 // app.use(ElementPlus, {
