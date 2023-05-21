@@ -8,8 +8,8 @@ const search = useSearchStore()
 const stations = useStationsStore()
 
 const form = reactive({
-  start_station: search.start_station,
-  end_station: search.end_station,
+  start_station_id: search.start_station_id,
+  end_station_id: search.end_station_id,
   date: search.date
 })
 
@@ -28,7 +28,7 @@ onMounted(() => {
 <template>
   <el-form :model="form" label-width="120px">
     <el-form-item label="出发站">
-      <el-select v-model="form.start_station" filterable>
+      <el-select v-model="form.start_station_id" filterable>
         <el-option
           v-for="item in stations.rawData"
           :key="item.id"
@@ -38,7 +38,7 @@ onMounted(() => {
       </el-select>
     </el-form-item>
     <el-form-item label="到达站">
-      <el-select v-model="form.end_station" filterable>
+      <el-select v-model="form.end_station_id" filterable>
         <el-option
           v-for="item in stations.rawData"
           :key="item.id"
@@ -49,14 +49,16 @@ onMounted(() => {
     </el-form-item>
     <el-form-item label="日期">
       <el-date-picker
+        :clearable="false"
         v-model="form.date"
         type="date"
         placeholder="选择 日期"
+        value-format="YYYY-MM-DD"
         :disabled-date="disabledDate"
       />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="this.$emit('formUpdated', form); search.$patch(form)">
+      <el-button type="primary" @click="search.$patch(form);this.$emit('formUpdated', form); ">
         查询
       </el-button>
     </el-form-item>

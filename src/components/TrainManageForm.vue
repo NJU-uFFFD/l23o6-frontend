@@ -130,7 +130,7 @@ getRoute()
               日期
             </el-text>
           </template>
-          <el-date-picker v-model="train.date" value-format="YYYY-MM-DD"/>
+          <el-date-picker v-model="train.date" value-format="YYYY-MM-DD" :clearable="false"/>
         </el-form-item>
       </el-col>
     </el-row>
@@ -170,16 +170,16 @@ getRoute()
             {{ stations.idToName[station] }}
           </div>
 
-          <el-date-picker style="width: 50%; margin-right: 1%"
+          <el-date-picker style="width: 50%; margin-right: 1%" :disabled="index === 0" @change="() => {if(index === route.station_ids.length - 1) {train.departure_times[index] = train.arrival_times[index]}}"
             v-model="train.arrival_times[index]"
             type="datetime"
-            placeholder="到点"
+            placeholder="到点" format="YY/MM/DD HH:mm"
           />
 
-          <el-date-picker style="width: 50%"
+          <el-date-picker style="width: 50%" :disabled="index === route.station_ids.length - 1"  @change="() => {if(index === 0) {train.arrival_times[0] = train.departure_times[0]}}"
             v-model="train.departure_times[index]"
             type="datetime"
-            placeholder="开点"
+            placeholder="开点" format="YY/MM/DD HH:mm"
           />
 
         </div>
@@ -191,10 +191,10 @@ getRoute()
     </el-button>
 
 
-        <pre>
-          {{ train.arrival_times }}
-          {{train.departure_times }}
-        </pre>
+<!--        <pre>-->
+<!--          {{ train.arrival_times }}-->
+<!--          {{train.departure_times }}-->
+<!--        </pre>-->
   </div>
 
 </template>

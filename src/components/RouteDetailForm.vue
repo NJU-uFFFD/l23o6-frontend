@@ -177,7 +177,7 @@ const deleteStation = (index) => {
   visibility: hidden
 }
 
-.container:hover .change {
+.container:hover  .change {
   visibility: visible
 }
 </style>

@@ -25,14 +25,14 @@ const submit = () => {
     url: '/v1/train',
     method: 'GET',
     params: {
-      start_station: search.start_station,
-      end_station: search.end_station,
+      start_station_id: search.start_station_id,
+      end_station_id: search.end_station_id,
       date: search.date
     }
   })
 
   r.then((res) => {
-    trains.res = res.data.data.items
+    trains.res = res.data.data
     console.log(res.data)
     console.log("submit")
   }).catch((error) => {

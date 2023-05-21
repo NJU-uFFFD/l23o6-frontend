@@ -67,10 +67,10 @@ const addTrain = (train) => {
       title: '成功',
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
+    add.value = false
     trainName.value = ''
     refreshData()
     filter()
-    add.value = false
   }).catch((error) => {
     console.log(error)
     ElNotification({
@@ -125,10 +125,10 @@ const changeTrain = (train) => {
       title: '成功',
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
+    change.value = false
     trainName.value = ''
     refreshData()
     filter()
-    change.value = false
   }).catch((error) => {
     console.log(error)
     ElNotification({
