@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 import {useSearchStore} from "~/stores/search.js";
+import {useStationsStore} from "~/stores/stations.js";
 
 const search = useSearchStore()
+const stations = useStationsStore()
 
 const form = reactive({
   startStation: search.startStation,
@@ -16,16 +18,34 @@ const disabledDate = (time: Date) => {
   return time.getTime() < new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 }
 
+onMounted(() => {
+  stations.fetch()
+})
+
 
 </script>
 
 <template>
   <el-form :model="form" label-width="120px">
     <el-form-item label="出发站">
-      <el-input v-model="form.startStation" />
+      <el-select v-model="form.startStation" filterable>
+        <el-option
+          v-for="item in stations.rawData"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
+      </el-select>
     </el-form-item>
     <el-form-item label="到达站">
-      <el-input v-model="form.endStation" />
+      <el-select v-model="form.endStation" filterable>
+        <el-option
+          v-for="item in stations.rawData"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
+      </el-select>
     </el-form-item>
     <el-form-item label="日期">
       <el-date-picker

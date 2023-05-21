@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import {useUserStore} from "~/stores/user.js";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
+const user = useUserStore()
+
+if(user.username === ''){
+  router.push('/login')
+}
 
 </script>
 

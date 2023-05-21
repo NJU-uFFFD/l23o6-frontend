@@ -5,6 +5,9 @@ import {request} from "~/utils/request";
 import {AxiosError, AxiosResponse} from "axios";
 import {ElNotification} from "element-plus";
 import {h} from "vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 defineProps<{
   pageIndex: string
@@ -29,6 +32,7 @@ const logout = () =>
       message: h('info', { style: 'color: teal' }, response.data.msg),
     })
     user.$reset()
+    router.push('/')
   }).catch((error: AxiosError<any>) => {
     console.log(error)
     ElNotification({

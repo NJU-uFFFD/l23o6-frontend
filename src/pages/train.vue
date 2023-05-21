@@ -1,5 +1,132 @@
 <script setup lang="ts">
 
+import {h, onMounted, reactive, ref, watch} from "vue";
+import {request} from "~/utils/request";
+import {ElNotification} from "element-plus";
+import {useStationsStore} from "~/stores/stations.js";
+
+let trainName = ref('')
+const stations = useStationsStore()
+
+let trains;
+let trainsFiltered = reactive({
+  data: []
+})
+
+let toAdd = ref('')
+let toRename = ref('')
+let toRenameId = ref(0)
+let rename = ref(false)
+
+// const addStation = () => {
+//   if (toAdd.value === '') return
+//   request({
+//     url: '/v1/station',
+//     method: 'POST',
+//     data: {
+//       name: toAdd.value
+//     }
+//   }).then((res) => {
+//     console.log(res.data)
+//     ElNotification({
+//       offset: 70,
+//       title: '成功',
+//       message: h('success', {style: 'color: teal'}, res.data.msg),
+//     })
+//     stationName.value = ''
+//     stations.fetch()
+//     filter()
+//     toAdd.value = ''
+//   }).catch((error) => {
+//     console.log(error)
+//     ElNotification({
+//       offset: 70,
+//       title: 'postStation错误',
+//       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+//     })
+//   })
+// }
+//
+// const delStation = (id) => {
+//   request({
+//     url: `/v1/station/${id}`,
+//     method: 'DELETE'
+//   }).then((res) => {
+//     console.log(res.data)
+//     ElNotification({
+//       offset: 70,
+//       title: '成功',
+//       message: h('success', {style: 'color: teal'}, res.data.msg),
+//     })
+//     stationName.value = ''
+//     stations.fetch()
+//     filter()
+//   }).catch((error) => {
+//     console.log(error)
+//     ElNotification({
+//       offset: 70,
+//       title: 'deleteStation错误',
+//       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+//     })
+//   })
+// }
+//
+// const renameStation = () => {
+//   request({
+//     url: `/v1/station/${toRenameId.value}`,
+//     method: 'PUT',
+//     data: {
+//       name: toRename.value
+//     }
+//   }).then((res) => {
+//     console.log(res.data)
+//     ElNotification({
+//       offset: 70,
+//       title: '成功',
+//       message: h('success', {style: 'color: teal'}, res.data.msg),
+//     })
+//     stationName.value = ''
+//     stations.fetch()
+//     filter()
+//     toRename.value = ''
+//     toRenameId.value = 0
+//     rename.value=false
+//   }).catch((error) => {
+//     console.log(error)
+//     ElNotification({
+//       offset: 70,
+//       title: 'putStation错误',
+//       message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+//     })
+//   })
+// }
+//
+
+// const refreshDate = () => {
+//   stations.fetch()
+//   request()
+//
+//
+//
+//   trainsFiltered.data = [...trains.rawData]
+// }
+
+// const filter = () => {
+//   stationsFiltered.data = stations.rawData.filter((station) => {
+//     return station.name.includes(stationName.value)
+//   })
+// }
+//
+// onMounted(() => {
+//   stations.fetch()
+//   stationsFiltered.data = [...stations.rawData]
+//   console.log(stations.rawData)
+// })
+//
+// watch(stations, () => {
+//   filter()
+// })
+
 </script>
 
 <template>
@@ -8,18 +135,69 @@
       <MenuComponent pageIndex="/train"/>
     </el-header>
     <el-main>
-      <el-row justify="center" style="display: flex; align-content: center;height: 85vh;">
-        <el-col :span="12" style="display: flex; align-items: center">
-          <el-card class="search-ticket-card" shadow="hover" header="车次查询">
-            <SearchTrainForm @formUpdated="() => {this.$router.push('/search#query');}"></SearchTrainForm>
-          </el-card>
-        </el-col>
-        <el-col :span="12" style="display: flex; align-items: center">
-          <Title style="margin: 0 auto 20vh"></Title>
-        </el-col>
-      </el-row>
+      <div style="display: flex; justify-content: center">
+        <el-card shadow="hover" style="width: 70vh; height: auto; ">
+          <el-form inline style="display: flex; " @submit.native.prevent>
+            <el-form-item label="车次名" style="display: flex; flex-grow: 1">
+              <el-input v-model="trainName" autofocus @keyup.enter.native="filter"/>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="filter">
+                查询
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </div>
+
+      <br/>
+      <br/>
+
+
+      <div style="display: flex; justify-content: center">
+        <div style="display: flex; width: 80vh; justify-content: flex-end">
+          <el-space>
+            <el-input v-model="toAdd" style="width: 20vh"/>
+            <el-button type="primary" @click="addTrain">
+              添加
+            </el-button>
+          </el-space>
+        </div>
+      </div>
+
+
+      <br/>
+      <br/>
+
+      <div style="display: flex; justify-content: center">
+        <el-collapse style="width: 80vh; display: flex;flex-direction: column;">
+          <el-collapse-item v-for="train in trainsFiltered.data" :title="train.name">
+            <el-button @click="rename=true; toRenameId=train.id">
+              更改
+            </el-button>
+            <el-button type="danger" @click="delTrain(train.id)">
+              删除
+            </el-button>
+          </el-collapse-item>
+
+        </el-collapse>
+      </div>
+
     </el-main>
   </el-container>
+
+  <el-dialog v-model="rename" title="重命名" width="30%" draggable @close="toRenameId=0; toRename=''">
+    <div>请输入新的车次名</div>
+    <br/>
+    <div style="display: flex;">
+      <el-space>
+        <el-input v-model="toRename"/>
+        <el-button type="primary" @click="renameTrain">
+          确定
+        </el-button>
+      </el-space>
+    </div>
+  </el-dialog>
 
 </template>
 

@@ -3,6 +3,7 @@ import {h, onMounted, reactive, ref} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
 import {useStationsStore} from "~/stores/stations.js";
+import {Right} from "@element-plus/icons-vue";
 
 let routeName = ref('')
 
@@ -118,9 +119,8 @@ const refreshData = () => {
     method: 'GET'
   }).then((res) => {
     routes = res.data.data
-    console.log(routes)
     routesFiltered.data = [...routes]
-    console.log(res.data)
+    console.log(routesFiltered.data)
   }).catch((error) => {
     console.log(error)
     ElNotification({
@@ -141,6 +141,7 @@ const filter = () => {
 onMounted(() => {
   refreshData()
 })
+
 
 
 </script>
@@ -187,12 +188,50 @@ onMounted(() => {
       <div style="display: flex; justify-content: center">
         <el-collapse style="width: 80vh; display: flex;flex-direction: column;">
           <el-collapse-item v-for="route in routesFiltered.data" :title="route.name">
-            <el-button @click="change=true; toChange=route;">
-              更改
-            </el-button>
-            <el-button type="danger" @click="delRoute(route.id)">
-              删除
-            </el-button>
+            <div style="margin-bottom: 5%">
+              <el-button @click="change=true; toChange=route;">
+                更改
+              </el-button>
+              <el-button type="danger" @click="delRoute(route.id)">
+                删除
+              </el-button>
+            </div>
+
+
+            <div style=" display: flex">
+
+              <el-row justify="center" class="el-row" style="width: 50%;">
+                <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
+                  <el-text tag="b" type="primary" size="large">
+                    {{ route.station_ids.length > 0 ? stations.idToName[route.station_ids[0]] : ''  }}
+                  </el-text>
+                </el-col>
+                <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
+                  <el-icon size="15">
+                    <Right/>
+                  </el-icon>
+                </el-col>
+                <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
+                  <el-text style="text-align: center" tag="b" type="primary" size="large">
+                    {{ route.station_ids.length > 0 ? stations.idToName[route.station_ids[route.station_ids.length - 1]] : ''}}
+                  </el-text>
+                </el-col>
+              </el-row>
+
+
+              <el-timeline>
+                <el-timeline-item
+                  v-for="(station_id, index) in route.station_ids"
+                  :key="index"
+                  hollow
+                >
+                  <strong>
+                    {{ stations.idToName[station_id] }}
+                  </strong>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
+
           </el-collapse-item>
 
         </el-collapse>
@@ -206,13 +245,6 @@ onMounted(() => {
     <br/>
     <div>
       <RouteDetailForm  v-bind="toChange" @formSubmitted="changeRoute" :key="toChange.id"/>
-      <!--      <el-space>-->
-      <!--        <el-input v-model="toChangeName"/>-->
-      <!--        <el-button type="primary" @click="changeRoute">-->
-      <!--          确定-->
-      <!--        </el-button>-->
-      <!--      </el-space>-->
-<!--      <RouteDetailForm :stations-prop="stations" :station-ids-prop=""/>-->
     </div>
   </el-dialog>
 
@@ -221,12 +253,6 @@ onMounted(() => {
     <br/>
     <div>
       <RouteDetailForm  v-bind="toAdd" @formSubmitted="addRoute"/>
-<!--      <el-space>-->
-<!--        <el-input v-model="toAddName"/>-->
-<!--        <el-button type="primary" @click="addRoute">-->
-<!--          确定-->
-<!--        </el-button>-->
-<!--      </el-space>-->
     </div>
   </el-dialog>
 </template>

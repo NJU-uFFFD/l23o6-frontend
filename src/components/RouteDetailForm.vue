@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
+import {h,reactive, ref} from 'vue'
 import {VueDraggable} from 'vue-draggable-plus'
 import {CloseBold, SwitchFilled} from "@element-plus/icons-vue";
 import {useStationsStore} from "~/stores/stations.js";
+import {ElMessage} from "element-plus";
 
 const stations = useStationsStore()
 
@@ -19,9 +20,9 @@ let route = reactive({
 
 let edit = ref(false)
 let add = ref(false)
-let toAddId = ref(1)
-let toEditIndex = ref(1)
-let toEditId = ref(1)
+let toAddId = ref<number>()
+let toEditIndex = ref<number>()
+let toEditId = ref<number>()
 
 
 console.log(props.station_ids)
@@ -35,6 +36,13 @@ console.log(route.station_ids)
 
 
 const addStation = () => {
+  if(toAddId.value === undefined){
+    ElMessage({
+      message: '站点不能为空',
+      type: 'error',
+    })
+    return
+  }
   route.station_ids.push(toAddId.value)
   add.value = false;
 }
@@ -77,7 +85,7 @@ const deleteStation = (index) => {
       <div v-for="station in route.station_ids" :key="station">
         <el-card style="margin-bottom: 0.25%" shadow="hover" class="container">
           <div style="display: flex; align-items: center;">
-            <el-icon class="handle">
+            <el-icon class="handle" size="large">
               <SwitchFilled/>
             </el-icon>
             <strong style="margin-left: 5%; margin-right: 5%">
@@ -122,14 +130,15 @@ const deleteStation = (index) => {
   </div>
 
 
-  <el-dialog v-model="add" title="添加站点" width="30%" draggable @close="toAddId=1">
+  <el-dialog v-model="add" title="添加站点" width="30%" draggable @close="toAddId=undefined">
     <div>请选择新的站点</div>
     <br/>
     <div style="display: flex;">
       <el-space>
-        <el-select v-model="toAddId">
+        <el-select v-model="toAddId" filterable>
           <el-option
             v-for="item in stations.rawData"
+            :disabled="route.station_ids.includes(item.id)"
             :key="item.id"
             :label="item.name"
             :value="item.id"
@@ -148,9 +157,10 @@ const deleteStation = (index) => {
     <br/>
     <div style="display: flex;">
       <el-space>
-        <el-select v-model="toEditId">
+        <el-select v-model="toEditId" filterable>
           <el-option
             v-for="item in stations.rawData"
+            :disabled="route.station_ids.includes(item.id)&&item.id!==toEditId"
             :key="item.id"
             :label="item.name"
             :value="item.id"
