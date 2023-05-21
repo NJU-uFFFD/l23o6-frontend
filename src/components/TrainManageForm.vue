@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {h, reactive, ref, watch} from 'vue'
-import {CloseBold, SwitchFilled, WarnTriangleFilled} from "@element-plus/icons-vue";
+import {SwitchFilled} from "@element-plus/icons-vue";
 import {useStationsStore} from "~/stores/stations.js";
 import {ElNotification} from "element-plus";
 import {request} from "~/utils/request";
@@ -94,25 +94,67 @@ getRoute()
 
 <template>
   <div style="display: flex;flex-direction: column">
+
+    <el-row>
+      <el-col :span="7">
+        <el-form-item>
+          <template #label>
+            <el-text tag="b" type="primary">
+              车次名
+            </el-text>
+          </template>
+          <el-input v-model="train.name"/>
+        </el-form-item>
+      </el-col>
+      <el-col :span="7" :offset="1">
+        <el-form-item>
+          <template #label>
+            <el-text tag="b" type="primary">
+              车型
+            </el-text>
+          </template>
+          <el-select v-model="train.train_type">
+            <el-option
+              v-for="type in ['高铁', '普通列车']"
+              :key="type"
+              :label="type"
+              :value="type"
+            />
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="8" :offset="1">
+        <el-form-item>
+          <template #label>
+            <el-text tag="b" type="primary">
+              日期
+            </el-text>
+          </template>
+          <el-date-picker v-model="train.date" value-format="YYYY-MM-DD"/>
+        </el-form-item>
+      </el-col>
+    </el-row>
+
+<el-row>
+  <el-col :span="24">
     <el-form-item>
       <template #label>
         <el-text tag="b" type="primary">
-          车次名
+          路线名
         </el-text>
       </template>
-      <el-input v-model="train.name" style="margin-right: 60%"/>
+      <el-select v-model="train.route_id" style="width: 100%">
+        <el-option
+          v-for="singleRoute in routes"
+          :key="singleRoute.id"
+          :label="singleRoute.name"
+          :value="singleRoute.id"
+        />
+      </el-select>
     </el-form-item>
+  </el-col>
+</el-row>
 
-    <el-date-picker type="datetime" v-model="train.date" value-format="YYYY-MM-DD"/>
-
-    <el-select v-model="train.route_id">
-      <el-option
-        v-for="singleRoute in routes"
-        :key="singleRoute.id"
-        :label="singleRoute.name"
-        :value="singleRoute.id"
-      />
-    </el-select>
 
 
     <div v-for="(station, index) in route.station_ids" :key="station">
@@ -128,16 +170,16 @@ getRoute()
             {{ stations.idToName[station] }}
           </div>
 
-          <el-date-picker
+          <el-date-picker style="width: 50%; margin-right: 1%"
             v-model="train.arrival_times[index]"
             type="datetime"
-            placeholder="Select date and time"
+            placeholder="到点"
           />
 
-          <el-date-picker
+          <el-date-picker style="width: 50%"
             v-model="train.departure_times[index]"
             type="datetime"
-            placeholder="Select date and time"
+            placeholder="开点"
           />
 
         </div>

@@ -235,7 +235,7 @@ onMounted(() => {
     </el-main>
   </el-container>
 
-  <el-dialog v-model="change" title="更改车次" width="50%" draggable >
+  <el-dialog v-model="change" title="更改车次" width="60%" draggable >
     <div>请输入更改后的车次信息</div>
     <br/>
     <div>
@@ -243,7 +243,7 @@ onMounted(() => {
     </div>
   </el-dialog>
 
-  <el-dialog v-model="add" title="添加车次" width="50%" draggable>
+  <el-dialog v-model="add" title="添加车次" width="60%" draggable destroy-on-close>
     <div>请输入新的车次信息</div>
     <br/>
     <div>

@@ -6,6 +6,7 @@ import {useStationsStore} from "~/stores/stations.js";
 import {Right} from "@element-plus/icons-vue";
 
 let routeName = ref('')
+let route_detail_form = ref()
 
 const stations = useStationsStore()
 let routes;
@@ -248,11 +249,11 @@ onMounted(() => {
     </div>
   </el-dialog>
 
-  <el-dialog v-model="add" title="添加路线" width="50%" draggable>
+  <el-dialog v-model="add" title="添加路线" width="50%" draggable destroy-on-close>
     <div>请输入新的路线信息</div>
     <br/>
     <div>
-      <RouteDetailForm  v-bind="toAdd" @formSubmitted="addRoute"/>
+      <RouteDetailForm ref="route_detail_form" v-bind="toAdd" @formSubmitted="addRoute"/>
     </div>
   </el-dialog>
 </template>
