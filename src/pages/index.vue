@@ -1,36 +1,5 @@
 <script lang="ts" setup>
 
-
-// let train = {
-//     trainName: "G1234",
-//     start_station: "北京",
-//     end_station: "上海",
-//     departure_time: Date(),
-//     arrival_time: Date(),
-//     duration: "0s",
-//     tickets: [
-//         {
-//             seatType: "无座",
-//             price: 50,
-//             remain: 100
-//         },
-//         {
-//             seatType: "二等座",
-//             price: 100,
-//             remain: 100
-//         },
-//         {
-//             seatType: "一等座",
-//             price: 200,
-//             remain: 100
-//         },
-//         {
-//             seatType: "商务座",
-//             price: 300,
-//             remain: 100
-//         }
-//     ]
-// }
 </script>
 
 <template>
@@ -43,7 +12,7 @@
         <el-row justify="center" style="display: flex; align-content: center;height: 85vh;">
           <el-col :span="12" style="display: flex; align-items: center">
             <el-card class="search-ticket-card" shadow="hover" header="车票查询">
-              <SearchTicketForm @formUpdated="() => {this.$router.push('/search#query');}"></SearchTicketForm>
+              <SearchTicketForm :inline="false" @formUpdated="() => {this.$router.push('/search#query');}"></SearchTicketForm>
             </el-card>
           </el-col>
           <el-col :span="12" style="display: flex; align-items: center">
@@ -53,15 +22,6 @@
       </el-main>
     </el-container>
 
-
-<!--<draggabletest/>-->
-<!--<RouteDetailForm :station-ids-prop="stationIds" :stations-prop="stations"/>-->
-  <!--<OrderDetail>-->
-  <!--</OrderDetail>-->
-  <!--<user/>-->
-  <!--    <Title />-->
-  <!--    <train-detail train-id="1" />-->
-  <!--    <login></login>-->
 </template>
 
 <style scoped>

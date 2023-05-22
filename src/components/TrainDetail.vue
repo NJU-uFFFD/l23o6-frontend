@@ -2,6 +2,9 @@
 import {request} from "~/utils/request";
 import {onMounted, reactive, watch} from "vue";
 import {Right} from "@element-plus/icons-vue";
+import {useStationsStore} from "~/stores/stations.js";
+
+const stations = useStationsStore()
 
 const props = defineProps({
   trainId: Number
@@ -11,8 +14,8 @@ let data = reactive({
   data: {
     id: 0,
     name: "",
-    start_station: "",
-    end_station: "",
+    start_station_id: 0,
+    end_station_id: 0,
     departure_time: "",
     arrival_time: "",
     ticket_info: [
@@ -25,25 +28,25 @@ let data = reactive({
   }
 });
 
-watch(props, () => {
-  data.data = {
-    id: 0,
-    name: "",
-    start_station: "",
-    end_station: "",
-    departure_time: "",
-    arrival_time: "",
-    ticket_info: [
-      {
-        type: "",
-        count: 0,
-        price: 0
-      }
-    ]
-  }
-  console.log(props.trainId)
-  refreshData()
-})
+// watch(props, () => {
+//   data.data = {
+//     id: 0,
+//     name: "",
+//     start_station_id: "",
+//     end_station_id: "",
+//     departure_time: "",
+//     arrival_time: "",
+//     ticket_info: [
+//       {
+//         type: "",
+//         count: 0,
+//         price: 0
+//       }
+//     ]
+//   }
+//   console.log(props.trainId)
+//   refreshData()
+// })
 
 const refreshData = () => {
   const r = request({
@@ -89,7 +92,7 @@ onMounted(() => {
   <el-row justify="center" class="el-row">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
-        {{ data.data.start_station }}
+        {{ stations.idToName[data.data.start_station_id] }}
       </el-text>
     </el-col>
     <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
@@ -99,7 +102,7 @@ onMounted(() => {
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
       <el-text style="text-align: center">
-        {{ data.data.end_station }}
+        {{ stations.idToName[data.data.end_station_id] }}
       </el-text>
     </el-col>
   </el-row>
@@ -121,7 +124,7 @@ onMounted(() => {
 
   <!--    <el-space alignment="center" size="large">-->
   <!--      <el-text style="float: right">-->
-  <!--        {{data.data.start_station}}-->
+  <!--        {{data.data.start_station_id}}-->
   <!--      </el-text>-->
 
 
@@ -130,7 +133,7 @@ onMounted(() => {
   <!--      </el-icon>-->
 
   <!--      <el-text>-->
-  <!--        {{data.data.end_station}}-->
+  <!--        {{data.data.end_station_id}}-->
   <!--      </el-text>-->
   <!--    </el-space>-->
 

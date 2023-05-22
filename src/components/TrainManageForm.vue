@@ -93,9 +93,9 @@ getRoute()
 </script>
 
 <template>
-  <div style="display: flex;flex-direction: column">
+  <div>
 
-    <el-row>
+    <el-row >
       <el-col :span="7">
         <el-form-item>
           <template #label>
@@ -107,13 +107,13 @@ getRoute()
         </el-form-item>
       </el-col>
       <el-col :span="7" :offset="1">
-        <el-form-item>
+        <el-form-item style="display: flex">
           <template #label>
             <el-text tag="b" type="primary">
               车型
             </el-text>
           </template>
-          <el-select v-model="train.train_type">
+          <el-select v-model="train.train_type" style="display: flex; flex-grow: 1">
             <el-option
               v-for="type in ['高铁', '普通列车']"
               :key="type"
@@ -124,13 +124,13 @@ getRoute()
         </el-form-item>
       </el-col>
       <el-col :span="8" :offset="1">
-        <el-form-item>
+        <el-form-item style="display: flex">
           <template #label>
             <el-text tag="b" type="primary">
               日期
             </el-text>
           </template>
-          <el-date-picker v-model="train.date" value-format="YYYY-MM-DD" :clearable="false"/>
+          <el-date-picker v-model="train.date" value-format="YYYY-MM-DD" :clearable="false" style="display: flex; flex-grow: 1"/>
         </el-form-item>
       </el-col>
     </el-row>

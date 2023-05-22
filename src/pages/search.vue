@@ -7,12 +7,12 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute();
 const search = useSearchStore();
-// let table = ref(false)
-// let id = ref(0)
 
 let trains = reactive({
   res : []
 })
+
+let loading = ref(false)
 
 onMounted(() => {
   if(route.hash == "#query") {
@@ -21,6 +21,7 @@ onMounted(() => {
 })
 
 const submit = () => {
+  loading.value = true
   const r = request({
     url: '/v1/train',
     method: 'GET',
@@ -42,6 +43,8 @@ const submit = () => {
       title: 'search错误',
       message: h('error', { style: 'color: teal' }, error.response?.data.msg),
     })
+  }).finally(() => {
+    loading.value = false
   })
 }
 
@@ -53,21 +56,16 @@ const submit = () => {
     <el-header>
       <MenuComponent pageIndex="/search" />
     </el-header>
-    <el-main>
-      <div style="height: 5vh">
-      </div>
+    <el-main v-loading="loading" style="height: 90vh">
 
-      <div style="display: flex; justify-content: center">
-        <el-card shadow="hover" style="width: 70vh; height: auto">
-          <SearchTicketForm @formUpdated="submit"/>
+      <div style="display: flex; justify-content: center; margin-bottom: 5vh">
+        <el-card shadow="hover" style="width: 80%;">
+
+          <SearchTicketForm :inline="true" @formUpdated="submit()"/>
         </el-card>
       </div>
 
-
-      <div style="height: 5vh">
-      </div>
-
-      <train-description v-for="train in trains.res" v-bind="train"/>
+        <train-description v-for="train in trains.res" v-bind="train"/>
     </el-main>
   </el-container>
 

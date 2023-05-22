@@ -1,12 +1,16 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
+import {SwitchFilled} from '@element-plus/icons-vue'
+import {useStationsStore} from "~/stores/stations.js";
+
+const stations = useStationsStore()
 
 const props = defineProps({
   id: Number,
   name: String,
-  start_station: String,
-  end_station: String,
+  start_station_id: Number,
+  end_station_id: Number,
   departure_time: Date,
   arrival_time: Date,
   duration: String,
@@ -17,7 +21,7 @@ let drawer = ref(false)
 let dialog = ref(false)
 
 
-import {SwitchFilled} from '@element-plus/icons-vue'
+
 </script>
 
 <template>
@@ -40,10 +44,10 @@ import {SwitchFilled} from '@element-plus/icons-vue'
         {{ duration }}
       </el-descriptions-item>
       <el-descriptions-item label="出发站" span="2" width="25%" align="center">
-        {{ start_station }}
+        {{ stations.idToName[start_station_id] }}
       </el-descriptions-item>
       <el-descriptions-item label="到达站" span="2" width="25%" align="center">
-        {{ end_station }}
+        {{ stations.idToName[end_station_id] }}
       </el-descriptions-item>
       <el-descriptions-item label="出发时间" span="2" width="25%" align="center">
         {{ departure_time }}
@@ -77,15 +81,14 @@ import {SwitchFilled} from '@element-plus/icons-vue'
     v-model="drawer"
     direction="rtl"
     size="30%"
+    destroy-on-close
   >
     <TrainDetail :trainId="id"/>
   </el-drawer>
 
-
   <el-dialog v-model="dialog" title="Tips" width="50%" draggable>
     <OrderForm v-bind="props"></OrderForm>
   </el-dialog>
-
 
 </template>
 

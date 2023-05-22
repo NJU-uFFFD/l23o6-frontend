@@ -4,6 +4,10 @@ import {onMounted, reactive} from "vue";
 import {useSearchStore} from "~/stores/search.js";
 import {useStationsStore} from "~/stores/stations.js";
 
+defineProps({
+  inline: Boolean
+})
+
 const search = useSearchStore()
 const stations = useStationsStore()
 
@@ -26,7 +30,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-form :model="form" label-width="120px">
+  <el-form :model="form" label-width="120px" :inline="inline">
     <el-form-item label="出发站">
       <el-select v-model="form.start_station_id" filterable>
         <el-option
