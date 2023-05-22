@@ -8,7 +8,10 @@ import {useUserStore} from "~/stores/user.js";
 import {request} from "~/utils/request";
 import {AxiosError, AxiosResponse} from "axios/index";
 import {useRouter} from "vue-router";
+import {useStationsStore} from "~/stores/stations.js";
+import {parseDate} from "~/utils/date.js";
 
+const stations = useStationsStore()
 
 const user = useUserStore()
 const router = useRouter()
@@ -17,10 +20,10 @@ const orderFormRef = ref<FormInstance>()
 const props = defineProps({
   id: Number,
   name: String,
-  departure_station_id: Number,
-  arrival_station_id: Number,
-  departure_time: Date,
-  arrival_time: Date,
+  end_station_id: Number,
+  start_station_id: Number,
+  departure_time: Number,
+  arrival_time: Number,
   duration: String,
   ticket_info: Array
 })
@@ -32,6 +35,7 @@ let orderForm = reactive({
   phone: user.phone,
   seat_type: '',
 })
+
 
 const orderRules = reactive<FormRules>({
   name: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
@@ -72,8 +76,8 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
           phone: orderForm.phone,
           type: orderForm.type
         },
-        departure_station_id: props.departure_station_id,
-        arrival_station_id: props.arrival_station_id,
+        start_station_id: props.start_station_id,
+        end_station_id: props.end_station_id,
         seat_type: orderForm.seat_type
       }
     })
@@ -118,7 +122,7 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
   <el-row justify="center" class="el-row">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
-        {{ departure_station_id }}
+        {{ stations.idToName[start_station_id] }}
       </el-text>
     </el-col>
     <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
@@ -128,7 +132,7 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
       <el-text style="text-align: center">
-        {{ arrival_station_id }}
+        {{ stations.idToName[end_station_id] }}
       </el-text>
     </el-col>
   </el-row>
@@ -136,14 +140,14 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
   <el-row justify="center">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
-        {{ departure_time }}
+        {{ parseDate(departure_time) }}
       </el-text>
     </el-col>
     <el-col :span="2">
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center">
       <el-text>
-        {{ arrival_time }}
+        {{ parseDate(arrival_time) }}
       </el-text>
     </el-col>
   </el-row>

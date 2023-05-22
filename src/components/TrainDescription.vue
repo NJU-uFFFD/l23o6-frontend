@@ -3,6 +3,7 @@
 import {ref} from "vue";
 import {SwitchFilled} from '@element-plus/icons-vue'
 import {useStationsStore} from "~/stores/stations.js";
+import {calDuration, parseDate} from "~/utils/date.js";
 
 const stations = useStationsStore()
 
@@ -11,9 +12,8 @@ const props = defineProps({
   name: String,
   start_station_id: Number,
   end_station_id: Number,
-  departure_time: Date,
-  arrival_time: Date,
-  duration: String,
+  departure_time: Number,
+  arrival_time: Number,
   ticket_info: Array
 })
 
@@ -41,7 +41,7 @@ let dialog = ref(false)
         </el-text>
       </el-descriptions-item>
       <el-descriptions-item label="历时" span="2" width="25%" align="center">
-        {{ duration }}
+        {{ calDuration(departure_time, arrival_time) }}
       </el-descriptions-item>
       <el-descriptions-item label="出发站" span="2" width="25%" align="center">
         {{ stations.idToName[start_station_id] }}
@@ -50,10 +50,10 @@ let dialog = ref(false)
         {{ stations.idToName[end_station_id] }}
       </el-descriptions-item>
       <el-descriptions-item label="出发时间" span="2" width="25%" align="center">
-        {{ departure_time }}
+        {{ parseDate(departure_time) }}
       </el-descriptions-item>
       <el-descriptions-item label="到达时间" span="2" width="25%" align="center">
-        {{ arrival_time }}
+        {{ parseDate(arrival_time) }}
       </el-descriptions-item>
       <el-descriptions-item v-for="ticket in ticket_info" :label="ticket.type" span="2" width="25%" align="center">
         {{ ticket.count }}
@@ -86,7 +86,7 @@ let dialog = ref(false)
     <TrainDetail :trainId="id"/>
   </el-drawer>
 
-  <el-dialog v-model="dialog" title="Tips" width="50%" draggable>
+  <el-dialog v-model="dialog" title="Tips" width="50%" draggable destroy-on-close>
     <OrderForm v-bind="props"></OrderForm>
   </el-dialog>
 

@@ -3,7 +3,7 @@ import {h, onMounted, reactive, ref} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
 import {useSearchStore} from "~/stores/search.js";
-import { useRoute } from 'vue-router'
+import {useRoute} from 'vue-router'
 
 const route = useRoute();
 const search = useSearchStore();
@@ -13,6 +13,7 @@ let trains = reactive({
 })
 
 let loading = ref(false)
+let empty = ref(false)
 
 onMounted(() => {
   if(route.hash == "#query") {
@@ -21,6 +22,7 @@ onMounted(() => {
 })
 
 const submit = () => {
+
   loading.value = true
   const r = request({
     url: '/v1/train',
@@ -36,6 +38,7 @@ const submit = () => {
     trains.res = res.data.data
     console.log(res.data)
     console.log("submit")
+    empty.value = trains.res.length === 0;
   }).catch((error) => {
     console.log(error)
     ElNotification({
@@ -61,11 +64,11 @@ const submit = () => {
       <div style="display: flex; justify-content: center; margin-bottom: 5vh">
         <el-card shadow="hover" style="width: 80%;">
 
-          <SearchTicketForm :inline="true" @formUpdated="submit()"/>
+          <SearchTicketForm :inline="true" @formUpdated="submit" style="display: flex; justify-content: center"/>
         </el-card>
       </div>
-
-        <train-description v-for="train in trains.res" v-bind="train"/>
+      <el-empty v-if="empty" description="结果为空" style="margin-top: 10%"/>
+      <train-description v-for="train in trains.res" v-bind="train"/>
     </el-main>
   </el-container>
 

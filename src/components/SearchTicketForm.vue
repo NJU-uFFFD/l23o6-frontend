@@ -1,12 +1,15 @@
 <script setup lang="ts">
 
-import {onMounted, reactive} from "vue";
+import {h, onMounted, reactive} from "vue";
 import {useSearchStore} from "~/stores/search.js";
 import {useStationsStore} from "~/stores/stations.js";
+import {ElNotification} from "element-plus";
 
 defineProps({
   inline: Boolean
 })
+
+const emit = defineEmits(['formUpdated'])
 
 const search = useSearchStore()
 const stations = useStationsStore()
@@ -20,6 +23,19 @@ const form = reactive({
 const disabledDate = (time: Date) => {
   let now = new Date();
   return time.getTime() < new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+}
+
+const checkNull = () => {
+  if(search.start_station_id == undefined || search.end_station_id == undefined || search.date == undefined) {
+    ElNotification({
+      offset: 70,
+      title: '错误',
+      message: h('error', { style: 'color: teal' }, "请填写完整信息"),
+    })
+    return
+  }
+  console.log("checkNull")
+  emit('formUpdated', form)
 }
 
 onMounted(() => {
@@ -62,7 +78,7 @@ onMounted(() => {
       />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="search.$patch(form);this.$emit('formUpdated', form); ">
+      <el-button type="primary" @click="search.$patch(form);checkNull();">
         查询
       </el-button>
     </el-form-item>
