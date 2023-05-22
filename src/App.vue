@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {onMounted} from "vue";
-import {useUserStore} from "~/stores/user.js";
-import {useSearchStore} from "~/stores/search.js";
+import {useUserStore} from "~/stores/user";
+import {useSearchStore} from "~/stores/search";
 
 onMounted(() => {
   const userStore = useUserStore()

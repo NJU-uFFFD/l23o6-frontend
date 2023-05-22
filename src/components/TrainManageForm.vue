@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import {h, reactive, ref, watch} from 'vue'
 import {SwitchFilled} from "@element-plus/icons-vue";
-import {useStationsStore} from "~/stores/stations.js";
+import {useStationsStore} from "~/stores/stations";
 import {ElNotification} from "element-plus";
 import {request} from "~/utils/request";
-
-const stations = useStationsStore()
 
 const props = defineProps({
   name: String,
@@ -17,6 +15,8 @@ const props = defineProps({
   train_type: String
 })
 
+const stations = useStationsStore()
+
 let train = reactive({
   name: props.name,
   train_type: props.train_type,
@@ -26,24 +26,18 @@ let train = reactive({
   arrival_times: props.arrival_times,
   extra_infos: props.extra_infos
 })
-
-
-
 let route = reactive({
   id: 0,
   name: '',
   station_ids: []
 })
-
 let routes = ref([])
 
 const getRoutes = () => {
-  console.log("getRoutes")
   request({
     url: `/v1/admin/route`,
     method: 'GET'
   }).then((res) => {
-    console.log(res.data.data)
     routes.value = res.data.data
   }).catch((error) => {
     ElNotification({
@@ -58,16 +52,12 @@ const getRoutes = () => {
 
 getRoutes()
 
-
 const getRoute = () => {
   if(train.route_id === undefined) return
-  console.log("manage")
-  console.log(props.route_id)
   request({
     url: `/v1/admin/route/${train.route_id}`,
     method: 'GET'
   }).then((res) => {
-    console.log(res.data.data)
     route.id = res.data.data.id
     route.name = res.data.data.name
     route.station_ids = res.data.data.station_ids
@@ -79,7 +69,6 @@ const getRoute = () => {
     })
     console.log(error)
   })
-  console.log("end")
 }
 
 watch(() => train.route_id, () => {
@@ -94,7 +83,6 @@ getRoute()
 
 <template>
   <div>
-
     <el-row >
       <el-col :span="7">
         <el-form-item>
@@ -135,27 +123,25 @@ getRoute()
       </el-col>
     </el-row>
 
-<el-row>
-  <el-col :span="24">
-    <el-form-item>
-      <template #label>
-        <el-text tag="b" type="primary">
-          路线名
-        </el-text>
-      </template>
-      <el-select v-model="train.route_id" style="width: 100%">
-        <el-option
-          v-for="singleRoute in routes"
-          :key="singleRoute.id"
-          :label="singleRoute.name"
-          :value="singleRoute.id"
-        />
-      </el-select>
-    </el-form-item>
-  </el-col>
-</el-row>
-
-
+    <el-row>
+      <el-col :span="24">
+        <el-form-item>
+          <template #label>
+            <el-text tag="b" type="primary">
+              路线名
+            </el-text>
+          </template>
+          <el-select v-model="train.route_id" style="width: 100%">
+            <el-option
+              v-for="singleRoute in routes"
+              :key="singleRoute.id"
+              :label="singleRoute.name"
+              :value="singleRoute.id"
+            />
+          </el-select>
+        </el-form-item>
+      </el-col>
+    </el-row>
 
     <div v-for="(station, index) in route.station_ids" :key="station">
       <el-card style="margin-bottom: 0.25%" shadow="hover" class="container">
@@ -181,7 +167,6 @@ getRoute()
             type="datetime"
             placeholder="开点" format="YY/MM/DD HH:mm"
           />
-
         </div>
       </el-card>
     </div>

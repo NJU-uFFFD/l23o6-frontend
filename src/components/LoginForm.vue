@@ -2,18 +2,16 @@
 import {h, reactive, ref} from 'vue'
 import type {FormInstance, FormRules} from 'element-plus'
 import {ElNotification} from "element-plus"
-import {request} from "../utils/request"
+import {request} from "~/utils/request"
 import {AxiosError, AxiosResponse} from 'axios';
 import {Lock, User} from '@element-plus/icons-vue'
-import {useUserStore} from "~/stores/user.js";
+import {useUserStore} from "~/stores/user";
 import {useRouter} from "vue-router";
-
 
 const user = useUserStore();
 const router = useRouter();
 
 const ruleFormRef = ref<FormInstance>()
-
 const ruleForm = reactive({
   username: '',
   password: '',
@@ -40,9 +38,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (!valid) return
-
     console.log('submit!')
-
     const r = request({
       url: '/v1/session',
       method: 'POST',
@@ -53,7 +49,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     })
 
     r.then((response: AxiosResponse<any>) => {
-      console.log(response)
       ElNotification({
         offset: 70,
         title: '登录成功',
@@ -70,9 +65,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       })
     })
   })
-
 }
-
 </script>
 
 <template>
@@ -80,12 +73,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
     <el-form-item prop="username">
       <el-input v-model="ruleForm.username" type="text" :prefix-icon="User" placeholder="用户名"/>
     </el-form-item>
-
     <el-form-item prop="password">
       <el-input v-model="ruleForm.password" autocomplete="off" type="password" show-password :prefix-icon="Lock" placeholder="密码"/>
     </el-form-item>
-
-
     <el-row justify="center">
       <el-col :span="12" style="display: flex; justify-content: center; align-items: center">
         <el-form-item>
@@ -100,12 +90,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
             注册
           </el-button>
         </el-form-item>
-
       </el-col>
     </el-row>
-
   </el-form>
 </template>
-
 
 <style scoped></style>

@@ -2,7 +2,7 @@
 import {h, onMounted, reactive, ref} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
-import {useSearchStore} from "~/stores/search.js";
+import {useSearchStore} from "~/stores/search";
 import {useRoute} from 'vue-router'
 
 const route = useRoute();
@@ -11,7 +11,6 @@ const search = useSearchStore();
 let trains = reactive({
   res : []
 })
-
 let loading = ref(false)
 let empty = ref(false)
 
@@ -22,7 +21,6 @@ onMounted(() => {
 })
 
 const submit = () => {
-
   loading.value = true
   const r = request({
     url: '/v1/train',
@@ -36,7 +34,6 @@ const submit = () => {
 
   r.then((res) => {
     trains.res = res.data.data
-    console.log(res.data)
     console.log("submit")
     empty.value = trains.res.length === 0;
   }).catch((error) => {
@@ -71,15 +68,6 @@ const submit = () => {
       <train-description v-for="train in trains.res" v-bind="train"/>
     </el-main>
   </el-container>
-
-
-<!--  <el-drawer-->
-<!--    v-model="table"-->
-<!--    direction="rtl"-->
-<!--    size="30%"-->
-<!--  >-->
-<!--    <TrainDetail :trainId="id"/>-->
-<!--  </el-drawer>-->
 </template>
 
 <style scoped>

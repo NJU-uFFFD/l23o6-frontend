@@ -1,37 +1,31 @@
 <script setup lang="ts">
-import {h,reactive, ref} from 'vue'
+import {reactive, ref} from 'vue'
 import {VueDraggable} from 'vue-draggable-plus'
 import {CloseBold, SwitchFilled} from "@element-plus/icons-vue";
-import {useStationsStore} from "~/stores/stations.js";
+import {useStationsStore} from "~/stores/stations";
 import {ElMessage} from "element-plus";
-
-const stations = useStationsStore()
 
 const props = defineProps({
   name: String,
   station_ids: Array
 })
 
+const stations = useStationsStore()
 
 let route = reactive({
   name: '',
   station_ids: []
 })
-
 let edit = ref(false)
 let add = ref(false)
 let toAddId = ref<number>()
 let toEditIndex = ref<number>()
 let toEditId = ref<number>()
 
-
 for (let i = 0; i < props.station_ids?.length; i++) {
   route.station_ids.push(props.station_ids?.[i])
 }
 route.name = <string>props.name;
-
-console.log(route.station_ids)
-
 
 const addStation = () => {
   if(toAddId.value === undefined){
@@ -46,10 +40,11 @@ const addStation = () => {
 }
 
 const editStation = () => {
-  route.station_ids.splice(toEditIndex.value, 1, toEditId.value)
+  if (typeof toEditIndex.value === "number") {
+    route.station_ids.splice(toEditIndex.value, 1, toEditId.value)
+  }
   edit.value = false;
 }
-
 
 const onEnd = () => {
   // refreshIndex()
@@ -58,7 +53,6 @@ const onEnd = () => {
 const deleteStation = (index) => {
   route.station_ids.splice(index, 1)
 }
-
 </script>
 
 <template>
@@ -71,14 +65,11 @@ const deleteStation = (index) => {
       </template>
       <el-input v-model="route.name" style="margin-right: 60%"/>
     </el-form-item>
-
-
     <div>
       <el-button @click="add=true" style="margin-bottom: 3%; float:right;">
         添加站点
       </el-button>
     </div>
-
     <VueDraggable ref="el" v-model="route.station_ids" :animation="100" handle=".handle" @end="onEnd">
       <div v-for="station in route.station_ids" :key="station">
         <el-card style="margin-bottom: 0.25%" shadow="hover" class="container">
@@ -92,11 +83,6 @@ const deleteStation = (index) => {
             <div style="width: 80%">
               {{ stations.idToName[station] }}
             </div>
-
-            <div>
-
-            </div>
-
             <div style="display: flex; flex-direction: row; justify-items: center; align-items: center;">
               <el-space>
                 <el-button class="change" @click="toEditIndex=route.station_ids.indexOf(station); toEditId=station; edit=true">
@@ -110,23 +96,18 @@ const deleteStation = (index) => {
                 </div>
               </el-space>
             </div>
-
-
           </div>
         </el-card>
       </div>
     </VueDraggable>
-
     <el-button @click="this.$emit('formSubmitted', route)" style="margin-top: 2vh" type="primary">
       确认
     </el-button>
-
 
     <!--    <pre>-->
     <!--      {{ route.station_ids }}-->
     <!--    </pre>-->
   </div>
-
 
   <el-dialog v-model="add" title="添加站点" width="30%" draggable @close="toAddId=undefined">
     <div>请选择新的站点</div>
@@ -148,7 +129,6 @@ const deleteStation = (index) => {
       </el-space>
     </div>
   </el-dialog>
-
 
   <el-dialog v-model="edit" title="编辑站点" width="30%" draggable>
     <div>请选择新的站点</div>

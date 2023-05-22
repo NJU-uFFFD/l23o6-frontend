@@ -1,11 +1,8 @@
 <script setup lang="ts">
-
 import {ref} from "vue";
 import {SwitchFilled} from '@element-plus/icons-vue'
-import {useStationsStore} from "~/stores/stations.js";
-import {calDuration, parseDate} from "~/utils/date.js";
-
-const stations = useStationsStore()
+import {useStationsStore} from "~/stores/stations";
+import {calDuration, parseDate} from "~/utils/date";
 
 const props = defineProps({
   id: Number,
@@ -17,11 +14,10 @@ const props = defineProps({
   ticket_info: Array
 })
 
+const stations = useStationsStore()
+
 let drawer = ref(false)
 let dialog = ref(false)
-
-
-
 </script>
 
 <template>
@@ -69,7 +65,6 @@ let dialog = ref(false)
       </el-button>
     </div>
 
-
     <el-divider>
       <el-icon>
         <SwitchFilled/>
@@ -92,5 +87,4 @@ let dialog = ref(false)
 
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -7,7 +7,7 @@ export const useStationsStore = defineStore('stations', {
     state: () => {
         return {
             rawData: [{
-                id: '',
+                id: 0,
                 name: ''
             }],
             idToName: {},
@@ -22,15 +22,15 @@ export const useStationsStore = defineStore('stations', {
             }).then((res) => {
                 this.rawData = res.data.data
                 this.idToName = this.rawData.reduce(function (map, station) {
+                    // @ts-ignore
                     map[station.id] = station.name
                     return map
                 }, {})
                 this.nameToId = this.rawData.reduce(function (map, station) {
+                    // @ts-ignore
                     map[station.name] = station.id
                     return map
                 }, {})
-                console.log(this.rawData)
-                console.log(res.data)
             }).catch((error) => {
                 console.log(error)
                 ElNotification({

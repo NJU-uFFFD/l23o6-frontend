@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
-import {h, onBeforeMount, onMounted, onUpdated, reactive, ref, watch} from "vue";
-import {useUserStore} from "~/stores/user.js";
+import {h, reactive, ref, watch} from "vue";
+import {useUserStore} from "~/stores/user";
 import {ElNotification, FormInstance} from "element-plus";
 import {request} from "~/utils/request";
 import {AxiosError, AxiosResponse} from "axios";
 
-const ruleFormRef = ref<FormInstance>()
-
 const user = useUserStore()
+
+const ruleFormRef = ref<FormInstance>()
 let edit = ref(false);
 let form = reactive({
   username: '',
@@ -31,7 +31,6 @@ watch(user, () => {
 })
 
 setForm()
-
 
 const rules = reactive({
   username: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
@@ -75,7 +74,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     })
 
     r.then((response: AxiosResponse<any>) => {
-      console.log(response)
       ElNotification({
         offset: 70,
         title: '修改成功',
@@ -93,9 +91,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     })
   })
 }
-
-
-
 </script>
 
 <template>
@@ -104,7 +99,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
       <el-button @click="edit=false;">取消</el-button>
       <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
     </el-space>
-
 
   </div>
   <div v-else style="display: flex; flex-direction: row-reverse; justify-content: flex-start">
@@ -146,8 +140,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
       <el-input v-model="form.phone" style="width: 25vh" :disabled="!edit"/>
     </el-form-item>
   </el-form>
-
-
 </template>
 
 <style scoped>

@@ -12,12 +12,10 @@ let orderDetail = reactive({
 })
 
 onMounted(() => {
-  console.log(route.params['orderId'])
   request({
     url: `/order/${route.params['orderId']}`,
     method: 'GET',
   }).then(res => {
-    console.log(res)
     orderDetail.data = res.data
   }).catch(err => {
     console.log(err)
@@ -79,7 +77,6 @@ onMounted(() => {
 <!--        {{ ticket.count }}-->
 <!--      </el-descriptions-item>-->
 <!--    </el-descriptions>&ndash;&gt;-->
-
 
   </el-main>
 </el-container>

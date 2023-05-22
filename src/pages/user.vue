@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useUserStore} from "~/stores/user.js";
+import {useUserStore} from "~/stores/user";
 import {useRouter} from "vue-router";
 
 const router = useRouter()
@@ -20,10 +20,8 @@ const user = useUserStore()
         <br/>
         <UserInfoComponent style="width: 40vh; margin: 0 auto"/>
       </div>
-
     </el-main>
   </el-container>
-
 </template>
 
 <style scoped>

@@ -1,14 +1,12 @@
 <script setup lang="ts">
-
 import {h, onMounted, reactive} from "vue";
-import {useSearchStore} from "~/stores/search.js";
-import {useStationsStore} from "~/stores/stations.js";
+import {useSearchStore} from "~/stores/search";
+import {useStationsStore} from "~/stores/stations";
 import {ElNotification} from "element-plus";
 
 defineProps({
   inline: Boolean
 })
-
 const emit = defineEmits(['formUpdated'])
 
 const search = useSearchStore()
@@ -34,15 +32,12 @@ const checkNull = () => {
     })
     return
   }
-  console.log("checkNull")
   emit('formUpdated', form)
 }
 
 onMounted(() => {
   stations.fetch()
 })
-
-
 </script>
 
 <template>

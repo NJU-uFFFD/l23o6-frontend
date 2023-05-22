@@ -55,7 +55,6 @@ declare module '@vue/runtime-core' {
     Login: typeof import('./components/Login.vue')['default']
     LoginComponent: typeof import('./components/LoginComponent.vue')['default']
     LoginForm: typeof import('./components/LoginForm.vue')['default']
-    'LoginForm,': typeof import('./components/LoginForm
     Menu: typeof import('./components/Menu.vue')['default']
     MenuComponent: typeof import('./components/MenuComponent.vue')['default']
     OrderDetail: typeof import('./components/OrderDetail.vue')['default']

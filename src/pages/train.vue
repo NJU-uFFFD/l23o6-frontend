@@ -1,16 +1,16 @@
 <script setup lang="ts">
 
-import {h, onMounted, reactive, ref, watch} from "vue";
+import {h, onMounted, reactive, ref} from "vue";
 import {request} from "~/utils/request";
 import {ElMessage, ElNotification} from "element-plus";
-import {useStationsStore} from "~/stores/stations.js";
+import {useStationsStore} from "~/stores/stations";
 import {Right} from "@element-plus/icons-vue";
 import TrainManageDetail from "~/components/TrainManageDetail.vue";
 import TrainManageForm from "~/components/TrainManageForm.vue";
 
-let trainName = ref('')
 const stations = useStationsStore()
 
+let trainName = ref('')
 let trains;
 let trainsFiltered = reactive({
   data: []
@@ -61,7 +61,6 @@ const addTrain = (train) => {
       train_type: train.train_type
     }
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -86,7 +85,6 @@ const delTrain = (id) => {
     url: `/v1/admin/train/${id}`,
     method: 'DELETE'
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -119,7 +117,6 @@ const changeTrain = (train) => {
       train_type: train.train_type
     }
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -139,7 +136,6 @@ const changeTrain = (train) => {
   })
 }
 
-
 const refreshData = () => {
   stations.fetch()
   request({
@@ -148,7 +144,6 @@ const refreshData = () => {
   }).then((res) => {
     trains = res.data.data
     trainsFiltered.data = [...trains]
-    console.log(trainsFiltered.data)
   }).catch((error) => {
     console.log(error)
     ElNotification({
@@ -194,7 +189,6 @@ onMounted(() => {
       <br/>
       <br/>
 
-
       <div style="display: flex; justify-content: center">
         <div style="display: flex; width: 80vh; justify-content: flex-end">
           <el-space>
@@ -204,7 +198,6 @@ onMounted(() => {
           </el-space>
         </div>
       </div>
-
 
       <br/>
       <br/>
@@ -220,18 +213,12 @@ onMounted(() => {
                 删除
               </el-button>
             </div>
-
-
             <div>
               <TrainManageDetail v-bind="train"/>
-
             </div>
-
           </el-collapse-item>
-
         </el-collapse>
       </div>
-
     </el-main>
   </el-container>
 

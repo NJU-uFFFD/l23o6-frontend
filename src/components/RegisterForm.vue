@@ -6,9 +6,9 @@ import {request} from "~/utils/request"
 import {AxiosError, AxiosResponse} from 'axios';
 import {useRouter} from "vue-router";
 
+const router = useRouter();
 
 const ruleFormRef = ref<FormInstance>()
-const router = useRouter();
 
 const validateCheckPass = (rule: any, value: any, callback: any) => {
   if (ruleForm.password === '') return
@@ -18,7 +18,6 @@ const validateCheckPass = (rule: any, value: any, callback: any) => {
     callback()
   }
 }
-
 
 const ruleForm = reactive({
   username: '',
@@ -85,9 +84,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         phone: ruleForm.phone,
       }
     })
-
     r.then((response: AxiosResponse<any>) => {
-      console.log(response)
       ElNotification({
         offset: 70,
         title: '注册成功',
@@ -104,7 +101,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     })
   })
 
-
 }
 
 </script>
@@ -114,19 +110,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
     <el-form-item label="用户名" prop="username">
       <el-input v-model="ruleForm.username" type="text"/>
     </el-form-item>
-
     <el-form-item label="密码" prop="password">
       <el-input v-model="ruleForm.password" autocomplete="off" type="password"/>
     </el-form-item>
-
     <el-form-item label="密码确认" prop="checkPass">
       <el-input v-model="ruleForm.checkPass" autocomplete="off" type="password"/>
     </el-form-item>
-
     <el-form-item label="姓名" prop="name">
       <el-input v-model="ruleForm.name" type="text"/>
     </el-form-item>
-
     <el-form-item label="证件类型" prop="type">
       <el-select v-model="ruleForm.type" placeholder=" ">
         <el-option value="身份证"/>
@@ -134,22 +126,18 @@ const submitForm = (formEl: FormInstance | undefined) => {
         <el-option value="其他"/>
       </el-select>
     </el-form-item>
-
     <el-form-item label="证件号码" prop="idn">
       <el-input v-model="ruleForm.idn" type="text"/>
     </el-form-item>
-
     <el-form-item label="手机号" prop="phone">
       <el-input v-model="ruleForm.phone" />
     </el-form-item>
-
     <el-form-item prop="rick">
       <el-checkbox v-model="ruleForm.rick">
         <span>我已阅读并同意</span>
         <el-link type="primary" href="https://www.bilibili.com/video/BV1GJ411x7h7/" target="_blank">《l23o6客户服务中心网站服务条款》</el-link>
       </el-checkbox>
     </el-form-item>
-
 
     <el-row justify="start">
       <el-col :span="12" style="display: flex; justify-content: center; align-items: center">
@@ -163,11 +151,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
             返回
           </el-button>
         </el-form-item>
-
       </el-col>
     </el-row>
-
-
   </el-form>
 </template>
 

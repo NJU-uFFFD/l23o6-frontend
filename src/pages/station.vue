@@ -3,15 +3,14 @@
 import {h, onMounted, reactive, ref, watch} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
-import {useStationsStore} from "~/stores/stations.js";
-
-let stationName = ref('')
+import {useStationsStore} from "~/stores/stations";
 
 let stations = useStationsStore()
+
+let stationName = ref('')
 let stationsFiltered = reactive({
   data: []
 })
-
 let toAdd = ref('')
 let toRename = ref('')
 let toRenameId = ref(0)
@@ -26,7 +25,6 @@ const addStation = () => {
       name: toAdd.value
     }
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -51,7 +49,6 @@ const delStation = (id) => {
     url: `/v1/admin/station/${id}`,
     method: 'DELETE'
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -78,7 +75,6 @@ const renameStation = () => {
       name: toRename.value
     }
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -100,7 +96,6 @@ const renameStation = () => {
   })
 }
 
-
 const filter = () => {
   stationsFiltered.data = stations.rawData.filter((station) => {
     return station.name.includes(stationName.value)
@@ -110,7 +105,6 @@ const filter = () => {
 onMounted(() => {
   stations.fetch()
   stationsFiltered.data = [...stations.rawData]
-  console.log(stations.rawData)
 })
 
 watch(stations, () => {
@@ -143,7 +137,6 @@ watch(stations, () => {
       <br/>
       <br/>
 
-
       <div style="display: flex; justify-content: center">
         <div style="display: flex; width: 80vh; justify-content: flex-end">
           <el-space>
@@ -154,7 +147,6 @@ watch(stations, () => {
           </el-space>
         </div>
       </div>
-
 
       <br/>
       <br/>
@@ -172,7 +164,6 @@ watch(stations, () => {
 
         </el-collapse>
       </div>
-
     </el-main>
   </el-container>
 
@@ -191,6 +182,4 @@ watch(stations, () => {
 
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -16,13 +16,12 @@ const activeName = ref('登录')
         </el-col>
         <el-col :span="12" style="display: flex; align-items: center">
           <el-card class="login-card" shadow="hover" header="账号密码登录">
-            <login-form></login-form>
+            <login-form/>
           </el-card>
         </el-col>
       </el-row>
     </el-main>
   </el-container>
-
 
 </template>
 

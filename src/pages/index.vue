@@ -3,7 +3,6 @@
 </script>
 
 <template>
-
     <el-container>
       <el-header>
         <MenuComponent pageIndex="/" />
@@ -16,12 +15,11 @@
             </el-card>
           </el-col>
           <el-col :span="12" style="display: flex; align-items: center">
-            <Title style="margin: 0 auto 20vh"></Title>
+            <Title style="margin: 0 auto 20vh"/>
           </el-col>
         </el-row>
       </el-main>
     </el-container>
-
 </template>
 
 <style scoped>

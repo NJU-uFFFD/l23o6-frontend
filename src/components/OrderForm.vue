@@ -1,21 +1,13 @@
 <script setup lang="ts">
-
-
 import {Right} from "@element-plus/icons-vue";
 import {h, reactive, ref} from "vue";
 import {ElNotification, FormInstance, FormRules} from "element-plus";
-import {useUserStore} from "~/stores/user.js";
+import {useUserStore} from "~/stores/user";
 import {request} from "~/utils/request";
-import {AxiosError, AxiosResponse} from "axios/index";
+import {AxiosError, AxiosResponse} from "axios";
 import {useRouter} from "vue-router";
-import {useStationsStore} from "~/stores/stations.js";
-import {parseDate} from "~/utils/date.js";
-
-const stations = useStationsStore()
-
-const user = useUserStore()
-const router = useRouter()
-const orderFormRef = ref<FormInstance>()
+import {useStationsStore} from "~/stores/stations";
+import {parseDate} from "~/utils/date";
 
 const props = defineProps({
   id: Number,
@@ -28,6 +20,12 @@ const props = defineProps({
   ticket_info: Array
 })
 
+const stations = useStationsStore()
+const user = useUserStore()
+const router = useRouter()
+
+
+const orderFormRef = ref<FormInstance>()
 let orderForm = reactive({
   name: user.name,
   type: user.type,
@@ -35,7 +33,6 @@ let orderForm = reactive({
   phone: user.phone,
   seat_type: '',
 })
-
 
 const orderRules = reactive<FormRules>({
   name: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
@@ -56,15 +53,11 @@ const orderRules = reactive<FormRules>({
 })
 
 const submitOrderForm = (formEl: FormInstance | undefined) => {
-
   if (!formEl) return
 
   formEl.validate((valid) => {
-    console.log(valid)
     if (!valid) return
-
     console.log('submit!')
-
     const r = request({
       url: '/v1/order',
       method: 'POST',
@@ -93,7 +86,6 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       })
     })
   })
-
 }
 
 </script>
@@ -105,8 +97,6 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
     </el-text>
     <br/>
   </div>
-
-
   <el-row class="el-row">
     <el-col :span="24" style="display: flex; justify-content: center; align-items: center">
       <el-text type="primary" size="large" tag="b">
@@ -114,11 +104,7 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       </el-text>
     </el-col>
   </el-row>
-
-
 <br/>
-
-
   <el-row justify="center" class="el-row">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
@@ -136,25 +122,21 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       </el-text>
     </el-col>
   </el-row>
-
   <el-row justify="center">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
         {{ parseDate(departure_time) }}
       </el-text>
     </el-col>
-    <el-col :span="2">
-    </el-col>
+    <el-col :span="2"/>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center">
       <el-text>
         {{ parseDate(arrival_time) }}
       </el-text>
     </el-col>
   </el-row>
-
   <br/>
   <br/>
-
   <el-form
     ref="orderFormRef"
     :model="orderForm"
@@ -188,9 +170,6 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       </el-button>
     </el-form-item>
   </el-form>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

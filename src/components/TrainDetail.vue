@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {request} from "~/utils/request";
-import {onMounted, reactive, watch} from "vue";
+import {onMounted, reactive} from "vue";
 import {Right} from "@element-plus/icons-vue";
-import {useStationsStore} from "~/stores/stations.js";
-
-const stations = useStationsStore()
+import {useStationsStore} from "~/stores/stations";
 
 const props = defineProps({
   trainId: Number
 })
+
+const stations = useStationsStore()
 
 let data = reactive({
   data: {
@@ -54,20 +54,15 @@ const refreshData = () => {
     method: 'GET'
   }).then((res) => {
     data.data = res.data.data
-    console.log(data)
     console.log("submit")
   }).catch((error) => {
     console.log(error)
   })
 }
 
-
 onMounted(() => {
   refreshData()
 })
-
-
-
 </script>
 
 <template>
@@ -84,10 +79,6 @@ onMounted(() => {
       </el-text>
     </el-col>
   </el-row>
-
-
-
-
 
   <el-row justify="center" class="el-row">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">

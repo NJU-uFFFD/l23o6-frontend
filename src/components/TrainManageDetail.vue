@@ -1,14 +1,11 @@
 <script setup lang="ts">
 
 import {Right, SwitchFilled} from "@element-plus/icons-vue";
-import {h, PropType, reactive, watch} from "vue";
+import {h, reactive, watch} from "vue";
 import {request} from "~/utils/request";
-import {useStationsStore} from "~/stores/stations.js";
+import {useStationsStore} from "~/stores/stations";
 import {ElNotification} from "element-plus";
-import {parseDate} from "~/utils/date.js";
-
-
-const stations = useStationsStore()
+import {parseDate} from "~/utils/date";
 
 const props = defineProps({
   id: Number,
@@ -20,6 +17,8 @@ const props = defineProps({
   extraInfos: Array
 })
 
+const stations = useStationsStore()
+
 let route = reactive({
   id: 0,
   name: '',
@@ -27,13 +26,10 @@ let route = reactive({
 });
 
 const getRoute = () => {
-  console.log("manage")
-  console.log(props.route_id)
   request({
     url: `/v1/admin/route/${props.route_id}`,
     method: 'GET'
   }).then((res) => {
-    console.log(res.data.data)
     route.id = res.data.data.id
     route.name = res.data.data.name
     route.station_ids = res.data.data.station_ids
@@ -45,15 +41,12 @@ const getRoute = () => {
     })
     console.log(error)
   })
-  console.log("end")
 }
 
 watch(() => props.route_id, () => {
   getRoute()
 })
 getRoute()
-
-
 </script>
 
 <template>
@@ -64,11 +57,8 @@ getRoute()
     {{ route.name }}
   </el-text>
 
-
-
   <br/>
   <br/>
-
 
   <el-row justify="center" class="el-row">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
@@ -94,8 +84,7 @@ getRoute()
         {{ parseDate(departure_times?.[0]) }}
       </el-text>
     </el-col>
-    <el-col :span="2">
-    </el-col>
+    <el-col :span="2"/>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center">
       <el-text>
         {{ parseDate(props.arrival_times?.[props.arrival_times?.length - 1]) }}
@@ -119,7 +108,6 @@ getRoute()
         </strong>
       </el-space>
 
-
       <el-space spacer="|" size="large">
         <div>
           <strong>
@@ -135,12 +123,7 @@ getRoute()
         </div>
 
       </el-space>
-<!--      {{ parseDate(props.departure_times[index]) }}-->
-<!--      {{ parseDate(props.arrival_times[index]) }}-->
     </div>
-
-
-
   </el-card>
 
 

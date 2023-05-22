@@ -2,33 +2,28 @@
 import {h, onMounted, reactive, ref} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
-import {useStationsStore} from "~/stores/stations.js";
+import {useStationsStore} from "~/stores/stations";
 import {Right} from "@element-plus/icons-vue";
+
+const stations = useStationsStore()
 
 let routeName = ref('')
 let route_detail_form = ref()
-
-const stations = useStationsStore()
 let routes;
 let routesFiltered = reactive({
   data: []
 })
-
 let toAdd = {
   name: '',
   station_ids: []
 }
-
 let toChange= {
   id: 0,
   name: '',
   station_ids: []
 }
-
-
 let change = ref(false)
 let add = ref(false)
-
 
 const addRoute = (route) => {
   request({
@@ -39,7 +34,6 @@ const addRoute = (route) => {
       station_ids: route.station_ids
     }
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -64,7 +58,6 @@ const delRoute = (id) => {
     url: `/v1/admin/route/${id}`,
     method: 'DELETE'
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -92,7 +85,6 @@ const changeRoute = (route) => {
       station_ids: route.station_ids
     }
   }).then((res) => {
-    console.log(res.data)
     ElNotification({
       offset: 70,
       title: '成功',
@@ -112,7 +104,6 @@ const changeRoute = (route) => {
   })
 }
 
-
 const refreshData = () => {
   stations.fetch()
   request({
@@ -121,7 +112,6 @@ const refreshData = () => {
   }).then((res) => {
     routes = res.data.data
     routesFiltered.data = [...routes]
-    console.log(routesFiltered.data)
   }).catch((error) => {
     console.log(error)
     ElNotification({
@@ -131,19 +121,15 @@ const refreshData = () => {
     })
   })
 }
-
 const filter = () => {
   routesFiltered.data = routes.filter((routes) => {
     return routes.name.includes(routeName.value)
   })
 }
 
-
 onMounted(() => {
   refreshData()
 })
-
-
 
 </script>
 
@@ -171,7 +157,6 @@ onMounted(() => {
       <br/>
       <br/>
 
-
       <div style="display: flex; justify-content: center">
         <div style="display: flex; width: 80vh; justify-content: flex-end">
           <el-space>
@@ -181,7 +166,6 @@ onMounted(() => {
           </el-space>
         </div>
       </div>
-
 
       <br/>
       <br/>
@@ -197,7 +181,6 @@ onMounted(() => {
                 删除
               </el-button>
             </div>
-
 
             <div style=" display: flex">
 
@@ -218,7 +201,6 @@ onMounted(() => {
                   </el-text>
                 </el-col>
               </el-row>
-
 
               <el-timeline>
                 <el-timeline-item

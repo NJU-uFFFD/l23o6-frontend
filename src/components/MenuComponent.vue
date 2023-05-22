@@ -1,31 +1,28 @@
 <script lang="ts" setup>
 import {toggleDark} from '~/composables';
-import {useUserStore} from "~/stores/user.js";
+import {useUserStore} from "~/stores/user";
 import {request} from "~/utils/request";
 import {AxiosError, AxiosResponse} from "axios";
 import {ElNotification} from "element-plus";
 import {h} from "vue";
 import {useRouter} from "vue-router";
 
-const router = useRouter()
-
 defineProps<{
   pageIndex: string
 }>()
 
+const router = useRouter()
 const user = useUserStore()
 
 const menuSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 }
 
-const logout = () =>
-{
+const logout = () => {
   request({
     url: '/v1/session',
     method: 'DELETE'
   }).then((response: AxiosResponse<any>) => {
-    console.log(response)
     ElNotification({
       offset: 70,
       title: '登出成功',
@@ -42,8 +39,6 @@ const logout = () =>
     })
   });
 }
-
-
 </script>
 
 <template>
@@ -61,21 +56,15 @@ const logout = () =>
       </button>
     </el-menu-item>
     <div class="flex-grow"/>
-
-
     <el-menu-item index="/login" v-if="user.username === ''">登录</el-menu-item>
     <el-menu-item index="/register" v-if="user.username === ''">注册</el-menu-item>
     <el-menu-item index="/user" v-if="user.username !== ''">用户中心</el-menu-item>
     <el-menu-item @click="logout" v-if="user.username !== ''">登出</el-menu-item>
-
-
   </el-menu>
 </template>
-
 
 <style scoped>
 .flex-grow {
   flex-grow: 1;
 }
-
 </style>
