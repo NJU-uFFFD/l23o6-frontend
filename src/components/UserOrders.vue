@@ -13,6 +13,7 @@ let orders = reactive({
 const stations = useStationsStore()
 
 let dialog = ref(false)
+let id = ref()
 
 let orderDetail = reactive({
   data:Object
@@ -41,21 +42,6 @@ const getTrainName = (id) => {
       console.log(err)
     }
   )
-}
-
-const getOrderDetail = (id) => {
-  request({
-    url: `/v1/order/${id}`,
-    method: 'GET'
-  }).then((res) => {
-    console.log(res.data.data)
-    orderDetail.data = res.data.data
-  }).catch((err) => {
-      console.log(err)
-    }
-  )
-
-
 }
 
 onMounted(() => {
@@ -141,7 +127,7 @@ onMounted(() => {
 
       <el-row>
         <el-col :span="2" :offset="21">
-          <el-button type="primary" @click="dialog=true; getOrderDetail(order.id)">
+          <el-button type="primary" @click="dialog=true; id=order.id">
             查看详情
           </el-button>
         </el-col>
@@ -157,7 +143,7 @@ onMounted(() => {
              v-model="dialog"
              title="订单详情"
              width="50%">
-    <OrderDetail v-bind="orderDetail.data"/>
+    <OrderDetail :id="id"/>
   </el-dialog>
 
 
