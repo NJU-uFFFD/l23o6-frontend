@@ -62,7 +62,7 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       url: '/v1/order',
       method: 'POST',
       data: {
-        trainId: props.id,
+        train_id: props.id,
         passenger: {
           name: orderForm.name,
           idn: orderForm.idn,
@@ -160,7 +160,7 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
     </el-form-item>
     <el-form-item label="坐席" prop="seat_type">
       <el-select v-model="orderForm.seat_type">
-        <el-option v-for="ticket in props.ticket_info" :value="ticket.price">
+        <el-option v-for="ticket in props.ticket_info" :value="ticket.type">
             <el-text>
               {{ ticket.type }} {{ ticket.price }}元
             </el-text>
