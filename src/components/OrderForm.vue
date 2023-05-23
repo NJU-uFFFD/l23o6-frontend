@@ -77,6 +77,7 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
 
     r.then((response: AxiosResponse<any>) => {
       console.log(response)
+      router.push(`/order/${response.data.data.id}`)
     }).catch((error: AxiosError<any>) => {
       console.log(error)
       ElNotification({

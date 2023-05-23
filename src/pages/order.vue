@@ -11,21 +11,26 @@ let orderDetail = reactive({
   data: Object
 })
 
-onMounted(() => {
+const getOrderDetail = () => {
   request({
-    url: `/order/${route.params['orderId']}`,
+    url: `/v1/order/${route.params['orderId']}`,
     method: 'GET',
   }).then(res => {
-    orderDetail.data = res.data
+    orderDetail.data = res.data.data
   }).catch(err => {
     console.log(err)
     ElNotification({
       offset: 70,
       title: 'getOrder错误',
-      message: h('i', { style: 'color: teal' }, err.response?.data.msg),
+      message: h('i', {style: 'color: teal'}, err.response?.data.msg),
     })
   })
-})
+}
+
+onMounted(() => {
+    getOrderDetail()
+  }
+)
 
 
 
@@ -44,39 +49,17 @@ onMounted(() => {
       <br/>
     </div>
 
-<!--<el-descriptions>-->
-<!--      :column="4"-->
-<!--      border-->
-<!--    >-->
-<!--      <el-descriptions-item span="2" width="25%" align="center">-->
-<!--        <template #label>-->
-<!--          <el-text type="primary" tag="b" size="large">-->
-<!--            车次-->
-<!--          </el-text>-->
-<!--        </template>-->
-<!--        <el-text type="primary" tag="b" size="large">-->
-<!--          {{name}}-->
-<!--        </el-text>-->
-<!--      </el-descriptions-item>-->
-<!--      <el-descriptions-item label="历时" span="2" width="25%" align="center">-->
-<!--        {{ duration }}-->
-<!--      </el-descriptions-item>-->
-<!--      <el-descriptions-item label="出发站" span="2" width="25%" align="center">-->
-<!--        {{ start_station }}-->
-<!--      </el-descriptions-item>-->
-<!--      <el-descriptions-item label="到达站" span="2" width="25%" align="center">-->
-<!--        {{ end_station }}-->
-<!--      </el-descriptions-item>-->
-<!--      <el-descriptions-item label="出发时间" span="2" width="25%" align="center">-->
-<!--        {{ departure_time }}-->
-<!--      </el-descriptions-item>-->
-<!--      <el-descriptions-item label="到达时间" span="2" width="25%" align="center">-->
-<!--        {{ arrival_time }}-->
-<!--      </el-descriptions-item>-->
-<!--      <el-descriptions-item v-for="ticket in ticket_info" :label="ticket.type" span="2" width="25%" align="center">-->
-<!--        {{ ticket.count }}-->
-<!--      </el-descriptions-item>-->
-<!--    </el-descriptions>&ndash;&gt;-->
+    <div style="margin-bottom: 2vh; margin-right: 25%">
+      <el-button style="float:right" @click="getOrderDetail">
+        刷新
+      </el-button>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 5vh">
+      <OrderDetail v-bind="orderDetail.data" style="width: 50%"/>
+    </div>
+
+
 
   </el-main>
 </el-container>
