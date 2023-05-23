@@ -67,7 +67,7 @@ const getTrain = () => {
 const pay = (id) => {
   request({
     url: `/v1/order/${id}`,
-    method: 'PUT',
+    method: 'PATCH',
     data: {
       status: '已支付'
     }
@@ -77,6 +77,7 @@ const pay = (id) => {
       title: '支付成功',
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
+    getOrderDetail()
     console.log(res)
   }).catch((error) => {
     ElNotification({
@@ -91,7 +92,7 @@ const pay = (id) => {
 const cancel = (id) => {
   request({
     url: `/v1/order/${id}`,
-    method: 'PUT',
+    method: 'PATCH',
     data: {
       status: '已取消'
     }
@@ -101,6 +102,7 @@ const cancel = (id) => {
       title: '取消成功',
       message: h('success', {style: 'color: teal'}, res.data.msg),
     })
+    getOrderDetail()
     console.log(res)
   }).catch((error) => {
     ElNotification({
@@ -209,9 +211,9 @@ getOrderDetail()
         </el-button>
       </div>
     </div>
-    <div v-else-if="orderDetail.data.status==='已支付'">
+    <div v-else-if="orderDetail.data.status==='已支付'" style="margin-top: 2vh">
       <div style="float:right;">
-        <el-button>
+        <el-button @click="cancel(id)">
           取消订单
         </el-button>
       </div>
