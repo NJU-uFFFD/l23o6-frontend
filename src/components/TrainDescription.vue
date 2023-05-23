@@ -3,6 +3,8 @@ import {ref} from "vue";
 import {SwitchFilled} from '@element-plus/icons-vue'
 import {useStationsStore} from "~/stores/stations";
 import {calDuration, parseDate} from "~/utils/date";
+import {useUserStore} from "~/stores/user";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   id: Number,
@@ -14,10 +16,19 @@ const props = defineProps({
   ticket_info: Array
 })
 
+const router = useRouter()
+const user = useUserStore()
 const stations = useStationsStore()
 
 let drawer = ref(false)
 let dialog = ref(false)
+
+const handleOrder = () => {
+  dialog.value = true
+  if (user.name === '') {
+    router.push('/login')
+  }
+}
 </script>
 
 <template>
@@ -60,7 +71,7 @@ let dialog = ref(false)
       <el-button @click="drawer=true">
         查看详情
       </el-button>
-      <el-button type="primary" @click="dialog=true">
+      <el-button type="primary" @click="handleOrder">
         购买
       </el-button>
     </div>

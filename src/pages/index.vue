@@ -4,10 +4,10 @@
 
 <template>
     <el-container>
-      <el-header>
+      <el-header style="position: fixed; width: 100%">
         <MenuComponent pageIndex="/" />
       </el-header>
-      <el-main>
+      <el-main style="margin-top: 10vh">
         <el-row justify="center" style="display: flex; align-content: center;height: 85vh;">
           <el-col :span="12" style="display: flex; align-items: center">
             <el-card class="search-ticket-card" shadow="hover" header="车票查询">

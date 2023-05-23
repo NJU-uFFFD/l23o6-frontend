@@ -113,13 +113,13 @@ getRoute()
           <strong>
             到点:
           </strong>
-          {{ parseDate(props.departure_times[index]) }}
+          {{ parseDate(props.arrival_times[index]) }}
         </div>
         <div>
           <strong>
             开点:
           </strong>
-          {{ parseDate(props.arrival_times[index]) }}
+          {{ parseDate(props.departure_times[index]) }}
         </div>
 
       </el-space>

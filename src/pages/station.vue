@@ -115,10 +115,10 @@ watch(stations, () => {
 
 <template>
   <el-container>
-    <el-header>
+    <el-header style="position: fixed; width: 100%" >
       <MenuComponent pageIndex="/station"/>
     </el-header>
-    <el-main>
+    <el-main style="margin-top:8vh">
       <div style="display: flex; justify-content: center">
         <el-card shadow="hover" style="width: 70vh; height: auto; ">
           <el-form inline style="display: flex; " @submit.native.prevent>

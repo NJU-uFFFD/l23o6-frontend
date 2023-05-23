@@ -33,10 +33,10 @@ onMounted(() => {
 
 <template>
 <el-container>
-  <el-header>
+  <el-header style="position: fixed; width: 100%">
     <MenuComponent pageIndex="/order"/>
   </el-header>
-  <el-main>
+  <el-main style="margin-top: 10vh">
     <div>
       <el-text size="large" type="primary" style="display: flex;justify-content: center">
         <h1>订单详情</h1>

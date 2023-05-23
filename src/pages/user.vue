@@ -9,10 +9,10 @@ const user = useUserStore()
 
 <template>
   <el-container>
-    <el-header>
+    <el-header style="position: fixed; width: 100%">
       <MenuComponent pageIndex="/user"/>
     </el-header>
-    <el-main style="display: flex; justify-content: center; align-items: center; height: 80vh">
+    <el-main style="display: flex; justify-content: center; align-items: center; height: 80vh;margin-top: 10vh">
       <div>
         <el-text size="large" type="primary" style="display: flex;justify-content: center">
           <h1>个人信息</h1>

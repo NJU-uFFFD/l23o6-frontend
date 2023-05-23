@@ -6,11 +6,11 @@ const activeName = ref('登录')
 
 <template>
   <el-container>
-    <el-header>
+    <el-header style="position: fixed; width: 100%">
       <MenuComponent pageIndex="/login" />
     </el-header>
-    <el-main>
-      <el-row justify="center" style="display: flex; align-content: center;height: 90vh;">
+    <el-main style="margin-top: 10vh">
+      <el-row justify="center" style="display: flex; align-content: center;height: 80vh;">
         <el-col :span="12" style="display: flex; align-items: center">
           <Title style="margin: 0 auto 20vh"></Title>
         </el-col>
