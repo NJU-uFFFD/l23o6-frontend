@@ -161,11 +161,9 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
     <el-form-item label="坐席" prop="seat_type">
       <el-select v-model="orderForm.seat_type">
         <el-option v-for="ticket in props.ticket_info" :value="ticket.price">
-          <template #label>
             <el-text>
               {{ ticket.type }} {{ ticket.price }}元
             </el-text>
-          </template>
         </el-option>
       </el-select>
     </el-form-item>
