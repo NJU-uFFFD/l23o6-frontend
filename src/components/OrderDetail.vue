@@ -4,7 +4,7 @@ import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
 import {h, reactive, watch} from "vue";
 import {useStationsStore} from "~/stores/stations";
-import {parseDate} from "../utils/date";
+import {parseDate} from "~/utils/date";
 
 
 const stations = useStationsStore()
@@ -44,6 +44,7 @@ const getTrain = () => {
 
 watch(props, () => {
   getTrain()
+  stations.fetch()
 })
 
 </script>
@@ -65,7 +66,7 @@ watch(props, () => {
         <el-text size="large" tag="b" type="primary">
           创建日期:&nbsp;&nbsp;
         </el-text>
-        <el-text size="large">
+        <el-text size="large" tag="b">
           {{ parseDate(props.created_at) }}
         </el-text>
       </div>
@@ -116,7 +117,7 @@ watch(props, () => {
       </el-descriptions-item>
     </el-descriptions>
 
-    <div style="margin-top: 2vh">
+    <div style="margin-top: 2vh" v-show="props.status==='等待支付'">
       <div style="float:right;">
         <el-button>
           取消
