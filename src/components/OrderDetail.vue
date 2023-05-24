@@ -5,7 +5,9 @@ import {ElNotification} from "element-plus";
 import {h, onMounted, reactive, watch} from "vue";
 import {useStationsStore} from "~/stores/stations";
 import {parseDate} from "~/utils/date";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const stations = useStationsStore()
 
 const props = defineProps({
@@ -37,6 +39,9 @@ const getOrderDetail = () => {
     console.log(orderDetail.data)
   }).catch(err => {
     console.log(err)
+    if(err.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'getOrder错误',
@@ -80,6 +85,9 @@ const pay = (id) => {
     getOrderDetail()
     console.log(res)
   }).catch((error) => {
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: '支付失败',
@@ -105,6 +113,9 @@ const cancel = (id) => {
     getOrderDetail()
     console.log(res)
   }).catch((error) => {
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: '取消失败',

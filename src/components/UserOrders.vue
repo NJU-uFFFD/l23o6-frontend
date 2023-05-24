@@ -5,11 +5,13 @@ import {request} from "~/utils/request";
 import {parseDate} from "~/utils/date";
 import {Right} from "@element-plus/icons-vue";
 import {useStationsStore} from "~/stores/stations";
+import {useRouter} from "vue-router";
 
 let orders = reactive({
   data: []
 })
 
+const router = useRouter()
 const stations = useStationsStore()
 
 let dialog = ref(false)
@@ -28,6 +30,9 @@ const getOrders = () => {
   }).then((res) => {
     orders.data = res.data.data
   }).catch((error) => {
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     console.log(error)
   })
 }

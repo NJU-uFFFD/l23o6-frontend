@@ -4,6 +4,7 @@ import {SwitchFilled} from "@element-plus/icons-vue";
 import {useStationsStore} from "~/stores/stations";
 import {ElNotification} from "element-plus";
 import {request} from "~/utils/request";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   name: String,
@@ -15,6 +16,8 @@ const props = defineProps({
   train_type: String
 })
 
+
+const router = useRouter()
 const stations = useStationsStore()
 
 let train = reactive({
@@ -40,6 +43,9 @@ const getRoutes = () => {
   }).then((res) => {
     routes.value = res.data.data
   }).catch((error) => {
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'getRoutes错误(trainManage)',
@@ -62,6 +68,9 @@ const getRoute = () => {
     route.name = res.data.data.name
     route.station_ids = res.data.data.station_ids
   }).catch((error) => {
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'getRoute错误(trainManage)',

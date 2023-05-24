@@ -7,7 +7,9 @@ import {useStationsStore} from "~/stores/stations";
 import {Right} from "@element-plus/icons-vue";
 import TrainManageDetail from "~/components/TrainManageDetail.vue";
 import TrainManageForm from "~/components/TrainManageForm.vue";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const stations = useStationsStore()
 
 let trainName = ref('')
@@ -72,6 +74,9 @@ const addTrain = (train) => {
     filter()
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'postTrain错误',
@@ -95,6 +100,9 @@ const delTrain = (id) => {
     filter()
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'deleteTrain错误',
@@ -128,6 +136,9 @@ const changeTrain = (train) => {
     filter()
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'putTrain错误',
@@ -146,6 +157,9 @@ const refreshData = () => {
     trainsFiltered.data = [...trains]
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'getTrain错误',

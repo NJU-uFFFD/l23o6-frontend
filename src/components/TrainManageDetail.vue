@@ -6,6 +6,7 @@ import {request} from "~/utils/request";
 import {useStationsStore} from "~/stores/stations";
 import {ElNotification} from "element-plus";
 import {parseDate} from "~/utils/date";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   id: Number,
@@ -17,6 +18,7 @@ const props = defineProps({
   extraInfos: Array
 })
 
+const router = useRouter()
 const stations = useStationsStore()
 
 let route = reactive({
@@ -34,6 +36,9 @@ const getRoute = () => {
     route.name = res.data.data.name
     route.station_ids = res.data.data.station_ids
   }).catch((error) => {
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'getRoute错误(trainManage)',

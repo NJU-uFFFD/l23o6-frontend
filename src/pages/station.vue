@@ -4,8 +4,10 @@ import {h, onMounted, reactive, ref, watch} from "vue";
 import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
 import {useStationsStore} from "~/stores/stations";
+import {useRouter} from "vue-router";
 
 let stations = useStationsStore()
+let router = useRouter()
 
 let stationName = ref('')
 let stationsFiltered = reactive({
@@ -36,6 +38,9 @@ const addStation = () => {
     toAdd.value = ''
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'postStation错误',
@@ -59,6 +64,9 @@ const delStation = (id) => {
     filter()
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'deleteStation错误',
@@ -88,6 +96,9 @@ const renameStation = () => {
     rename.value=false
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'putStation错误',

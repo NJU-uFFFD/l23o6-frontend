@@ -80,6 +80,10 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
       router.push(`/order/${response.data.data.id}`)
     }).catch((error: AxiosError<any>) => {
       console.log(error)
+      console.log()
+      if(error.response?.data.code == 100003){
+        router.push('/login')
+      }
       ElNotification({
         offset: 70,
         title: 'postOrder错误',

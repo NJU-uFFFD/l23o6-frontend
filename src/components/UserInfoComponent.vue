@@ -5,8 +5,10 @@ import {useUserStore} from "~/stores/user";
 import {ElNotification, FormInstance} from "element-plus";
 import {request} from "~/utils/request";
 import {AxiosError, AxiosResponse} from "axios";
+import {useRouter} from "vue-router";
 
 const user = useUserStore()
+const router = useRouter()
 
 const ruleFormRef = ref<FormInstance>()
 let edit = ref(false);
@@ -83,6 +85,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
       edit.value=false
     }).catch((error: AxiosError<any>) => {
       console.log(error)
+      if(error.response?.data.code == 100003){
+        router.push('/login')
+      }
       ElNotification({
         offset: 70,
         title: 'putUser错误',

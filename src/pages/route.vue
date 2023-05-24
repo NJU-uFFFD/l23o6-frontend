@@ -4,7 +4,9 @@ import {request} from "~/utils/request";
 import {ElNotification} from "element-plus";
 import {useStationsStore} from "~/stores/stations";
 import {Right} from "@element-plus/icons-vue";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const stations = useStationsStore()
 
 let routeName = ref('')
@@ -45,6 +47,9 @@ const addRoute = (route) => {
     add.value = false
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'postRoute错误',
@@ -68,6 +73,9 @@ const delRoute = (id) => {
     filter()
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'deleteRoute错误',
@@ -96,6 +104,9 @@ const changeRoute = (route) => {
     change.value = false
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'putRoute错误',
@@ -114,6 +125,9 @@ const refreshData = () => {
     routesFiltered.data = [...routes]
   }).catch((error) => {
     console.log(error)
+    if(error.response?.data.code == 100003){
+      router.push('/login')
+    }
     ElNotification({
       offset: 70,
       title: 'getRoute错误',
