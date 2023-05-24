@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {request} from "~/utils/request";
-import {onMounted, reactive} from "vue";
+import {computed, onMounted, reactive} from "vue";
 import {Right} from "@element-plus/icons-vue";
 import {useStationsStore} from "~/stores/stations";
+import {parseDate} from "../utils/date";
 
 const props = defineProps({
   trainId: Number
@@ -14,39 +15,13 @@ let data = reactive({
   data: {
     id: 0,
     name: "",
-    start_station_id: 0,
-    end_station_id: 0,
-    departure_time: "",
-    arrival_time: "",
-    ticket_info: [
-      {
-        type: "",
-        count: 0,
-        price: 0
-      }
-    ]
+    station_ids: [],
+    date: '',
+    departure_times: [],
+    arrival_times: [],
+    extra_infos: [],
   }
 });
-
-// watch(props, () => {
-//   data.data = {
-//     id: 0,
-//     name: "",
-//     start_station_id: "",
-//     end_station_id: "",
-//     departure_time: "",
-//     arrival_time: "",
-//     ticket_info: [
-//       {
-//         type: "",
-//         count: 0,
-//         price: 0
-//       }
-//     ]
-//   }
-//   console.log(props.trainId)
-//   refreshData()
-// })
 
 const refreshData = () => {
   const r = request({
@@ -60,6 +35,20 @@ const refreshData = () => {
   })
 }
 
+const tableData = computed(() => {
+  return data.data.station_ids.map(
+    (station_id, index) => {
+      return {
+        index: index,
+        station_name: stations.idToName[station_id],
+        departure_time: parseDate(data.data.departure_times[index]),
+        arrival_time: parseDate(data.data.arrival_times[index]),
+        extra_info: data.data.extra_infos[index]
+      }
+    }
+  )
+})
+
 onMounted(() => {
   refreshData()
 })
@@ -72,10 +61,18 @@ onMounted(() => {
     </el-col>
   </el-row>
 
-  <el-row class="el-row">
+  <el-row class="el-row" style="margin-bottom: 1vh">
     <el-col :span="24" style="display: flex; justify-content: center; align-items: center">
       <el-text type="primary" size="large" tag="b">
-        {{ data.data.name }}
+        <h1>{{ data.data.name }}</h1>
+      </el-text>
+    </el-col>
+  </el-row>
+
+  <el-row class="el-row">
+    <el-col :span="24" style="display: flex; justify-content: center; align-items: center">
+      <el-text  tag="b">
+        <h3>{{ data.data.date }}</h3>
       </el-text>
     </el-col>
   </el-row>
@@ -83,7 +80,7 @@ onMounted(() => {
   <el-row justify="center" class="el-row">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
-        {{ stations.idToName[data.data.start_station_id] }}
+        <h3>{{ stations.idToName[data.data.station_ids[0]] }}</h3>
       </el-text>
     </el-col>
     <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
@@ -93,7 +90,7 @@ onMounted(() => {
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
       <el-text style="text-align: center">
-        {{ stations.idToName[data.data.end_station_id] }}
+        <h3>{{ stations.idToName[data.data.station_ids[data.data.station_ids.length-1]] }}</h3>
       </el-text>
     </el-col>
   </el-row>
@@ -101,43 +98,26 @@ onMounted(() => {
   <el-row justify="center">
     <el-col :span="11" style="display: flex; justify-content: right; align-items: center">
       <el-text>
-        {{ data.data.departure_time }}
+        {{ parseDate(data.data.departure_times[0]) }}
       </el-text>
     </el-col>
     <el-col :span="2">
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center">
       <el-text>
-        {{ data.data.arrival_time }}
+        {{ parseDate(data.data.arrival_times[data.data.station_ids.length-1]) }}
       </el-text>
     </el-col>
   </el-row>
 
-  <!--    <el-space alignment="center" size="large">-->
-  <!--      <el-text style="float: right">-->
-  <!--        {{data.data.start_station_id}}-->
-  <!--      </el-text>-->
 
-
-  <!--      <el-icon size="15">-->
-  <!--        <Right />-->
-  <!--      </el-icon>-->
-
-  <!--      <el-text>-->
-  <!--        {{data.data.end_station_id}}-->
-  <!--      </el-text>-->
-  <!--    </el-space>-->
-
-
-  <!--  <el-table :data="tableData" height="250" style="width: 100%">-->
-  <!--    <el-table-column prop="date" label="站序" width="180" />-->
-  <!--    <el-table-column prop="name" label="车站" width="180" />-->
-  <!--    <el-table-column prop="address" label="出发时间" />-->
-  <!--    <el-table-column prop="address" label="到达时间" />-->
-  <!--    <el-table-column prop="address" label="历时" />-->
-  <!--    <el-table-column prop="address" label="停留时间" />-->
-  <!--  </el-table>-->
-
+  <el-table :data="tableData" style="width: 80%; margin: 0 auto; margin-top: 5vh">
+    <el-table-column prop="index" label="站序" />
+    <el-table-column prop="station_name" label="站名"  />
+    <el-table-column prop="arrival_time" label="到达时间"  />
+    <el-table-column prop="departure_time" label="出发时间" />
+    <el-table-column prop="extra_info" label="其他" />
+  </el-table>
 </template>
 
 <style scoped>

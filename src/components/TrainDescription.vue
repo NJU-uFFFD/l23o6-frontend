@@ -86,7 +86,7 @@ const handleOrder = () => {
   <el-drawer
     v-model="drawer"
     direction="rtl"
-    size="30%"
+    size="50%"
     destroy-on-close
   >
     <TrainDetail :trainId="id"/>
