@@ -6,10 +6,10 @@ import { h } from "vue";
 export const useStationsStore = defineStore('stations', {
     state: () => {
         return {
-            rawData: [{
-                id: 0,
-                name: ''
-            }],
+            rawData: [] as {
+                id: number,
+                name: string
+            }[],
             idToName: {} as Record<number, string>,
             nameToId: {} as Record<string, number>,
         }

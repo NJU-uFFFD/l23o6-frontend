@@ -19,10 +19,8 @@ let orderDetail = reactive<{ data: OrderDetailData | undefined }>({
   data: undefined,
 })
 
-let train = reactive({
-  data: {
-    name: '',
-  }
+let train = reactive<{ data: { name?: string } }>({
+  data: {}
 });
 
 const getOrderDetail = () => {
