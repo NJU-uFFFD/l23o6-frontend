@@ -99,7 +99,7 @@ getRoute()
 
   <br/>
 
-  <el-card v-for="(stationId, index) in route.station_ids" style="margin-bottom: 0.35%">
+  <el-card shadow="hover" v-for="(stationId, index) in route.station_ids" style="margin-bottom: 0.35%">
     <div style="display: flex; align-items: center">
       <el-space :size="50" style="width: 50%">
         <el-icon size="large">

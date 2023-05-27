@@ -53,7 +53,7 @@ const submit = () => {
 
 <template>
   <el-container>
-    <el-header style="position: fixed; width: 100%">
+    <el-header style="position: fixed; width: 100%; z-index: 999">
       <MenuComponent pageIndex="/search" />
     </el-header>
     <el-main v-loading="loading" style="height: 90vh;margin-top: 8vh">

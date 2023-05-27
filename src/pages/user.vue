@@ -18,7 +18,7 @@ const menuSelect = (key) => {
 
 <template>
   <el-container>
-    <el-header>
+    <el-header style="position: fixed; width: 100%; z-index: 999">
       <MenuComponent pageIndex="/user"/>
     </el-header>
     <el-container style="display: flex; align-items: center; height: 85vh">
