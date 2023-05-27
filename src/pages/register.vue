@@ -11,7 +11,7 @@
       <el-row style="display: flex; justify-content: center; align-content: center; height: 80vh">
         <el-col :span="24" style="display: flex; justify-content: center; align-content: center">
           <el-card shadow="hover" header="注册">
-            <RegisterForm/>
+            <RegisterForm />
           </el-card>
         </el-col>
       </el-row>
@@ -19,6 +19,4 @@
   </el-container>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

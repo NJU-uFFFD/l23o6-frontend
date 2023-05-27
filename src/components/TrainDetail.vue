@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {request} from "~/utils/request";
-import {computed, onMounted, reactive} from "vue";
-import {Right} from "@element-plus/icons-vue";
-import {useStationsStore} from "~/stores/stations";
-import {parseDate} from "../utils/date";
+import { request } from "~/utils/request";
+import { computed, onMounted, reactive } from "vue";
+import { Right } from "@element-plus/icons-vue";
+import { useStationsStore } from "~/stores/stations";
+import { parseDate } from "../utils/date";
 
 const props = defineProps({
   trainId: Number
@@ -24,7 +24,7 @@ let data = reactive({
 });
 
 const refreshData = () => {
-  const r = request({
+  request({
     url: `/v1/train/${props.trainId}`,
     method: 'GET'
   }).then((res) => {
@@ -71,7 +71,7 @@ onMounted(() => {
 
   <el-row class="el-row">
     <el-col :span="24" style="display: flex; justify-content: center; align-items: center">
-      <el-text  tag="b">
+      <el-text tag="b">
         <h3>{{ data.data.date }}</h3>
       </el-text>
     </el-col>
@@ -85,12 +85,12 @@ onMounted(() => {
     </el-col>
     <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
       <el-icon size="15">
-        <Right/>
+        <Right />
       </el-icon>
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
       <el-text style="text-align: center">
-        <h3>{{ stations.idToName[data.data.station_ids[data.data.station_ids.length-1]] }}</h3>
+        <h3>{{ stations.idToName[data.data.station_ids[data.data.station_ids.length - 1]] }}</h3>
       </el-text>
     </el-col>
   </el-row>
@@ -105,7 +105,7 @@ onMounted(() => {
     </el-col>
     <el-col :span="11" style="display: flex; justify-content: left; align-items: center">
       <el-text>
-        {{ parseDate(data.data.arrival_times[data.data.station_ids.length-1]) }}
+        {{ parseDate(data.data.arrival_times[data.data.station_ids.length - 1]) }}
       </el-text>
     </el-col>
   </el-row>
@@ -113,15 +113,15 @@ onMounted(() => {
 
   <el-table :data="tableData" style="width: 80%; margin: 0 auto; margin-top: 5vh">
     <el-table-column prop="index" label="站序" />
-    <el-table-column prop="station_name" label="站名"  />
-    <el-table-column prop="arrival_time" label="到达时间"  />
+    <el-table-column prop="station_name" label="站名" />
+    <el-table-column prop="arrival_time" label="到达时间" />
     <el-table-column prop="departure_time" label="出发时间" />
     <el-table-column prop="extra_info" label="其他" />
   </el-table>
 </template>
 
 <style scoped>
-.el-row{
-    height: 36px;
+.el-row {
+  height: 36px;
 }
 </style>

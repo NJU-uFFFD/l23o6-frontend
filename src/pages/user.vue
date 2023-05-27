@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {useUserStore} from "~/stores/user";
-import {useRouter} from "vue-router";
-import {ref} from "vue";
-import {request} from "~/utils/request";
+import { useUserStore } from "~/stores/user";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { request } from "~/utils/request";
 
 const router = useRouter()
 const user = useUserStore()
@@ -19,16 +19,12 @@ const menuSelect = (key) => {
 <template>
   <el-container>
     <el-header style="position: fixed; width: 100%; z-index: 999">
-      <MenuComponent pageIndex="/user"/>
+      <MenuComponent pageIndex="/user" />
     </el-header>
     <el-container style="display: flex; align-items: center; height: 85vh">
       <el-aside width="15%">
-        <el-menu
-          default-active="1"
-          class="el-menu-vertical-demo"
-          style="height: 85vh; display: flex; flex-direction: column; justify-content: center"
-          @select="menuSelect"
-        >
+        <el-menu default-active="1" class="el-menu-vertical-demo"
+          style="height: 85vh; display: flex; flex-direction: column; justify-content: center" @select="menuSelect">
           <el-menu-item index="1">
             <strong>
               个人信息
@@ -42,21 +38,21 @@ const menuSelect = (key) => {
         </el-menu>
       </el-aside>
       <el-main style="display: flex; justify-content: center; align-items: center">
-        <div v-show="index==1">
+        <div v-show="index == 1">
           <el-text size="large" type="primary" style="display: flex;justify-content: center">
             <h1>个人信息</h1>
           </el-text>
-          <br/>
-          <UserInfoComponent style="width: 40vh; margin: 0 auto"/>
+          <br />
+          <UserInfoComponent style="width: 40vh; margin: 0 auto" />
         </div>
 
 
-        <div v-show="index==2" style="height: 85vh; margin-top: 10vh; width: 65%">
+        <div v-show="index == 2" style="height: 85vh; margin-top: 10vh; width: 65%">
           <el-text size="large" type="primary" style="display: flex;justify-content: center; margin-bottom: 5vh">
             <h1>订单</h1>
           </el-text>
 
-          <UserOrders/>
+          <UserOrders />
         </div>
       </el-main>
     </el-container>
@@ -64,6 +60,4 @@ const menuSelect = (key) => {
   </el-container>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

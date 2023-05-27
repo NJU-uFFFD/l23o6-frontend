@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {h, reactive, ref} from 'vue'
-import type {FormInstance, FormRules} from 'element-plus'
-import {ElNotification} from "element-plus"
-import {request} from "~/utils/request"
-import {AxiosError, AxiosResponse} from 'axios';
-import {useRouter} from "vue-router";
+import { h, reactive, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElNotification } from "element-plus"
+import { request } from "~/utils/request"
+import { AxiosError, AxiosResponse } from 'axios';
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -49,12 +49,12 @@ const rules = reactive<FormRules>({
     validator: validateCheckPass,
     trigger: 'change'
   }],
-  name:[{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  name: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     min: 2, max: 16, message: '姓名长度不符合要求(2-16)', trigger: 'change'
   }, {
     pattern: /^[\u4e00-\u9fa5]{2,16}$/, message: '姓名只能包含中文', trigger: 'change'
   }],
-  idn:[{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  idn: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     pattern: /^\d{17}(\d|X)$/, message: '身份证号码不符合要求', trigger: 'change'
   }],
   type: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
@@ -108,26 +108,26 @@ const submitForm = (formEl: FormInstance | undefined) => {
 <template>
   <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" class="demo-ruleForm" label-width="120px">
     <el-form-item label="用户名" prop="username">
-      <el-input v-model="ruleForm.username" type="text"/>
+      <el-input v-model="ruleForm.username" type="text" />
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" autocomplete="off" type="password"/>
+      <el-input v-model="ruleForm.password" autocomplete="off" type="password" />
     </el-form-item>
     <el-form-item label="密码确认" prop="checkPass">
-      <el-input v-model="ruleForm.checkPass" autocomplete="off" type="password"/>
+      <el-input v-model="ruleForm.checkPass" autocomplete="off" type="password" />
     </el-form-item>
     <el-form-item label="姓名" prop="name">
-      <el-input v-model="ruleForm.name" type="text"/>
+      <el-input v-model="ruleForm.name" type="text" />
     </el-form-item>
     <el-form-item label="证件类型" prop="type">
       <el-select v-model="ruleForm.type" placeholder=" ">
-        <el-option value="身份证"/>
-        <el-option value="护照"/>
-        <el-option value="其他"/>
+        <el-option value="身份证" />
+        <el-option value="护照" />
+        <el-option value="其他" />
       </el-select>
     </el-form-item>
     <el-form-item label="证件号码" prop="idn">
-      <el-input v-model="ruleForm.idn" type="text"/>
+      <el-input v-model="ruleForm.idn" type="text" />
     </el-form-item>
     <el-form-item label="手机号" prop="phone">
       <el-input v-model="ruleForm.phone" />
@@ -135,19 +135,20 @@ const submitForm = (formEl: FormInstance | undefined) => {
     <el-form-item prop="rick">
       <el-checkbox v-model="ruleForm.rick">
         <span>我已阅读并同意</span>
-        <el-link type="primary" href="https://www.bilibili.com/video/BV1GJ411x7h7/" target="_blank">《l23o6客户服务中心网站服务条款》</el-link>
+        <el-link type="primary" href="https://www.bilibili.com/video/BV1GJ411x7h7/"
+          target="_blank">《l23o6客户服务中心网站服务条款》</el-link>
       </el-checkbox>
     </el-form-item>
 
     <el-row justify="start">
       <el-col :span="12" style="display: flex; justify-content: center; align-items: center">
         <el-form-item>
-          <el-button  type="primary" @click="submitForm(ruleFormRef)" :disabled="!ruleForm.rick">注册</el-button>
+          <el-button type="primary" @click="submitForm(ruleFormRef)" :disabled="!ruleForm.rick">注册</el-button>
         </el-form-item>
       </el-col>
       <el-col :span="7" style="display: flex; justify-content: center; align-items: center">
         <el-form-item>
-          <el-button @click="this.$router.back()">
+          <el-button @click="$router.back()">
             返回
           </el-button>
         </el-form-item>

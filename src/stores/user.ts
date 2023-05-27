@@ -1,5 +1,5 @@
-import {defineStore} from "pinia";
-import {request} from "~/utils/request";
+import { defineStore } from "pinia";
+import { request } from "~/utils/request";
 
 export const useUserStore = defineStore('user', {
     state: () => {
@@ -11,13 +11,13 @@ export const useUserStore = defineStore('user', {
             phone: ''
         }
     },
-    getters:{
-      getUserName(){
+    getters: {
+        getUserName() {
 
-      }
+        }
     },
     actions: {
-        fetch(){
+        fetch() {
             request({
                 url: '/v1/user',
                 method: 'GET'

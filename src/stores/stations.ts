@@ -1,7 +1,7 @@
-import {defineStore} from "pinia";
-import {request} from "~/utils/request";
-import {ElNotification} from "element-plus";
-import {h} from "vue";
+import { defineStore } from "pinia";
+import { request } from "~/utils/request";
+import { ElNotification } from "element-plus";
+import { h } from "vue";
 
 export const useStationsStore = defineStore('stations', {
     state: () => {
@@ -10,12 +10,12 @@ export const useStationsStore = defineStore('stations', {
                 id: 0,
                 name: ''
             }],
-            idToName: {},
-            nameToId: {}
+            idToName: {} as Record<number, string>,
+            nameToId: {} as Record<string, number>,
         }
     },
     actions: {
-        async fetch(){
+        async fetch() {
             request({
                 url: '/v1/station',
                 method: 'GET'
@@ -36,7 +36,7 @@ export const useStationsStore = defineStore('stations', {
                 ElNotification({
                     offset: 70,
                     title: 'getStation错误',
-                    message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+                    message: h('error', { style: 'color: teal' }, error.response?.data.msg),
                 })
             })
         }

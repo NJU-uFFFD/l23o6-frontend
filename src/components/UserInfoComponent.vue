@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
-import {h, reactive, ref, watch} from "vue";
-import {useUserStore} from "~/stores/user";
-import {ElNotification, FormInstance} from "element-plus";
-import {request} from "~/utils/request";
-import {AxiosError, AxiosResponse} from "axios";
-import {useRouter} from "vue-router";
+import { h, reactive, ref, watch } from "vue";
+import { useUserStore } from "~/stores/user";
+import { ElNotification, FormInstance } from "element-plus";
+import { request } from "~/utils/request";
+import { AxiosError, AxiosResponse } from "axios";
+import { useRouter } from "vue-router";
 
 const user = useUserStore()
 const router = useRouter()
@@ -35,23 +35,23 @@ watch(user, () => {
 setForm()
 
 const rules = reactive({
-  username: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  username: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     min: 4, max: 16, message: '用户名长度不符合要求(4-16)', trigger: 'change'
   }, {
     pattern: /^[a-z\d-_]*$/, message: '用户名只能包含小写字母,数字,下划线和连字符', trigger: 'change'
   }],
-  name: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  name: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     min: 2, max: 16, message: '姓名长度不符合要求(2-16)', trigger: 'change'
   }, {
     pattern: /^[\u4e00-\u9fa5]{2,16}$/, message: '姓名只能包含中文', trigger: 'change'
   }],
-  idn: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  idn: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     pattern: /^\d{17}(\d|X)$/, message: '身份证号码不符合要求', trigger: 'change'
   }],
-  type: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  type: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     pattern: /^(身份证|护照|其他)$/, message: '证件类型不符合要求', trigger: 'change'
   }],
-  phone: [{required: true, message: '此字段为必填项', trigger: 'change'}, {
+  phone: [{ required: true, message: '此字段为必填项', trigger: 'change' }, {
     pattern: /^1[3456789]\d{9}$/, message: '手机号码不符合要求', trigger: 'change'
   }],
 })
@@ -79,19 +79,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
       ElNotification({
         offset: 70,
         title: '修改成功',
-        message: h('info', {style: 'color: teal'}, response.data.msg),
+        message: h('info', { style: 'color: teal' }, response.data.msg),
       })
       user.fetch()
-      edit.value=false
+      edit.value = false
     }).catch((error: AxiosError<any>) => {
       console.log(error)
-      if(error.response?.data.code == 100003){
+      if (error.response?.data.code == 100003) {
         router.push('/login')
       }
       ElNotification({
         offset: 70,
         title: 'putUser错误',
-        message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+        message: h('error', { style: 'color: teal' }, error.response?.data.msg),
       })
     })
   })
@@ -101,51 +101,42 @@ const submitForm = (formEl: FormInstance | undefined) => {
 <template>
   <div v-if="edit" style="display: flex; flex-direction: row-reverse; justify-content: flex-start">
     <el-space>
-      <el-button @click="edit=false;">取消</el-button>
+      <el-button @click="edit = false;">取消</el-button>
       <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
     </el-space>
 
   </div>
   <div v-else style="display: flex; flex-direction: row-reverse; justify-content: flex-start">
     <el-space>
-      <el-button type="primary" @click="edit=true;setForm()">编辑</el-button>
+      <el-button type="primary" @click="edit = true; setForm()">编辑</el-button>
     </el-space>
   </div>
 
   <br>
 
-  <el-form
-    ref="ruleFormRef"
-    :model="form"
-    :rules="rules"
-    label-width="7vh"
-    class="demo-ruleForm"
-    label-position="right"
-    hide-required-asterisk
-    size="large"
-  >
-    <el-form-item label="用户名" prop="username" >
-      <el-input v-model="form.username" style="width: 25vh" :disabled="true"/>
+  <el-form ref="ruleFormRef" :model="form" :rules="rules" label-width="7vh" class="demo-ruleForm" label-position="right"
+    hide-required-asterisk size="large">
+    <el-form-item label="用户名" prop="username">
+      <el-input v-model="form.username" style="width: 25vh" :disabled="true" />
     </el-form-item>
-    <el-form-item label="姓名" prop="name" >
-      <el-input v-model="form.name" style="width: 25vh" :disabled="!edit"/>
+    <el-form-item label="姓名" prop="name">
+      <el-input v-model="form.name" style="width: 25vh" :disabled="!edit" />
     </el-form-item>
-    <el-form-item label="证件类型" prop="type" >
+    <el-form-item label="证件类型" prop="type">
       <el-select v-model="form.type" placeholder=" " style="width: 25vh" :disabled="!edit">
-        <el-option value="身份证"/>
-        <el-option value="护照"/>
-        <el-option value="其他"/>
+        <el-option value="身份证" />
+        <el-option value="护照" />
+        <el-option value="其他" />
       </el-select>
     </el-form-item>
-    <el-form-item label="证件号码" prop="idn" >
-      <el-input v-model="form.idn" type="text" style="width: 25vh" :disabled="!edit"/>
+    <el-form-item label="证件号码" prop="idn">
+      <el-input v-model="form.idn" type="text" style="width: 25vh" :disabled="!edit" />
     </el-form-item>
 
-    <el-form-item label="手机号" prop="phone" >
-      <el-input v-model="form.phone" style="width: 25vh" :disabled="!edit"/>
+    <el-form-item label="手机号" prop="phone">
+      <el-input v-model="form.phone" style="width: 25vh" :disabled="!edit" />
     </el-form-item>
   </el-form>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

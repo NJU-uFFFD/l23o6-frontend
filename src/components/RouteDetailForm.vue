@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
-import {VueDraggable} from 'vue-draggable-plus'
-import {CloseBold, SwitchFilled} from "@element-plus/icons-vue";
-import {useStationsStore} from "~/stores/stations";
-import {ElMessage} from "element-plus";
+import { PropType, reactive, ref } from 'vue'
+import { VueDraggable } from 'vue-draggable-plus'
+import { CloseBold, SwitchFilled } from "@element-plus/icons-vue";
+import { useStationsStore } from "~/stores/stations";
+import { ElMessage } from "element-plus";
 
 const props = defineProps({
   name: String,
-  station_ids: Array
+  station_ids: Array as PropType<number[]>
 })
 
 const stations = useStationsStore()
 
 let route = reactive({
   name: '',
-  station_ids: []
+  station_ids: [] as number[]
 })
 let edit = ref(false)
 let add = ref(false)
@@ -22,13 +22,16 @@ let toAddId = ref<number>()
 let toEditIndex = ref<number>()
 let toEditId = ref<number>()
 
-for (let i = 0; i < props.station_ids?.length; i++) {
-  route.station_ids.push(props.station_ids?.[i])
+if (Array.isArray(props.station_ids)) {
+  for (let i = 0; i < props.station_ids.length; i++) {
+    route.station_ids.push(props.station_ids[i])
+  }
 }
+
 route.name = <string>props.name;
 
 const addStation = () => {
-  if(toAddId.value === undefined){
+  if (toAddId.value === undefined) {
     ElMessage({
       message: '站点不能为空',
       type: 'error',
@@ -40,7 +43,7 @@ const addStation = () => {
 }
 
 const editStation = () => {
-  if (typeof toEditIndex.value === "number") {
+  if (typeof toEditIndex.value === "number" && typeof toEditId.value === "number") {
     route.station_ids.splice(toEditIndex.value, 1, toEditId.value)
   }
   edit.value = false;
@@ -50,7 +53,7 @@ const onEnd = () => {
   // refreshIndex()
 }
 
-const deleteStation = (index) => {
+const deleteStation = (index: number) => {
   route.station_ids.splice(index, 1)
 }
 </script>
@@ -63,10 +66,10 @@ const deleteStation = (index) => {
           路线名
         </el-text>
       </template>
-      <el-input v-model="route.name" style="margin-right: 60%"/>
+      <el-input v-model="route.name" style="margin-right: 60%" />
     </el-form-item>
     <div>
-      <el-button @click="add=true" style="margin-bottom: 3%; float:right;">
+      <el-button @click="add = true" style="margin-bottom: 3%; float:right;">
         添加站点
       </el-button>
     </div>
@@ -75,7 +78,7 @@ const deleteStation = (index) => {
         <el-card style="margin-bottom: 0.25%" shadow="hover" class="container">
           <div style="display: flex; align-items: center;">
             <el-icon class="handle" size="large">
-              <SwitchFilled/>
+              <SwitchFilled />
             </el-icon>
             <strong style="margin-left: 5%; margin-right: 5%">
               {{ route.station_ids.indexOf(station) + 1 }}
@@ -85,13 +88,14 @@ const deleteStation = (index) => {
             </div>
             <div style="display: flex; flex-direction: row; justify-items: center; align-items: center;">
               <el-space>
-                <el-button class="change" @click="toEditIndex=route.station_ids.indexOf(station); toEditId=station; edit=true">
+                <el-button class="change"
+                  @click="toEditIndex = route.station_ids.indexOf(station); toEditId = station; edit = true">
                   编辑
                 </el-button>
                 <div>
                   <el-icon @click="deleteStation(route.station_ids.indexOf(station))"
-                           style="display: flex; align-self: flex-end;">
-                    <CloseBold/>
+                    style="display: flex; align-self: flex-end;">
+                    <CloseBold />
                   </el-icon>
                 </div>
               </el-space>
@@ -100,7 +104,7 @@ const deleteStation = (index) => {
         </el-card>
       </div>
     </VueDraggable>
-    <el-button @click="this.$emit('formSubmitted', route)" style="margin-top: 2vh" type="primary">
+    <el-button @click="$emit('formSubmitted', route)" style="margin-top: 2vh" type="primary">
       确认
     </el-button>
 
@@ -109,19 +113,14 @@ const deleteStation = (index) => {
     <!--    </pre>-->
   </div>
 
-  <el-dialog v-model="add" title="添加站点" width="30%" draggable @close="toAddId=undefined">
+  <el-dialog v-model="add" title="添加站点" width="30%" draggable @close="toAddId = undefined">
     <div>请选择新的站点</div>
-    <br/>
+    <br />
     <div style="display: flex;">
       <el-space>
         <el-select v-model="toAddId" filterable>
-          <el-option
-            v-for="item in stations.rawData"
-            :disabled="route.station_ids.includes(item.id)"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in stations.rawData" :disabled="route.station_ids.includes(item.id)" :key="item.id"
+            :label="item.name" :value="item.id" />
         </el-select>
         <el-button type="primary" @click="addStation">
           确定
@@ -132,17 +131,13 @@ const deleteStation = (index) => {
 
   <el-dialog v-model="edit" title="编辑站点" width="30%" draggable>
     <div>请选择新的站点</div>
-    <br/>
+    <br />
     <div style="display: flex;">
       <el-space>
         <el-select v-model="toEditId" filterable>
-          <el-option
-            v-for="item in stations.rawData"
-            :disabled="route.station_ids.includes(item.id)&&item.id!==toEditId"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in stations.rawData"
+            :disabled="route.station_ids.includes(item.id) && item.id !== toEditId" :key="item.id" :label="item.name"
+            :value="item.id" />
         </el-select>
         <el-button type="primary" @click="editStation">
           确定
@@ -157,7 +152,7 @@ const deleteStation = (index) => {
   visibility: hidden
 }
 
-.container:hover  .change {
+.container:hover .change {
   visibility: visible
 }
 </style>

@@ -1,49 +1,49 @@
 <script setup lang="ts">
 
-import {h, onMounted, reactive, ref} from "vue";
-import {request} from "~/utils/request";
-import {ElMessage, ElNotification} from "element-plus";
-import {useStationsStore} from "~/stores/stations";
-import {Right} from "@element-plus/icons-vue";
+import { h, onMounted, reactive, ref } from "vue";
+import { request } from "~/utils/request";
+import { ElMessage, ElNotification } from "element-plus";
+import { useStationsStore } from "~/stores/stations";
 import TrainManageDetail from "~/components/TrainManageDetail.vue";
 import TrainManageForm from "~/components/TrainManageForm.vue";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
+import { TrainInfo } from "~/utils/interfaces";
 
 const router = useRouter()
 const stations = useStationsStore()
 
 let trainName = ref('')
-let trains;
+let trains = [] as TrainInfo[];
 let trainsFiltered = reactive({
-  data: []
+  data: [] as TrainInfo[],
 })
 
 let toAdd = reactive({
-    name: '',
-    route_id: undefined,
-    date: '',
-    train_type: '',
-    departure_times: [],
-    arrival_times: [],
-    extra_infos: []
+  name: '',
+  route_id: undefined,
+  date: '',
+  train_type: '',
+  departure_times: [],
+  arrival_times: [],
+  extra_infos: []
 })
 
-let toChange= reactive({
-    id: 0,
-    name: '',
-    route_id: 0,
-    train_type: '',
-    date: '',
-    departure_times: [],
-    arrival_times: [],
-    extra_infos: []
+let toChange: TrainInfo = reactive({
+  id: 0,
+  name: '',
+  route_id: 0,
+  train_type: '',
+  date: '',
+  departure_times: [],
+  arrival_times: [],
+  extra_infos: []
 })
 
 let add = ref(false)
 let change = ref(false)
 
-const addTrain = (train) => {
-  if(train.route_id === undefined){
+const addTrain = (train: TrainInfo) => {
+  if (train.route_id === undefined) {
     ElMessage({
       message: '路线不能为空',
       type: 'error',
@@ -66,7 +66,7 @@ const addTrain = (train) => {
     ElNotification({
       offset: 70,
       title: '成功',
-      message: h('success', {style: 'color: teal'}, res.data.msg),
+      message: h('success', { style: 'color: teal' }, res.data.msg),
     })
     add.value = false
     trainName.value = ''
@@ -74,18 +74,18 @@ const addTrain = (train) => {
     filter()
   }).catch((error) => {
     console.log(error)
-    if(error.response?.data.code == 100003){
+    if (error.response?.data.code == 100003) {
       router.push('/login')
     }
     ElNotification({
       offset: 70,
       title: 'postTrain错误',
-      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+      message: h('error', { style: 'color: teal' }, error.response?.data.msg),
     })
   })
 }
 
-const delTrain = (id) => {
+const delTrain = (id: number) => {
   request({
     url: `/v1/admin/train/${id}`,
     method: 'DELETE'
@@ -93,25 +93,25 @@ const delTrain = (id) => {
     ElNotification({
       offset: 70,
       title: '成功',
-      message: h('success', {style: 'color: teal'}, res.data.msg),
+      message: h('success', { style: 'color: teal' }, res.data.msg),
     })
     trainName.value = ''
     refreshData()
     filter()
   }).catch((error) => {
     console.log(error)
-    if(error.response?.data.code == 100003){
+    if (error.response?.data.code == 100003) {
       router.push('/login')
     }
     ElNotification({
       offset: 70,
       title: 'deleteTrain错误',
-      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+      message: h('error', { style: 'color: teal' }, error.response?.data.msg),
     })
   })
 }
 
-const changeTrain = (train) => {
+const changeTrain = (train: TrainInfo) => {
   request({
     url: `/v1/admin/train/${train.id}`,
     method: 'PUT',
@@ -128,7 +128,7 @@ const changeTrain = (train) => {
     ElNotification({
       offset: 70,
       title: '成功',
-      message: h('success', {style: 'color: teal'}, res.data.msg),
+      message: h('success', { style: 'color: teal' }, res.data.msg),
     })
     change.value = false
     trainName.value = ''
@@ -136,13 +136,13 @@ const changeTrain = (train) => {
     filter()
   }).catch((error) => {
     console.log(error)
-    if(error.response?.data.code == 100003){
+    if (error.response?.data.code == 100003) {
       router.push('/login')
     }
     ElNotification({
       offset: 70,
       title: 'putTrain错误',
-      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+      message: h('error', { style: 'color: teal' }, error.response?.data.msg),
     })
   })
 }
@@ -157,13 +157,13 @@ const refreshData = () => {
     trainsFiltered.data = [...trains]
   }).catch((error) => {
     console.log(error)
-    if(error.response?.data.code == 100003){
+    if (error.response?.data.code == 100003) {
       router.push('/login')
     }
     ElNotification({
       offset: 70,
       title: 'getTrain错误',
-      message: h('error', {style: 'color: teal'}, error.response?.data.msg),
+      message: h('error', { style: 'color: teal' }, error.response?.data.msg),
     })
   })
 }
@@ -182,14 +182,14 @@ onMounted(() => {
 <template>
   <el-container>
     <el-header style="position: fixed; width: 100%; z-index: 999">
-      <MenuComponent pageIndex="/train"/>
+      <MenuComponent pageIndex="/train" />
     </el-header>
     <el-main style="margin-top: 8vh">
       <div style="display: flex; justify-content: center">
         <el-card shadow="hover" style="width: 70vh; height: auto; ">
           <el-form inline style="display: flex; " @submit.native.prevent>
             <el-form-item label="车次名" style="display: flex; flex-grow: 1">
-              <el-input v-model="trainName" autofocus @keyup.enter.native="filter"/>
+              <el-input v-model="trainName" autofocus @keyup.enter.native="filter" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="filter">
@@ -200,27 +200,27 @@ onMounted(() => {
         </el-card>
       </div>
 
-      <br/>
-      <br/>
+      <br />
+      <br />
 
       <div style="display: flex; justify-content: center">
         <div style="display: flex; width: 80vh; justify-content: flex-end">
           <el-space>
-            <el-button type="primary" @click="add=true">
+            <el-button type="primary" @click="add = true">
               添加
             </el-button>
           </el-space>
         </div>
       </div>
 
-      <br/>
-      <br/>
+      <br />
+      <br />
 
       <div style="display: flex; justify-content: center">
         <el-collapse style="width: 80vh; display: flex;flex-direction: column;">
           <el-collapse-item v-for="train in trainsFiltered.data" :title="train.name">
             <div style="margin-bottom: 5%">
-              <el-button @click="change=true; toChange=train;">
+              <el-button @click="change = true; toChange = train;">
                 更改
               </el-button>
               <el-button type="danger" @click="delTrain(train.id)">
@@ -228,7 +228,7 @@ onMounted(() => {
               </el-button>
             </div>
             <div>
-              <TrainManageDetail v-bind="train"/>
+              <TrainManageDetail v-bind="{ ...train, date: new Date(train.date) }" />
             </div>
           </el-collapse-item>
         </el-collapse>
@@ -236,24 +236,21 @@ onMounted(() => {
     </el-main>
   </el-container>
 
-  <el-dialog v-model="change" title="更改车次" width="60%" draggable >
+  <el-dialog v-model="change" title="更改车次" width="60%" draggable>
     <div>请输入更改后的车次信息</div>
-    <br/>
+    <br />
     <div>
-      <TrainManageForm  v-bind="toChange" @formSubmitted="changeTrain" :key="toChange.id"/>
+      <TrainManageForm v-bind="toChange" @formSubmitted="changeTrain" :key="toChange.id" />
     </div>
   </el-dialog>
 
   <el-dialog v-model="add" title="添加车次" width="60%" draggable destroy-on-close>
     <div>请输入新的车次信息</div>
-    <br/>
+    <br />
     <div>
-      <TrainManageForm  v-bind="toAdd" @formSubmitted="addTrain"/>
+      <TrainManageForm v-bind="toAdd" @formSubmitted="addTrain" />
     </div>
   </el-dialog>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,14 +1,15 @@
 <script setup lang="ts">
 
-import {computed, onMounted, reactive, ref} from "vue";
-import {request} from "~/utils/request";
-import {parseDate} from "~/utils/date";
-import {Right} from "@element-plus/icons-vue";
-import {useStationsStore} from "~/stores/stations";
-import {useRouter} from "vue-router";
+import { computed, onMounted, reactive, ref } from "vue";
+import { request } from "~/utils/request";
+import { parseDate } from "~/utils/date";
+import { Right } from "@element-plus/icons-vue";
+import { useStationsStore } from "~/stores/stations";
+import { useRouter } from "vue-router";
+import { OrderDetailData } from "~/utils/interfaces";
 
 let orders = reactive({
-  data: []
+  data: [] as OrderDetailData[]
 })
 
 const router = useRouter()
@@ -18,8 +19,8 @@ let dialog = ref(false)
 let id = ref()
 
 let orderDetail = reactive({
-  data:Object
-  }
+  data: Object
+}
 )
 
 
@@ -30,22 +31,22 @@ const getOrders = () => {
   }).then((res) => {
     orders.data = res.data.data
   }).catch((error) => {
-    if(error.response?.data.code == 100003){
+    if (error.response?.data.code == 100003) {
       router.push('/login')
     }
     console.log(error)
   })
 }
 
-const getTrainName = (id) => {
+const getTrainName = (id: number) => {
   request({
     url: `/train/${id}`,
     method: 'GET'
   }).then((res) => {
     return res.data.name
   }).catch((err) => {
-      console.log(err)
-    }
+    console.log(err)
+  }
   )
 }
 
@@ -57,8 +58,7 @@ onMounted(() => {
 </script>
 
 <template>
-
-  <el-card v-for="order in orders.data" style="margin-bottom: 1vh" shadow="hover">
+  <el-card v-for="order in orders.data " style="margin-bottom: 1vh" shadow="hover">
     <div style="display: flex; flex-direction: column">
 
       <div style="display: flex; justify-content: space-between;">
@@ -105,7 +105,7 @@ onMounted(() => {
         </el-col>
         <el-col :span="2" style="display: flex; justify-content: center; align-items: center">
           <el-icon size="15">
-            <Right/>
+            <Right />
           </el-icon>
         </el-col>
         <el-col :span="11" style="display: flex; justify-content: left; align-items: center;">
@@ -132,7 +132,7 @@ onMounted(() => {
 
       <el-row>
         <el-col :span="2" :offset="21">
-          <el-button type="primary" @click="dialog=true; id=order.id">
+          <el-button type="primary" @click="dialog = true; id = order.id">
             查看详情
           </el-button>
         </el-col>
@@ -144,18 +144,9 @@ onMounted(() => {
   </el-card>
 
 
-  <el-dialog destroy-on-close
-             v-model="dialog"
-             title="订单详情"
-             width="50%">
-    <OrderDetail :id="id"/>
+  <el-dialog destroy-on-close v-model="dialog" title="订单详情" width="50%">
+    <OrderDetail :id="id" />
   </el-dialog>
-
-
-
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
