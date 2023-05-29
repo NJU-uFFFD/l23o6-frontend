@@ -35,7 +35,7 @@ let train = reactive<{ data: { name?: string } }>({
 
 const getOrderDetail = () => {
   request({
-    url: `/v1/order/${props.id}`,
+    url: `/order/${props.id}`,
     method: 'GET',
   }).then(res => {
     orderDetail.data = res.data.data
@@ -57,7 +57,7 @@ const getTrain = () => {
   console.log("getTrain")
   if (orderDetail.data) {
     request({
-      url: `/v1/train/${orderDetail.data.train_id}`,
+      url: `/train/${orderDetail.data.train_id}`,
       method: 'GET'
     }).then((res) => {
       train.data = res.data.data
@@ -76,7 +76,7 @@ const getTrain = () => {
 
 const pay = (id: number) => {
   request({
-    url: `/v1/order/${id}`,
+    url: `/order/${id}`,
     method: 'PATCH',
     data: {
       status: '已支付'
@@ -104,7 +104,7 @@ const pay = (id: number) => {
 
 const cancel = (id: number) => {
   request({
-    url: `/v1/order/${id}`,
+    url: `/order/${id}`,
     method: 'PATCH',
     data: {
       status: '已取消'

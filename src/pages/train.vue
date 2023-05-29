@@ -51,7 +51,7 @@ const addTrain = (train: TrainInfo) => {
     return
   }
   request({
-    url: '/v1/admin/train',
+    url: '/admin/train',
     method: 'POST',
     data: {
       name: train.name,
@@ -87,7 +87,7 @@ const addTrain = (train: TrainInfo) => {
 
 const delTrain = (id: number) => {
   request({
-    url: `/v1/admin/train/${id}`,
+    url: `/admin/train/${id}`,
     method: 'DELETE'
   }).then((res) => {
     ElNotification({
@@ -113,7 +113,7 @@ const delTrain = (id: number) => {
 
 const changeTrain = (train: TrainInfo) => {
   request({
-    url: `/v1/admin/train/${train.id}`,
+    url: `/admin/train/${train.id}`,
     method: 'PUT',
     data: {
       name: train.name,
@@ -150,7 +150,7 @@ const changeTrain = (train: TrainInfo) => {
 const refreshData = () => {
   stations.fetch()
   request({
-    url: '/v1/admin/train',
+    url: '/admin/train',
     method: 'GET'
   }).then((res) => {
     trains = res.data.data

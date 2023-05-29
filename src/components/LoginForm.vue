@@ -40,7 +40,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (!valid) return
     console.log('submit!')
     const r = request({
-      url: '/v1/session',
+      url: '/session',
       method: 'POST',
       data: {
         username: ruleForm.username,

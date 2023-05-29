@@ -20,7 +20,7 @@ const menuSelect = (key: string, keyPath: string[]) => {
 
 const logout = () => {
   request({
-    url: '/v1/session',
+    url: '/session',
     method: 'DELETE'
   }).then((response: AxiosResponse<any>) => {
     ElNotification({

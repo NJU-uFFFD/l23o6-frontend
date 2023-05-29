@@ -30,7 +30,7 @@ let route = reactive({
 
 const getRoute = () => {
   request({
-    url: `/v1/admin/route/${props.route_id}`,
+    url: `/admin/route/${props.route_id}`,
     method: 'GET'
   }).then((res) => {
     route.id = res.data.data.id

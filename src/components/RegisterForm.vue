@@ -73,7 +73,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     console.log('submit!')
 
     const r = request({
-      url: '/v1/user',
+      url: '/user',
       method: 'POST',
       data: {
         username: ruleForm.username,

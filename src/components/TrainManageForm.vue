@@ -39,7 +39,7 @@ let routes = ref([] as RouteInfo[])
 
 const getRoutes = () => {
   request({
-    url: `/v1/admin/route`,
+    url: `/admin/route`,
     method: 'GET'
   }).then((res) => {
     routes.value = res.data.data
@@ -62,7 +62,7 @@ getRoutes()
 const getRoute = () => {
   if (train.route_id === undefined) return
   request({
-    url: `/v1/admin/route/${train.route_id}`,
+    url: `/admin/route/${train.route_id}`,
     method: 'GET'
   }).then((res) => {
     route.id = res.data.data.id

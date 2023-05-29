@@ -19,7 +19,7 @@ export const useUserStore = defineStore('user', {
     actions: {
         fetch() {
             request({
-                url: '/v1/user',
+                url: '/user',
                 method: 'GET'
             }).then((res) => {
                 this.username = res.data.data.username;

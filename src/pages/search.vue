@@ -23,7 +23,7 @@ onMounted(() => {
 const submit = () => {
   loading.value = true
   const r = request({
-    url: '/v1/train',
+    url: '/train',
     method: 'GET',
     params: {
       start_station_id: search.start_station_id,

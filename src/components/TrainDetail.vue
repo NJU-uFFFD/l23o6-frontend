@@ -26,7 +26,7 @@ let data = reactive<{ data: TrainDetailInfo }>({
 
 const refreshData = () => {
   request({
-    url: `/v1/train/${props.trainId}`,
+    url: `/train/${props.trainId}`,
     method: 'GET'
   }).then((res) => {
     data.data = res.data.data

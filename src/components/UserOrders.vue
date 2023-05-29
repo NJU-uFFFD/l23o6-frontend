@@ -26,7 +26,7 @@ let orderDetail = reactive({
 
 const getOrders = () => {
   request({
-    url: '/v1/order',
+    url: '/order',
     method: 'GET'
   }).then((res) => {
     orders.data = res.data.data

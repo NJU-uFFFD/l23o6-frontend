@@ -61,7 +61,7 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
     if (!valid) return
     console.log('submit!')
     const r = request({
-      url: '/v1/order',
+      url: '/order',
       method: 'POST',
       data: {
         train_id: props.id,
@@ -162,8 +162,8 @@ const submitOrderForm = (formEl: FormInstance | undefined) => {
     </el-form-item>
     <el-form-item label="坐席" prop="seat_type">
       <el-select v-model="orderForm.seat_type">
-        <el-option v-for="ticket in props.ticket_info" :value="ticket.type"
-          :label="`${ticket.type}  ${ticket.price}元`" :disabled="ticket.count == 0" />
+        <el-option v-for="ticket in props.ticket_info" :value="ticket.type" :label="`${ticket.type}  ${ticket.price}元`"
+          :disabled="ticket.count == 0" />
       </el-select>
     </el-form-item>
     <el-form-item>

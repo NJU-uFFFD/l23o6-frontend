@@ -22,7 +22,7 @@ let rename = ref(false)
 const addStation = () => {
   if (toAdd.value === '') return
   request({
-    url: '/v1/admin/station',
+    url: '/admin/station',
     method: 'POST',
     data: {
       name: toAdd.value
@@ -52,7 +52,7 @@ const addStation = () => {
 
 const delStation = (id: number) => {
   request({
-    url: `/v1/admin/station/${id}`,
+    url: `/admin/station/${id}`,
     method: 'DELETE'
   }).then((res) => {
     ElNotification({
@@ -78,7 +78,7 @@ const delStation = (id: number) => {
 
 const renameStation = () => {
   request({
-    url: `/v1/admin/station/${toRenameId.value}`,
+    url: `/admin/station/${toRenameId.value}`,
     method: 'PUT',
     data: {
       name: toRename.value

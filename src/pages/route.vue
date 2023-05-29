@@ -30,7 +30,7 @@ let add = ref(false)
 
 const addRoute = (route: RouteInfo) => {
   request({
-    url: '/v1/admin/route',
+    url: '/admin/route',
     method: 'POST',
     data: {
       name: route.name,
@@ -61,7 +61,7 @@ const addRoute = (route: RouteInfo) => {
 
 const delRoute = (id: number) => {
   request({
-    url: `/v1/admin/route/${id}`,
+    url: `/admin/route/${id}`,
     method: 'DELETE'
   }).then((res) => {
     ElNotification({
@@ -87,7 +87,7 @@ const delRoute = (id: number) => {
 
 const changeRoute = (route: RouteInfo) => {
   request({
-    url: `/v1/admin/route/${toChange.id}`,
+    url: `/admin/route/${toChange.id}`,
     method: 'PUT',
     data: {
       name: route.name,
@@ -119,7 +119,7 @@ const changeRoute = (route: RouteInfo) => {
 const refreshData = () => {
   stations.fetch()
   request({
-    url: '/v1/admin/route',
+    url: '/admin/route',
     method: 'GET'
   }).then((res) => {
     routes = res.data.data
