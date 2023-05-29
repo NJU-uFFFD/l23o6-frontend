@@ -43,7 +43,7 @@ const menuSelect = (key) => {
             <h1>个人信息</h1>
           </el-text>
           <br />
-          <UserInfoComponent style="width: 40vh; margin: 0 auto" />
+          <UserInfoComponent style="width: 35vh; margin: 0 auto" />
         </div>
 
 

@@ -10,6 +10,8 @@ const props = defineProps({
   station_ids: Array as PropType<number[]>
 })
 
+const emit = defineEmits(['formSubmitted'])
+
 const stations = useStationsStore()
 
 let route = reactive({
