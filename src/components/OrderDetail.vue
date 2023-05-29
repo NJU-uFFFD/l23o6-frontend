@@ -15,8 +15,18 @@ const props = defineProps({
   id: Number,
 })
 
-let orderDetail = reactive<{ data: OrderDetailData | undefined }>({
-  data: undefined,
+let orderDetail = reactive<{ data: OrderDetailData }>({
+  data: {
+    id: 0,
+    train_id: 0,
+    seat: '',
+    status: '',
+    created_at: '',
+    start_station_id: 0,
+    end_station_id: 0,
+    departure_time: '',
+    arrival_time: '',
+  },
 })
 
 let train = reactive<{ data: { name?: string } }>({

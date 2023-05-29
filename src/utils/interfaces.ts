@@ -31,11 +31,21 @@ interface TrainInfo {
   id: number,
   name: string,
   route_id: number,
-  train_type:string,
+  train_type: string,
   date: string,
   departure_times: Array<string>,
   arrival_times: Array<string>,
   extra_infos: Array<string>
 }
 
-export { OrderDetailData, TicketInfo, RouteInfo, StationInfo, TrainInfo }
+interface TrainDetailInfo {
+  id: number,
+  name: string,
+  station_ids: Array<number>,
+  date: string,
+  departure_times: Array<string>,
+  arrival_times: Array<string>,
+  extra_infos: Array<string>
+}
+
+export { OrderDetailData, TicketInfo, RouteInfo, StationInfo, TrainInfo,TrainDetailInfo }

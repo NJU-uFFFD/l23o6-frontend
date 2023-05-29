@@ -4,6 +4,7 @@ import { computed, onMounted, reactive } from "vue";
 import { Right } from "@element-plus/icons-vue";
 import { useStationsStore } from "~/stores/stations";
 import { parseDate } from "../utils/date";
+import { TrainDetailInfo } from "~/utils/interfaces";
 
 const props = defineProps({
   trainId: Number
@@ -11,7 +12,7 @@ const props = defineProps({
 
 const stations = useStationsStore()
 
-let data = reactive({
+let data = reactive<{ data: TrainDetailInfo }>({
   data: {
     id: 0,
     name: "",
@@ -36,7 +37,7 @@ const refreshData = () => {
 }
 
 const tableData = computed(() => {
-  return data.data.station_ids.map(
+  return data.data.station_ids?.map(
     (station_id, index) => {
       return {
         index: index,

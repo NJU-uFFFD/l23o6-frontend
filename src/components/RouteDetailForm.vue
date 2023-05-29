@@ -7,7 +7,7 @@ import { ElMessage } from "element-plus";
 
 const props = defineProps({
   name: String,
-  station_ids: Array as PropType<number[]>
+  station_ids: Array as PropType<Array<number>>
 })
 
 const emit = defineEmits(['formSubmitted'])
@@ -16,7 +16,7 @@ const stations = useStationsStore()
 
 let route = reactive({
   name: '',
-  station_ids: [] as number[]
+  station_ids: [] as Array<number>
 })
 let edit = ref(false)
 let add = ref(false)
