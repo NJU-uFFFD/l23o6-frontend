@@ -8,7 +8,6 @@ import { useRouter } from "vue-router";
 import { RouteInfo } from '~/utils/interfaces';
 
 const props = defineProps({
-  id: Number,
   name: String,
   route_id: Number,
   date: String,
@@ -23,7 +22,6 @@ const router = useRouter()
 const stations = useStationsStore()
 
 let train = reactive({
-  id:props.id,
   name: props.name,
   train_type: props.train_type,
   route_id: props.route_id,

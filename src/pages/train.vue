@@ -113,7 +113,7 @@ const delTrain = (id: number) => {
 
 const changeTrain = (train: TrainInfo) => {
   request({
-    url: `/admin/train/${train.id}`,
+    url: `/admin/train/${toChange.id}`,
     method: 'PUT',
     data: {
       name: train.name,
