@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { request } from "~/utils/request";
 import { parseDate } from "~/utils/date";
 import { Right } from "@element-plus/icons-vue";
@@ -17,12 +17,6 @@ const stations = useStationsStore()
 
 let dialog = ref(false)
 let id = ref()
-
-let orderDetail = reactive({
-  data: Object
-}
-)
-
 
 const getOrders = () => {
   request({
@@ -144,7 +138,7 @@ onMounted(() => {
   </el-card>
 
 
-  <el-dialog destroy-on-close v-model="dialog" title="订单详情" width="50%">
+  <el-dialog destroy-on-close v-model="dialog" title="订单详情" width="50%" @close="getOrders">
     <OrderDetail :id="id" />
   </el-dialog>
 </template>

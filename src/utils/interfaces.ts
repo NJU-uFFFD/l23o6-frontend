@@ -8,6 +8,9 @@ interface OrderDetailData {
   end_station_id: number,
   departure_time: string,
   arrival_time: string,
+  price: number,
+  pay_by_credit:boolean,
+  payment:number,
 }
 
 interface TicketInfo {

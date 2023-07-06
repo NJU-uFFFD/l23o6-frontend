@@ -25,7 +25,7 @@ const menuSelect = (key) => {
       <el-aside width="15%">
         <el-menu default-active="1" class="el-menu-vertical-demo"
           style="height: 85vh; display: flex; flex-direction: column; justify-content: center" @select="menuSelect">
-          <el-menu-item index="1">
+          <el-menu-item index="1" @click="user.fetch()">
             <strong>
               个人信息
             </strong>
