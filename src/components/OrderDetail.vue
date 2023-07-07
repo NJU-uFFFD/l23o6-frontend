@@ -293,7 +293,8 @@ onBeforeRouteLeave(() => {
         {{ parseDate(orderDetail.data.arrival_time) }}
       </el-descriptions-item>
     </el-descriptions>
-    <div style="display: flex; justify-content: space-between; margin-top: 1vh;">
+    <div style="display: flex; justify-content: space-between; margin-top: 2vh;"
+      v-if="orderDetail.data.status === '等待支付'">
       <div>
         <el-text size="large" tag="b" type="primary">
           剩余积分:&nbsp;&nbsp;
@@ -302,18 +303,17 @@ onBeforeRouteLeave(() => {
           {{ useUserStore().credit }}
         </el-text>
         <el-checkbox style="margin-left: 0.5vw;" v-model="orderDetail.data.pay_by_credit"
-          v-if="orderDetail.data.status === '等待支付'" v-on:change="get_real_price">使用积分支付</el-checkbox>
+          v-on:change="get_real_price">使用积分支付</el-checkbox>
       </div>
       <div>
         <el-text size="large" tag="b" type="primary">
           选择支付方式:&nbsp;&nbsp;
         </el-text>
-        <payment-selector style="width:10vw" v-model="orderDetail.data.payment"
-          v-if="orderDetail.data.status === '等待支付'" />
+        <payment-selector style="width:10vw" v-model="orderDetail.data.payment" />
       </div>
     </div>
 
-    <div style="margin-top: 2vh" v-if="orderDetail.data && orderDetail.data.status === '等待支付'">
+    <div v-if="orderDetail.data && orderDetail.data.status === '等待支付'" style="margin-top: 2vh">
       <div style="float:right;">
         <el-button type="danger" @click="cancel(id ?? -1)">
           取消订单
